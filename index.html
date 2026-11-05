@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Tora MOD Wiki</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 :root {
   --bg: #0d0e13;
@@ -22,7 +19,7 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
-  /* 各陣営の文字色 */
+  /* 各陣営の色 */
   --c-impostor:    #ff4d4d;
   --c-madmate:     var(--c-impostor);
   --c-crewmate:    #38bdf8;
@@ -88,9 +85,7 @@ header {
   border-radius: 8px;
 }
 
-.menu-button:active {
-  background: var(--card);
-}
+.menu-button:active { background: var(--card); }
 
 .menu-bar {
   display: block;
@@ -100,10 +95,7 @@ header {
   border-radius: 2px;
 }
 
-.header-title {
-  font-size: 20px;
-  font-weight: bold;
-}
+.header-title { font-size: 20px; font-weight: bold; }
 
 .settings-button {
   background: var(--card);
@@ -114,9 +106,7 @@ header {
   font-size: 14px;
   cursor: pointer;
 }
-.settings-button:hover {
-  background: var(--hover);
-}
+.settings-button:hover { background: var(--hover); }
 
 /* サイドバー */
 .sidebar-overlay {
@@ -128,9 +118,7 @@ header {
   z-index: 200;
 }
 
-.sidebar-overlay.show {
-  display: block;
-}
+.sidebar-overlay.show { display: block; }
 
 .sidebar {
   position: fixed;
@@ -148,9 +136,7 @@ header {
   overflow-y: auto;
 }
 
-.sidebar.show {
-  left: 0;
-}
+.sidebar.show { left: 0; }
 
 .sidebar-header {
   display: flex;
@@ -161,10 +147,7 @@ header {
   border-bottom: 1px solid var(--border);
 }
 
-.sidebar-header h3 {
-  margin: 0;
-  font-size: 18px;
-}
+.sidebar-header h3 { margin: 0; font-size: 18px; }
 
 .sidebar-close {
   background: none;
@@ -175,9 +158,7 @@ header {
   line-height: 1;
 }
 
-.menu-section {
-  margin-bottom: 22px;
-}
+.menu-section { margin-bottom: 22px; }
 
 .menu-section-title {
   font-size: 12px;
@@ -198,9 +179,7 @@ header {
   cursor: pointer;
 }
 
-.menu-link:hover {
-  background: var(--hover);
-}
+.menu-link:hover { background: var(--hover); }
 
 .menu-link.all         { color: var(--text) !important; font-weight: bold; }
 .menu-link.impostor,
@@ -213,24 +192,17 @@ header {
 .menu-link.suggest     { color: #38bdf8 !important; font-weight: bold; }
 
 /* ページ切り替え */
-.page-view {
-  display: none;
-}
-.page-view.active {
-  display: block;
-}
+.page-view { display: none; }
+.page-view.active { display: block; }
 
-/* メインコンテンツ */
+/* メイン */
 main {
   max-width: 900px;
   margin: auto;
   padding: 24px 20px 40px;
 }
 
-h1 {
-  font-size: 34px;
-  margin: 0 0 6px 0;
-}
+h1 { font-size: 34px; margin: 0 0 6px 0; }
 
 .subtitle {
   color: var(--sub);
@@ -247,11 +219,7 @@ h1 {
   border-radius: 16px;
 }
 
-.info-card h2 {
-  margin-top: 0;
-  margin-bottom: 14px;
-  font-size: 20px;
-}
+.info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 
 .info-card p {
   margin: 0;
@@ -278,11 +246,7 @@ h1 {
   border-radius: 12px;
 }
 
-.plan-item-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+.plan-item-header { display: flex; align-items: center; gap: 10px; }
 
 .plan-badge {
   display: inline-block;
@@ -295,20 +259,10 @@ h1 {
   border: 1px solid rgba(56, 189, 248, 0.3);
 }
 
-.plan-title {
-  font-size: 15px;
-  font-weight: bold;
-  color: var(--text);
-}
+.plan-title { font-size: 15px; font-weight: bold; color: var(--text); }
+.plan-desc { font-size: 13px; color: var(--sub); line-height: 1.5; margin: 0; }
 
-.plan-desc {
-  font-size: 13px;
-  color: var(--sub);
-  line-height: 1.5;
-  margin: 0;
-}
-
-/* 役職ページ（検索・フィルターUI） */
+/* 役職検索UI */
 .search-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -317,10 +271,7 @@ h1 {
   margin-bottom: 24px;
 }
 
-.search-box-wrapper {
-  position: relative;
-  margin-bottom: 14px;
-}
+.search-box-wrapper { position: relative; margin-bottom: 14px; }
 
 .search-icon-svg {
   position: absolute;
@@ -345,17 +296,9 @@ h1 {
   font-size: 15px;
   outline: none;
 }
+.search-input:focus { border-color: #555f80; }
 
-.search-input:focus {
-  border-color: #555f80;
-}
-
-.filter-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
-}
+.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 
 .filter-btn {
   background: var(--card-inner);
@@ -382,28 +325,11 @@ h1 {
 .filter-btn.modifier    { color: var(--c-modifier);    border-color: rgba(34, 197, 94, 0.35); }
 .filter-btn.ghost       { color: var(--c-ghost);       border-color: rgba(255, 255, 255, 0.35); }
 
-.filter-btn.active:not(.all) {
-  background: rgba(255, 255, 255, 0.1);
-  font-weight: bold;
-}
+.filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
+.search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
 
-.search-count {
-  font-size: 13px;
-  color: var(--sub);
-  padding-left: 2px;
-}
-
-/* ★★★ 提案フォームスタイル ★★★ */
-.form-group {
-  margin-bottom: 18px;
-}
-
-.form-group.highlight-box {
-  background: var(--card-inner);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-}
+/* ★提案フォーム（余計な囲み枠をなくしたすっきり仕様） */
+.form-group { margin-bottom: 18px; }
 
 .form-label {
   display: block;
@@ -412,18 +338,8 @@ h1 {
   margin-bottom: 8px;
 }
 
-.form-label span.req {
-  color: #ff4d4d;
-  font-size: 12px;
-  margin-left: 4px;
-}
-
-.form-label span.opt {
-  color: var(--sub);
-  font-size: 12px;
-  margin-left: 4px;
-  font-weight: normal;
-}
+.form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
+.form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; font-weight: normal; }
 
 .form-row {
   display: grid;
@@ -432,9 +348,7 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
+  .form-row { grid-template-columns: 1fr; }
 }
 
 .form-input,
@@ -451,20 +365,11 @@ h1 {
   font-family: inherit;
 }
 
-.form-group.highlight-box .form-input {
-  background: var(--card);
-}
-
 .form-input:focus,
 .form-textarea:focus,
-.form-select:focus {
-  border-color: #38bdf8;
-}
+.form-select:focus { border-color: #38bdf8; }
 
-.form-textarea {
-  resize: vertical;
-  min-height: 120px;
-}
+.form-textarea { resize: vertical; min-height: 120px; }
 
 .submit-btn {
   width: 100%;
@@ -479,10 +384,7 @@ h1 {
   transition: opacity .2s;
   margin-top: 10px;
 }
-
-.submit-btn:hover {
-  opacity: 0.9;
-}
+.submit-btn:hover { opacity: 0.9; }
 
 .form-status {
   margin-top: 14px;
@@ -510,7 +412,7 @@ footer {
   font-size: 13px;
 }
 
-/* 設定モーダル */
+/* モーダル */
 .modal {
   display: none;
   position: fixed;
@@ -522,10 +424,7 @@ footer {
   padding: 20px;
   z-index: 300;
 }
-
-.modal.show {
-  display: flex;
-}
+.modal.show { display: flex; }
 
 .modal-content {
   width: 100%;
@@ -543,11 +442,7 @@ footer {
   align-items: center;
   margin-bottom: 20px;
 }
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 20px;
-}
+.modal-header h2 { margin: 0; font-size: 20px; }
 
 .close {
   background: none;
@@ -574,9 +469,7 @@ select {
   outline: none;
 }
 
-@media (max-width: 600px) {
-  h1 { font-size: 28px; }
-}
+@media (max-width: 600px) { h1 { font-size: 28px; } }
 </style>
 </head>
 
@@ -592,7 +485,6 @@ select {
     </button>
     <span class="header-title">Tora MOD</span>
   </div>
-
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
 
@@ -718,7 +610,7 @@ select {
     </section>
   </div>
 
-  <!-- ③ ★★★ 役職提案ページ（動的切り替え対応） ★★★ -->
+  <!-- ③ ★役職提案ページ★ -->
   <div id="page-suggest" class="page-view">
     <h1>役職の提案</h1>
     <div class="subtitle">Role Suggestion</div>
@@ -743,7 +635,7 @@ select {
           </select>
         </div>
 
-        <!-- 役職名（1人目 / 通常） -->
+        <!-- 役職名（1つ目） -->
         <div class="form-group" id="role1Group">
           <div class="form-row">
             <div>
@@ -757,24 +649,24 @@ select {
           </div>
         </div>
 
-        <!-- ★コンビネーション選択時のみ表示：役職名（2人目） -->
-        <div class="form-group highlight-box" id="role2Group" style="display: none;">
+        <!-- ★コンビネーション用：役職名（2つ目 - 1つ目とまったく同じ形式・二重枠なし） -->
+        <div class="form-group" id="role2Group" style="display: none;">
           <div class="form-row">
             <div>
-              <label class="form-label">相方の役職名（日本語） <span class="req">*必須</span></label>
+              <label class="form-label">役職名 2（日本語） <span class="req">*必須</span></label>
               <input type="text" id="roleName2" class="form-input" placeholder="例：クロックマスター">
             </div>
             <div>
-              <label class="form-label">相方の英語名（英名） <span class="opt">任意</span></label>
+              <label class="form-label">役職名 2（英語・英名） <span class="opt">任意</span></label>
               <input type="text" id="roleNameEn2" class="form-input" placeholder="例：Clock Master">
             </div>
           </div>
         </div>
 
-        <!-- ★第三陣営選択時のみ表示：勝利条件 -->
-        <div class="form-group highlight-box" id="winConditionGroup" style="display: none;">
+        <!-- ★第三陣営用：勝利条件（二重枠なしのシンプル入力欄） -->
+        <div class="form-group" id="winConditionGroup" style="display: none;">
           <label class="form-label">勝利条件 <span class="req">*必須</span></label>
-          <textarea id="winCondition" class="form-textarea" style="min-height: 80px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
+          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
         </div>
 
         <!-- 能力・説明 -->
@@ -858,7 +750,7 @@ function selectFilter(btn) {
   btn.classList.add("active");
 }
 
-// ★★★ 陣営選択による入力欄の動的切り替え ★★★
+// ★陣営選択による入力欄の切り替え
 function handleCampChange(camp) {
   const role2Group = document.getElementById("role2Group");
   const roleName2Input = document.getElementById("roleName2");
@@ -867,7 +759,7 @@ function handleCampChange(camp) {
   const winGroup = document.getElementById("winConditionGroup");
   const winInput = document.getElementById("winCondition");
 
-  // コンビネーションの場合：2つ目の役職入力欄を表示
+  // コンビネーションの場合：2つ目の入力欄を表示
   if (camp === "コンビネーション") {
     role2Group.style.display = "block";
     roleName2Input.required = true;
@@ -888,7 +780,7 @@ function handleCampChange(camp) {
   }
 }
 
-// ★★★ 役職提案の送信処理（Discord Webhook） ★★★
+// ★Discord Webhook送信
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
@@ -921,14 +813,12 @@ async function handleSuggestSubmit(event) {
     "属性": 2278750             // 緑
   };
 
-  // タイトル作成
   let embedTitle = `【新役職提案】${roleName}`;
   if (roleNameEn) embedTitle += ` (${roleNameEn})`;
   if (roleCamp === "コンビネーション") {
     embedTitle = `【新コンビネーション提案】${roleName} × ${roleName2}`;
   }
 
-  // フィールドの組み立て
   const fields = [
     { name: "陣営", value: roleCamp, inline: true },
     { name: "提案者", value: authorName, inline: true }
@@ -941,7 +831,7 @@ async function handleSuggestSubmit(event) {
       inline: true
     });
     fields.push({
-      name: "役職 2 (相方)",
+      name: "役職 2",
       value: `${roleName2} ${roleNameEn2 ? `(${roleNameEn2})` : ""}`,
       inline: true
     });
@@ -990,7 +880,7 @@ async function handleSuggestSubmit(event) {
       formStatus.classList.add("success");
       formStatus.style.display = "block";
       document.getElementById("roleSuggestForm").reset();
-      handleCampChange("クルーメイト"); // フォームリセット時に表示を元に戻す
+      handleCampChange("クルーメイト");
     } else {
       alert("送信に失敗しました。Webhookの設定を確認してください。");
     }
