@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Tora MOD Wiki</title>
 
 <style>
@@ -36,8 +37,10 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Arial, "Noto Sans JP", sans-serif;
-  transition: .2s;
+  transition: background .2s, color .2s;
 }
+
+/* ヘッダー */
 
 header {
   min-height: 65px;
@@ -61,6 +64,8 @@ header {
   cursor: pointer;
 }
 
+/* メイン */
+
 main {
   max-width: 1100px;
   margin: auto;
@@ -76,6 +81,8 @@ h1 {
   color: var(--sub);
   font-size: 15px;
 }
+
+/* ウェルカム */
 
 .welcome {
   margin-top: 35px;
@@ -113,14 +120,14 @@ h1 {
   display: flex;
   align-items: center;
   gap: 15px;
-  min-height: 105px;
-  padding: 18px;
+  min-height: 85px;
+  padding: 20px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 15px;
   color: var(--text);
   text-decoration: none;
-  transition: .2s;
+  transition: background .2s, transform .2s;
 }
 
 .role-category:hover {
@@ -128,34 +135,18 @@ h1 {
   transform: translateY(-2px);
 }
 
-.category-icon {
-  width: 58px;
-  height: 58px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 13px;
-  background: var(--bg);
-  font-size: 29px;
-}
-
 .category-name {
   font-size: 18px;
   font-weight: bold;
 }
 
-.category-description {
-  margin-top: 6px;
-  color: var(--sub);
-  font-size: 12px;
-}
-
 .arrow {
   margin-left: auto;
   color: var(--sub);
-  font-size: 22px;
+  font-size: 25px;
 }
+
+/* フッター */
 
 footer {
   margin-top: 70px;
@@ -209,6 +200,7 @@ footer {
   border: none;
   color: var(--text);
   font-size: 25px;
+  cursor: pointer;
 }
 
 .setting-row {
@@ -226,6 +218,8 @@ select {
   border-radius: 8px;
 }
 
+/* スマホ対応 */
+
 @media (max-width: 550px) {
   .role-grid {
     grid-template-columns: 1fr;
@@ -242,8 +236,9 @@ select {
 
 <header>
   <span>Tora MOD</span>
+
   <button class="settings-button" onclick="openSettings()">
-    ⚙ 設定
+    設定
   </button>
 </header>
 
@@ -255,8 +250,11 @@ select {
     Tora MOD Official Wiki
   </div>
 
+  <!-- ウェルカム -->
+
   <section class="welcome">
     <h2>Welcome to Tora MOD Wiki</h2>
+
     <p>
       Tora MODに関する情報をまとめたWikiです。
       <br>
@@ -271,56 +269,32 @@ select {
   <div class="role-grid">
 
     <a class="role-category" href="#">
-      <div class="category-icon">🔪</div>
-      <div>
-        <div class="category-name">インポスター</div>
-        <div class="category-description">インポスター陣営の役職</div>
-      </div>
+      <div class="category-name">インポスター</div>
       <span class="arrow">›</span>
     </a>
 
     <a class="role-category" href="#">
-      <div class="category-icon">🛡️</div>
-      <div>
-        <div class="category-name">マッドメイト</div>
-        <div class="category-description">マッドメイト陣営の役職</div>
-      </div>
+      <div class="category-name">マッドメイト</div>
       <span class="arrow">›</span>
     </a>
 
     <a class="role-category" href="#">
-      <div class="category-icon">🚀</div>
-      <div>
-        <div class="category-name">クルーメイト</div>
-        <div class="category-description">クルーメイト陣営の役職</div>
-      </div>
+      <div class="category-name">クルーメイト</div>
       <span class="arrow">›</span>
     </a>
 
     <a class="role-category" href="#">
-      <div class="category-icon">🐯</div>
-      <div>
-        <div class="category-name">第三陣営</div>
-        <div class="category-description">独立した勝利条件を持つ役職</div>
-      </div>
+      <div class="category-name">第三陣営</div>
       <span class="arrow">›</span>
     </a>
 
     <a class="role-category" href="#">
-      <div class="category-icon">✨</div>
-      <div>
-        <div class="category-name">属性</div>
-        <div class="category-description">役職に付与される特殊な属性</div>
-      </div>
+      <div class="category-name">属性</div>
       <span class="arrow">›</span>
     </a>
 
     <a class="role-category" href="#">
-      <div class="category-icon">👻</div>
-      <div>
-        <div class="category-name">幽霊役職</div>
-        <div class="category-description">死亡後に関係する役職</div>
-      </div>
+      <div class="category-name">幽霊役職</div>
       <span class="arrow">›</span>
     </a>
 
@@ -335,31 +309,43 @@ select {
 <!-- 設定画面 -->
 
 <div class="modal" id="settingsModal">
+
   <div class="modal-content">
 
     <div class="modal-header">
       <h2>設定</h2>
-      <button class="close" onclick="closeSettings()">×</button>
+
+      <button class="close" onclick="closeSettings()">
+        ×
+      </button>
     </div>
 
     <div class="setting-row">
+
       <span>テーマ</span>
 
       <select id="themeSelect" onchange="changeTheme(this.value)">
         <option value="dark">ダークモード</option>
         <option value="light">ライトモード</option>
       </select>
+
     </div>
 
   </div>
+
 </div>
 
 <script>
 
+// 保存されたテーマを読み込む
+
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
+
+// テーマ変更
 
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
+
   document.getElementById("themeSelect").value = theme;
 }
 
@@ -367,6 +353,8 @@ function changeTheme(theme) {
   localStorage.setItem("tora-theme", theme);
   applyTheme(theme);
 }
+
+// 設定画面
 
 function openSettings() {
   document.getElementById("settingsModal").classList.add("show");
@@ -376,12 +364,18 @@ function closeSettings() {
   document.getElementById("settingsModal").classList.remove("show");
 }
 
+// 初期設定
+
 applyTheme(savedTheme);
 
+// 背景タップで設定画面を閉じる
+
 document.getElementById("settingsModal").addEventListener("click", function(event) {
+
   if (event.target === this) {
     closeSettings();
   }
+
 });
 
 </script>
