@@ -22,13 +22,13 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
-  /* ★陣営カラー設定（自由に変更可能です） */
-  --c-impostor: #ef4444; /* 赤 */
-  --c-madmate:  #f97316; /* オレンジ（仮） */
-  --c-crewmate: #38bdf8; /* 水色（補完） */
-  --c-neutral:  #9ca3af; /* 灰色（第三陣営） */
-  --c-modifier: #22c55e; /* 緑（属性） */
-  --c-ghost:    #ffffff; /* 白（幽霊役職） */
+  /* ★各陣営の文字色 */
+  --c-impostor: #ff4d4d; /* インポスター：赤 */
+  --c-madmate:  #ff4d4d; /* マッドメイト：赤 */
+  --c-crewmate: #38bdf8; /* クルーメイト：青（水色） */
+  --c-neutral:  #9ca3af; /* 第三陣営：灰色 */
+  --c-modifier: #22c55e; /* 属性：緑 */
+  --c-ghost:    #ffffff; /* 幽霊役職：白 */
 }
 
 body.light {
@@ -40,7 +40,7 @@ body.light {
   --text: #222532;
   --sub: #697080;
   --hover: #f7f8fb;
-  --c-ghost: #52525b; /* ライトモード時は白だと見えなくなるため濃いグレーに自動調整 */
+  --c-ghost: #4b5563; /* ライトモード時のみ白は見えなくなるため濃いグレー */
 }
 
 body {
@@ -161,13 +161,6 @@ h1 {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
-}
-
-.category-icon img {
-  width: 65%;
-  height: 65%;
-  object-fit: contain;
 }
 
 /* テキストエリア */
@@ -197,24 +190,25 @@ h1 {
   padding-left: 8px;
 }
 
-/* ★陣営別の色設定 */
-.impostor .category-name { color: var(--c-impostor); }
-.impostor .category-icon { border-color: rgba(239, 68, 68, 0.4); }
-
-.madmate  .category-name { color: var(--c-madmate); }
-.madmate  .category-icon { border-color: rgba(249, 115, 22, 0.4); }
-
-.crewmate .category-name { color: var(--c-crewmate); }
-.crewmate .category-icon { border-color: rgba(56, 189, 248, 0.4); }
-
-.neutral  .category-name { color: var(--c-neutral); }
-.neutral  .category-icon { border-color: rgba(156, 163, 175, 0.4); }
-
-.modifier .category-name { color: var(--c-modifier); }
-.modifier .category-icon { border-color: rgba(34, 197, 94, 0.4); }
-
-.ghost    .category-name { color: var(--c-ghost); }
-.ghost    .category-icon { border-color: rgba(255, 255, 255, 0.4); }
+/* ★★★ 文字色の指定（確実に色が変わるように !important を付与） ★★★ */
+.role-category.impostor .category-name {
+  color: var(--c-impostor) !important;
+}
+.role-category.madmate .category-name {
+  color: var(--c-madmate) !important;
+}
+.role-category.crewmate .category-name {
+  color: var(--c-crewmate) !important;
+}
+.role-category.neutral .category-name {
+  color: var(--c-neutral) !important;
+}
+.role-category.modifier .category-name {
+  color: var(--c-modifier) !important;
+}
+.role-category.ghost .category-name {
+  color: var(--c-ghost) !important;
+}
 
 /* フッター */
 footer {
@@ -328,7 +322,7 @@ select {
 
   <div class="role-grid">
 
-    <!-- インポスター (赤) -->
+    <!-- インポスター（赤） -->
     <a class="role-category impostor" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
@@ -338,7 +332,7 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- マッドメイト (オレンジ) -->
+    <!-- マッドメイト（赤） -->
     <a class="role-category madmate" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
@@ -348,7 +342,7 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- クルーメイト (青) -->
+    <!-- クルーメイト（青） -->
     <a class="role-category crewmate" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
@@ -358,7 +352,7 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 第三陣営 (灰) -->
+    <!-- 第三陣営（灰色） -->
     <a class="role-category neutral" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
@@ -368,7 +362,7 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 属性 (緑) -->
+    <!-- 属性（緑） -->
     <a class="role-category modifier" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
@@ -378,7 +372,7 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 幽霊役職 (白) -->
+    <!-- 幽霊役職（白） -->
     <a class="role-category ghost" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
