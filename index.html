@@ -12,14 +12,23 @@
 }
 
 :root {
+  /* テーマ基本色 */
   --bg: #0d0e13;
   --header: #151720;
   --card: #1b202d;
-  --card-sub: #12151e; /* アイコン背景用 */
+  --card-sub: #12151e;
   --border: #303547;
   --text: #f2f3f7;
   --sub: #9ba2b2;
   --hover: #252c3c;
+
+  /* ★陣営カラー設定（自由に変更可能です） */
+  --c-impostor: #ef4444; /* 赤 */
+  --c-madmate:  #f97316; /* オレンジ（仮） */
+  --c-crewmate: #38bdf8; /* 水色（補完） */
+  --c-neutral:  #9ca3af; /* 灰色（第三陣営） */
+  --c-modifier: #22c55e; /* 緑（属性） */
+  --c-ghost:    #ffffff; /* 白（幽霊役職） */
 }
 
 body.light {
@@ -31,6 +40,7 @@ body.light {
   --text: #222532;
   --sub: #697080;
   --hover: #f7f8fb;
+  --c-ghost: #52525b; /* ライトモード時は白だと見えなくなるため濃いグレーに自動調整 */
 }
 
 body {
@@ -154,7 +164,6 @@ h1 {
   overflow: hidden;
 }
 
-/* アイコン画像（画像を指定した際に綺麗に収まる設定） */
 .category-icon img {
   width: 65%;
   height: 65%;
@@ -187,6 +196,25 @@ h1 {
   font-size: 22px;
   padding-left: 8px;
 }
+
+/* ★陣営別の色設定 */
+.impostor .category-name { color: var(--c-impostor); }
+.impostor .category-icon { border-color: rgba(239, 68, 68, 0.4); }
+
+.madmate  .category-name { color: var(--c-madmate); }
+.madmate  .category-icon { border-color: rgba(249, 115, 22, 0.4); }
+
+.crewmate .category-name { color: var(--c-crewmate); }
+.crewmate .category-icon { border-color: rgba(56, 189, 248, 0.4); }
+
+.neutral  .category-name { color: var(--c-neutral); }
+.neutral  .category-icon { border-color: rgba(156, 163, 175, 0.4); }
+
+.modifier .category-name { color: var(--c-modifier); }
+.modifier .category-icon { border-color: rgba(34, 197, 94, 0.4); }
+
+.ghost    .category-name { color: var(--c-ghost); }
+.ghost    .category-icon { border-color: rgba(255, 255, 255, 0.4); }
 
 /* フッター */
 footer {
@@ -300,11 +328,9 @@ select {
 
   <div class="role-grid">
 
-    <!-- インポスター -->
-    <a class="role-category" href="#">
-      <div class="category-icon">
-        <!-- 画像を使う場合はここに <img src="knife.png" alt="インポスター"> を入れます -->
-      </div>
+    <!-- インポスター (赤) -->
+    <a class="role-category impostor" href="#">
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">インポスター</span>
         <span class="category-desc">インポスター陣営の役職</span>
@@ -312,8 +338,8 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- マッドメイト -->
-    <a class="role-category" href="#">
+    <!-- マッドメイト (オレンジ) -->
+    <a class="role-category madmate" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">マッドメイト</span>
@@ -322,8 +348,8 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- クルーメイト -->
-    <a class="role-category" href="#">
+    <!-- クルーメイト (青) -->
+    <a class="role-category crewmate" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">クルーメイト</span>
@@ -332,8 +358,8 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 第三陣営 -->
-    <a class="role-category" href="#">
+    <!-- 第三陣営 (灰) -->
+    <a class="role-category neutral" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">第三陣営</span>
@@ -342,8 +368,8 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 属性 -->
-    <a class="role-category" href="#">
+    <!-- 属性 (緑) -->
+    <a class="role-category modifier" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">属性</span>
@@ -352,8 +378,8 @@ select {
       <span class="arrow">›</span>
     </a>
 
-    <!-- 幽霊役職 -->
-    <a class="role-category" href="#">
+    <!-- 幽霊役職 (白) -->
+    <a class="role-category ghost" href="#">
       <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">幽霊役職</span>
