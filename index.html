@@ -7,7 +7,6 @@
 
 <style>
 * { box-sizing: border-box; }
-
 :root {
   --bg: #0d0e13;
   --header: #151720;
@@ -18,20 +17,15 @@
   --text: #f2f3f7;
   --sub: #9ba2b2;
   --hover: #252c3c;
-
-  /* ★Toraカラー */
   --c-tora: #DDBB99;
-
-  /* 陣営色 */
-  --c-impostor:    #ff4d4d;
-  --c-madmate:     var(--c-impostor);
-  --c-crewmate:    #38bdf8;
-  --c-neutral:     #9ca3af;
-  --c-ghost:       #ffffff;
+  --c-impostor: #ff4d4d;
+  --c-madmate: var(--c-impostor);
+  --c-crewmate: #38bdf8;
+  --c-neutral: #9ca3af;
+  --c-ghost: #ffffff;
   --c-combination: var(--c-ghost);
-  --c-modifier:    #22c55e;
+  --c-modifier: #22c55e;
 }
-
 body.light {
   --bg: #f3f4f7;
   --header: #ffffff;
@@ -45,7 +39,6 @@ body.light {
   --c-ghost: #4b5563;
   --c-tora: #b88652;
 }
-
 body {
   margin: 0;
   background: var(--bg);
@@ -53,11 +46,9 @@ body {
   font-family: Arial, "Noto Sans JP", sans-serif;
   transition: background .2s, color .2s;
 }
+.tora-text { color: #DDBB99 !important; }
 
-.tora-text {
-  color: #DDBB99 !important;
-}
-
+/* ヘッダー */
 header {
   min-height: 65px;
   display: flex;
@@ -70,9 +61,7 @@ header {
   top: 0;
   z-index: 50;
 }
-
 .header-left { display: flex; align-items: center; gap: 12px; }
-
 .menu-button {
   background: transparent;
   border: none;
@@ -88,17 +77,8 @@ header {
   border-radius: 8px;
 }
 .menu-button:active { background: var(--card); }
-
-.menu-bar {
-  display: block;
-  width: 22px;
-  height: 2.5px;
-  background-color: var(--text);
-  border-radius: 2px;
-}
-
+.menu-bar { display: block; width: 22px; height: 2.5px; background-color: var(--text); border-radius: 2px; }
 .header-title { font-size: 20px; font-weight: bold; }
-
 .settings-button {
   background: var(--card);
   border: 1px solid var(--border);
@@ -120,7 +100,6 @@ header {
   z-index: 200;
 }
 .sidebar-overlay.show { display: block; }
-
 .sidebar {
   position: fixed;
   top: 0;
@@ -137,7 +116,6 @@ header {
   overflow-y: auto;
 }
 .sidebar.show { left: 0; }
-
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -147,24 +125,9 @@ header {
   border-bottom: 1px solid var(--border);
 }
 .sidebar-header h3 { margin: 0; font-size: 18px; }
-
-.sidebar-close {
-  background: none;
-  border: none;
-  color: var(--sub);
-  font-size: 26px;
-  cursor: pointer;
-}
-
+.sidebar-close { background: none; border: none; color: var(--sub); font-size: 26px; cursor: pointer; }
 .menu-section { margin-bottom: 22px; }
-.menu-section-title {
-  font-size: 12px;
-  color: var(--sub);
-  font-weight: bold;
-  margin-bottom: 8px;
-  padding-left: 8px;
-}
-
+.menu-section-title { font-size: 12px; color: var(--sub); font-weight: bold; margin-bottom: 8px; padding-left: 8px; }
 .menu-link {
   display: block;
   padding: 10px 12px;
@@ -176,26 +139,19 @@ header {
   cursor: pointer;
 }
 .menu-link:hover { background: var(--hover); }
-
-.menu-link.all         { color: var(--text) !important; font-weight: bold; }
-.menu-link.impostor,
-.menu-link.madmate     { color: var(--c-impostor) !important; }
-.menu-link.crewmate    { color: var(--c-crewmate) !important; }
-.menu-link.neutral     { color: var(--c-neutral) !important; }
+.menu-link.all { color: var(--text) !important; font-weight: bold; }
+.menu-link.impostor, .menu-link.madmate { color: var(--c-impostor) !important; }
+.menu-link.crewmate { color: var(--c-crewmate) !important; }
+.menu-link.neutral { color: var(--c-neutral) !important; }
 .menu-link.combination { color: var(--c-combination) !important; }
-.menu-link.modifier    { color: var(--c-modifier) !important; }
-.menu-link.ghost       { color: var(--c-ghost) !important; }
-.menu-link.suggest     { color: #38bdf8 !important; font-weight: bold; }
+.menu-link.modifier { color: var(--c-modifier) !important; }
+.menu-link.ghost { color: var(--c-ghost) !important; }
+.menu-link.suggest { color: #38bdf8 !important; font-weight: bold; }
+.menu-link.bug { color: #f87171 !important; font-weight: bold; }
 
 .page-view { display: none; }
 .page-view.active { display: block; }
-
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 24px 20px 40px;
-}
-
+main { max-width: 900px; margin: auto; padding: 24px 20px 40px; }
 h1 { font-size: 34px; margin: 0 0 6px 0; }
 .subtitle { color: var(--sub); font-size: 15px; margin-bottom: 24px; }
 
@@ -209,6 +165,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
 
+/* 予定リスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex;
@@ -232,6 +189,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .plan-title { font-size: 15px; font-weight: bold; color: var(--text); }
 .plan-desc { font-size: 13px; color: var(--sub); line-height: 1.5; margin: 0; }
 
+/* 検索UI */
 .search-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -263,7 +221,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   outline: none;
 }
 .search-input:focus { border-color: #555f80; }
-
 .filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
 .filter-btn {
   background: var(--card-inner);
@@ -276,17 +233,17 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   user-select: none;
 }
 .filter-btn.all.active { background: #2d3345; color: #fff; border-color: #4c5673; }
-.filter-btn.impostor    { color: var(--c-impostor);    border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.madmate     { color: var(--c-madmate);     border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.crewmate    { color: var(--c-crewmate);    border-color: rgba(56, 189, 248, 0.35); }
-.filter-btn.neutral     { color: var(--c-neutral);     border-color: rgba(156, 163, 175, 0.35); }
+.filter-btn.impostor { color: var(--c-impostor); border-color: rgba(255, 77, 77, 0.35); }
+.filter-btn.madmate { color: var(--c-madmate); border-color: rgba(255, 77, 77, 0.35); }
+.filter-btn.crewmate { color: var(--c-crewmate); border-color: rgba(56, 189, 248, 0.35); }
+.filter-btn.neutral { color: var(--c-neutral); border-color: rgba(156, 163, 175, 0.35); }
 .filter-btn.combination { color: var(--c-combination); border-color: rgba(255, 255, 255, 0.35); }
-.filter-btn.modifier    { color: var(--c-modifier);    border-color: rgba(34, 197, 94, 0.35); }
-.filter-btn.ghost       { color: var(--c-ghost);       border-color: rgba(255, 255, 255, 0.35); }
+.filter-btn.modifier { color: var(--c-modifier); border-color: rgba(34, 197, 94, 0.35); }
+.filter-btn.ghost { color: var(--c-ghost); border-color: rgba(255, 255, 255, 0.35); }
 .filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
 .search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
 
-/* フォーム */
+/* フォーム共通 */
 .form-group { margin-bottom: 18px; }
 .form-label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; }
 .form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
@@ -302,7 +259,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   margin-bottom: 22px;
   border: 1px solid var(--border);
 }
-
 .type-switch-btn {
   background: transparent;
   border: none;
@@ -314,7 +270,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   cursor: pointer;
   transition: all .2s;
 }
-
 .type-switch-btn.active {
   background: var(--card);
   color: var(--text);
@@ -328,7 +283,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }
-
 .form-input, .form-textarea, .form-select {
   width: 100%;
   background: var(--card-inner);
@@ -342,10 +296,15 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
+.log-textarea {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  background: #090b10;
+  color: #a5b4fc;
+}
 
 /* 設定項目エリア */
 .setting-items-container { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
-
 .setting-item-card {
   background: var(--card-inner);
   border: 1px solid var(--border);
@@ -355,42 +314,16 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   flex-direction: column;
   gap: 10px;
 }
-
 .setting-item-header { display: flex; justify-content: space-between; align-items: center; }
 .setting-item-title { font-size: 13px; font-weight: bold; color: var(--sub); }
-.setting-item-del-btn {
-  background: none;
-  border: none;
-  color: #ff4d4d;
-  font-size: 18px;
-  cursor: pointer;
-  line-height: 1;
-}
-
-.setting-main-row {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 10px;
-}
-
-.setting-detail-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.setting-detail-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
+.setting-item-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; }
+.setting-main-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
+.setting-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.setting-detail-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media (max-width: 600px) {
   .setting-main-row { grid-template-columns: 1fr; }
-  .setting-detail-grid { grid-template-columns: 1fr; }
-  .setting-detail-grid-2 { grid-template-columns: 1fr; }
+  .setting-detail-grid, .setting-detail-grid-2 { grid-template-columns: 1fr; }
 }
-
 .add-setting-btn {
   background: transparent;
   border: 1px dashed #38bdf8;
@@ -417,6 +350,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   cursor: pointer;
   margin-top: 14px;
 }
+.submit-btn.danger { background: #ef4444; color: #fff; }
 .submit-btn:hover { opacity: 0.9; }
 
 .form-status {
@@ -442,7 +376,6 @@ footer {
   border-top: 1px solid var(--border);
   font-size: 13px;
 }
-
 .modal {
   display: none;
   position: fixed;
@@ -507,6 +440,7 @@ select {
     <div class="menu-section-title">メイン</div>
     <a class="menu-link" onclick="showPage('home')">トップページ</a>
     <a class="menu-link suggest" onclick="showPage('suggest')">役職を提案する</a>
+    <a class="menu-link bug" onclick="showPage('bug')">バグ報告</a>
   </div>
 
   <div class="menu-section">
@@ -746,6 +680,43 @@ select {
     </section>
   </div>
 
+  <!-- ④ バグ報告ページ -->
+  <div id="page-bug" class="page-view">
+    <h1>バグ報告</h1>
+    <div class="subtitle">Bug Report</div>
+
+    <section class="info-card">
+      <p style="margin-bottom: 20px;">ゲーム中に発生した不具合やエラーを報告してください。何試合目・何ターン目かの情報や、ログがあると修正がスムーズになります！</p>
+
+      <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">何試合目か <span class="opt">任意</span></label>
+            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など">
+          </div>
+          <div class="form-group">
+            <label class="form-label">何ターン目か <span class="opt">任意</span></label>
+            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">バグ内容・発生状況 <span class="req">*必須</span></label>
+          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">ログの貼り付け <span class="opt">任意（BepInExなどのログ）</span></label>
+          <textarea id="bugLog" class="form-textarea log-textarea" style="min-height: 140px;" placeholder="エラーログがある場合はここに全文貼り付けてください"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn danger" id="bugSubmitBtn">バグを報告する</button>
+        <div id="bugFormStatus" class="form-status">バグ報告を送信しました。ご協力ありがとうございます！</div>
+      </form>
+    </section>
+  </div>
+
 </main>
 
 <footer>
@@ -816,6 +787,8 @@ function showPage(pageName, filterCategory) {
     }
   } else if (pageName === 'suggest') {
     document.getElementById("page-suggest").classList.add("active");
+  } else if (pageName === 'bug') {
+    document.getElementById("page-bug").classList.add("active");
   }
 
   document.getElementById("sidebar").classList.remove("show");
@@ -965,13 +938,33 @@ function toggleSettingType(selectEl) {
   }
 }
 
-// ★★★ 送信処理（Bot生存の厳格チェック＆Webhook送信） ★★★
+// ★★★ Webhook URL設定（役職提案用とバグ報告用で分離） ★★★
+const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
+const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1567935043404570734/R3xk7q01Y1fPGxYAXlXlBP8hhtbfAcRYMb4ngphiTnbuP9W84gCAWGn0EoaW43Lmyjz8";
+const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
+const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
+
+// Bot生存確認
+async function checkBotAlive() {
+  if (!BOT_SERVER_URL) return true;
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
+    const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) return false;
+    const data = await response.json();
+    return data && data.status === "online";
+  } catch (e) {
+    return false;
+  }
+}
+
+// ① 役職提案の送信処理
 async function handleSuggestSubmit(event) {
   event.preventDefault();
-
-  const WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
-  const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
-  const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
   const submitBtn = document.getElementById("submitBtn");
   const formStatus = document.getElementById("formStatus");
@@ -979,35 +972,14 @@ async function handleSuggestSubmit(event) {
   submitBtn.textContent = "送信中...";
   formStatus.style.display = "none";
 
-  // ①【超重要】Botが実際に生きているか厳格にチェック！
-  // 返事が来ない、エラー、または online でない場合は即座に中断してエラーを出す
-  if (BOT_SERVER_URL) {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3秒でタイムアウト判定
-      
-      const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
-      const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error("Bot is down");
-      }
-      
-      const data = await response.json();
-      if (!data || data.status !== "online") {
-        throw new Error("Bot status not online");
-      }
-    } catch (e) {
-      // Botが落ちている場合は、Webhookを一切送らずにメッセージを出して終了！
-      alert(BOT_OFFLINE_MSG);
-      submitBtn.disabled = false;
-      submitBtn.textContent = "提案";
-      return;
-    }
+  const isAlive = await checkBotAlive();
+  if (!isAlive) {
+    alert(BOT_OFFLINE_MSG);
+    submitBtn.disabled = false;
+    submitBtn.textContent = "提案";
+    return;
   }
 
-  // ② 提案データの準備（Botが生きている場合のみここを実行）
   const modMode = document.getElementById("modMode").value;
   const roleCamp = document.getElementById("roleCamp").value;
   const roleDesc = document.getElementById("roleDesc").value;
@@ -1045,28 +1017,14 @@ async function handleSuggestSubmit(event) {
 
     embedTitle = currentProposalType === 'port' ? `【移植案】${name1} × ${name2}` : `【新役職提案】${name1} × ${name2}`;
 
-    fields.push({
-      name: `役職1 [${camp1}]`,
-      value: `${name1} (${nameEn1})`,
-      inline: true
-    });
+    fields.push({ name: `役職1 [${camp1}]`, value: `${name1} (${nameEn1})`, inline: true });
     if (camp1 === "第三陣営") {
-      fields.push({
-        name: "役職1の勝利条件",
-        value: document.getElementById("combiWin1").value || "未記入"
-      });
+      fields.push({ name: "役職1の勝利条件", value: document.getElementById("combiWin1").value || "未記入" });
     }
 
-    fields.push({
-      name: `役職2 [${camp2}]`,
-      value: `${name2} (${nameEn2})`,
-      inline: true
-    });
+    fields.push({ name: `役職2 [${camp2}]`, value: `${name2} (${nameEn2})`, inline: true });
     if (camp2 === "第三陣営") {
-      fields.push({
-        name: "役職2の勝利条件",
-        value: document.getElementById("combiWin2").value || "未記入"
-      });
+      fields.push({ name: "役職2の勝利条件", value: document.getElementById("combiWin2").value || "未記入" });
     }
   } else {
     const roleName = document.getElementById("roleName").value;
@@ -1074,24 +1032,14 @@ async function handleSuggestSubmit(event) {
 
     embedTitle = currentProposalType === 'port' ? `【移植案】${roleName} (${roleNameEn})` : `【新役職提案】${roleName} (${roleNameEn})`;
 
-    fields.push({
-      name: "英語名 (英名)",
-      value: roleNameEn,
-      inline: true
-    });
+    fields.push({ name: "英語名 (英名)", value: roleNameEn, inline: true });
 
     if (roleCamp === "第三陣営") {
-      fields.push({
-        name: "勝利条件",
-        value: document.getElementById("winCondition").value || "未記入"
-      });
+      fields.push({ name: "勝利条件", value: document.getElementById("winCondition").value || "未記入" });
     }
   }
 
-  fields.push({
-    name: "能力・詳細説明",
-    value: roleDesc
-  });
+  fields.push({ name: "能力・詳細説明", value: roleDesc });
 
   const settingCards = document.querySelectorAll(".setting-item-card");
   if (settingCards.length > 0) {
@@ -1108,22 +1056,17 @@ async function handleSuggestSubmit(event) {
           const step = card.querySelector(".setting-step").value.trim();
           const max = card.querySelector(".setting-max").value.trim();
           const unit = card.querySelector(".setting-unit").value.trim();
-          
           let details = [];
           if (max) details.push(`最大: ${max}${unit}`);
           if (step) details.push(`間隔: ${step}${unit}`);
           if (!max && !step && unit) details.push(`単位: ${unit}`);
-          
           settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
         }
       }
     });
 
     if (settingText) {
-      fields.push({
-        name: "⚙️ ゲーム内設定項目",
-        value: settingText
-      });
+      fields.push({ name: "⚙️ ゲーム内設定項目", value: settingText });
     }
   }
 
@@ -1140,9 +1083,8 @@ async function handleSuggestSubmit(event) {
     ]
   };
 
-  // ③ Webhook送信実行
   try {
-    const response = await fetch(WEBHOOK_URL, {
+    const response = await fetch(SUGGEST_WEBHOOK_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
@@ -1164,6 +1106,80 @@ async function handleSuggestSubmit(event) {
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = "提案";
+  }
+}
+
+// ② バグ報告の送信処理
+async function handleBugSubmit(event) {
+  event.preventDefault();
+
+  const submitBtn = document.getElementById("bugSubmitBtn");
+  const formStatus = document.getElementById("bugFormStatus");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "送信中...";
+  formStatus.style.display = "none";
+
+  const isAlive = await checkBotAlive();
+  if (!isAlive) {
+    alert(BOT_OFFLINE_MSG);
+    submitBtn.disabled = false;
+    submitBtn.textContent = "バグを報告する";
+    return;
+  }
+
+  const match = document.getElementById("bugMatch").value.trim() || "未記入";
+  const turn = document.getElementById("bugTurn").value.trim() || "未記入";
+  const desc = document.getElementById("bugDesc").value.trim();
+  const log = document.getElementById("bugLog").value.trim();
+
+  const fields = [
+    { name: "何試合目か", value: match, inline: true },
+    { name: "何ターン目か", value: turn, inline: true },
+    { name: "バグ内容・発生状況", value: desc, inline: false }
+  ];
+
+  if (log) {
+    const trimmedLog = log.length > 950 ? log.substring(0, 950) + "\n...（以降省略）" : log;
+    fields.push({
+      name: "📋 エラーログ",
+      value: `\`\`\`text\n${trimmedLog}\n\`\`\``,
+      inline: false
+    });
+  }
+
+  const payload = {
+    username: "Tora MOD バグ報告",
+    embeds: [
+      {
+        title: "🐛【バグ報告】不具合が報告されました",
+        color: 15631988,
+        fields: fields,
+        footer: { text: "Tora MOD Official Wiki" },
+        timestamp: new Date().toISOString()
+      }
+    ]
+  };
+
+  try {
+    const response = await fetch(BUG_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
+      formStatus.classList.add("success");
+      formStatus.style.display = "block";
+      document.getElementById("bugReportForm").reset();
+    } else {
+      alert(BOT_OFFLINE_MSG);
+    }
+  } catch (error) {
+    alert(BOT_OFFLINE_MSG);
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "バグを報告する";
   }
 }
 
