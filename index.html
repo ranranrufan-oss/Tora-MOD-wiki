@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>トラ-MOD-ウィキ</title>
+<title>Role Wiki</title>
 
 <style>
 * {
@@ -15,7 +15,7 @@ body {
   margin: 0;
   background: #0d0e13;
   color: #f2f3f7;
-  font-family: Arial, "Noto Sans JP", sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 header {
@@ -44,12 +44,15 @@ h2 {
 .search {
   width: 100%;
   padding: 14px;
-  margin-bottom: 22px;
   border: 1px solid #353947;
   border-radius: 12px;
   background: #191c26;
   color: white;
   font-size: 16px;
+}
+
+#role-list {
+  margin-top: 20px;
 }
 
 .role {
@@ -71,7 +74,6 @@ h2 {
   border: none;
   color: white;
   text-align: left;
-  cursor: pointer;
 }
 
 .role-icon {
@@ -93,7 +95,6 @@ h2 {
 .role-name {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 7px;
 }
 
 .role-en {
@@ -104,11 +105,6 @@ h2 {
 .arrow {
   color: #aab0c0;
   font-size: 23px;
-  transition: transform .2s;
-}
-
-.role.open .arrow {
-  transform: rotate(180deg);
 }
 
 .description {
@@ -122,6 +118,10 @@ h2 {
   display: block;
 }
 
+.role.open .arrow {
+  transform: rotate(180deg);
+}
+
 .tag {
   display: inline-block;
   padding: 5px 12px;
@@ -130,6 +130,12 @@ h2 {
   color: #b8c6e8;
   font-size: 13px;
   margin-bottom: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 40px 15px;
+  color: #858c9b;
 }
 
 footer {
@@ -143,11 +149,11 @@ footer {
 
 <body>
 
-<header>役職Wiki</header>
+<header>Role Wiki</header>
 
 <main>
 
-<h1>トラ-MOD Wiki</h1>
+<h1>Role Wiki</h1>
 
 <input
   class="search"
@@ -163,106 +169,82 @@ footer {
 </main>
 
 <footer>
-トラ-MOD Wiki
+Role Wiki
 </footer>
 
 <script>
 
-// 役職データ
-// 新しい役職はここに追加！
+// ここに役職を追加していく
+const roles = [];
 
-const roles = [
-  {
-    name: "シェリフ",
-    english: "Sheriff",
-    icon: "🏹",
-    color: "#5599f5",
-    faction: "クルー",
-    description: "インポスターなどの敵をキルできる役職。対象を間違えると自分が死亡する。"
-  },
-
-  {
-    name: "シリアルキラー",
-    english: "Serial Killer",
-    icon: "🔪",
-    color: "#f05260",
-    faction: "インポスター",
-    description: "プレイヤーをキルして勝利を目指す役職。"
-  },
-
-  {
-    name: "タイガー",
-    english: "Tiger",
-    icon: "🐯",
-    color: "#ffd400",
-    faction: "第三陣営",
-    description: "捕食モードを使用して敵を倒す特殊な役職。"
-  }
-];
-
-// 役職カードを表示
 const list = document.getElementById("role-list");
 
 function showRoles(keyword = "") {
 
   list.innerHTML = "";
 
-  roles
-    .filter(role =>
-      role.name.toLowerCase().includes(keyword.toLowerCase()) ||
-      role.english.toLowerCase().includes(keyword.toLowerCase())
-    )
-    .forEach(role => {
+  const filtered = roles.filter(role =>
+    role.name.toLowerCase().includes(keyword.toLowerCase()) ||
+    role.english.toLowerCase().includes(keyword.toLowerCase())
+  );
 
-      const card = document.createElement("div");
-      card.className = "role";
+  if (filtered.length === 0) {
+    list.innerHTML =
+      '<div class="empty">役職はまだ登録されていません。</div>';
+    return;
+  }
 
-      const button = document.createElement("button");
-      button.className = "role-button";
+  filtered.forEach(role => {
 
-      const icon = document.createElement("div");
-      icon.className = "role-icon";
-      icon.textContent = role.icon;
+    const card = document.createElement("div");
+    card.className = "role";
 
-      const info = document.createElement("div");
-      info.className = "role-info";
+    const button = document.createElement("button");
+    button.className = "role-button";
 
-      const name = document.createElement("div");
-      name.className = "role-name";
-      name.style.color = role.color;
-      name.textContent = role.name;
+    const icon = document.createElement("div");
+    icon.className = "role-icon";
+    icon.textContent = role.icon;
 
-      const english = document.createElement("div");
-      english.className = "role-en";
-      english.textContent = "/ " + role.english;
+    const info = document.createElement("div");
+    info.className = "role-info";
 
-      info.append(name, english);
+    const name = document.createElement("div");
+    name.className = "role-name";
+    name.style.color = role.color;
+    name.textContent = role.name;
 
-      const arrow = document.createElement("div");
-      arrow.className = "arrow";
-      arrow.textContent = "▼";
+    const english = document.createElement("div");
+    english.className = "role-en";
+    english.textContent = "/ " + role.english;
 
-      button.append(icon, info, arrow);
+    info.append(name, english);
 
-      const description = document.createElement("div");
-      description.className = "description";
+    const arrow = document.createElement("div");
+    arrow.className = "arrow";
+    arrow.textContent = "▼";
 
-      const tag = document.createElement("div");
-      tag.className = "tag";
-      tag.textContent = role.faction;
+    button.append(icon, info, arrow);
 
-      const text = document.createElement("div");
-      text.textContent = role.description;
+    const description = document.createElement("div");
+    description.className = "description";
 
-      description.append(tag, text);
+    const tag = document.createElement("div");
+    tag.className = "tag";
+    tag.textContent = role.faction;
 
-      button.addEventListener("click", () => {
-        card.classList.toggle("open");
-      });
+    const text = document.createElement("div");
+    text.textContent = role.description;
 
-      card.append(button, description);
-      list.appendChild(card);
+    description.append(tag, text);
+
+    button.addEventListener("click", () => {
+      card.classList.toggle("open");
     });
+
+    card.append(button, description);
+    list.appendChild(card);
+  });
 }
 
 document.getElementById("search")
