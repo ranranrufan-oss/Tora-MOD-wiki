@@ -328,7 +328,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
 .search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
 
-/* ★提案フォーム（余計な囲み枠をなくしたすっきり仕様） */
+/* 提案フォーム */
 .form-group { margin-bottom: 18px; }
 
 .form-label {
@@ -339,7 +339,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 }
 
 .form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
-.form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; font-weight: normal; }
 
 .form-row {
   display: grid;
@@ -347,8 +346,14 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   gap: 12px;
 }
 
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 12px;
+}
+
 @media (max-width: 600px) {
-  .form-row { grid-template-columns: 1fr; }
+  .form-row, .form-row-3 { grid-template-columns: 1fr; }
 }
 
 .form-input,
@@ -610,7 +615,7 @@ select {
     </section>
   </div>
 
-  <!-- ③ ★役職提案ページ★ -->
+  <!-- ③ 役職提案ページ -->
   <div id="page-suggest" class="page-view">
     <h1>役職の提案</h1>
     <div class="subtitle">Role Suggestion</div>
@@ -635,35 +640,67 @@ select {
           </select>
         </div>
 
-        <!-- 役職名（1つ目） -->
-        <div class="form-group" id="role1Group">
+        <!-- 通常時の役職名と英名 -->
+        <div class="form-group" id="normalRoleGroup">
           <div class="form-row">
             <div>
-              <label class="form-label" id="roleNameLabel">役職名（日本語） <span class="req">*必須</span></label>
+              <label class="form-label">役職名（日本語） <span class="req">*必須</span></label>
               <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
             </div>
             <div>
-              <label class="form-label" id="roleNameEnLabel">役職名（英語・英名） <span class="opt">任意</span></label>
-              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler">
+              <label class="form-label">役職名（英語・英名） <span class="req">*必須</span></label>
+              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" required>
             </div>
           </div>
         </div>
 
-        <!-- ★コンビネーション用：役職名（2つ目 - 1つ目とまったく同じ形式・二重枠なし） -->
-        <div class="form-group" id="role2Group" style="display: none;">
-          <div class="form-row">
+        <!-- ★コンビネーション時：役職1（陣営・日本語名・英名） -->
+        <div class="form-group" id="combiRole1Group" style="display: none;">
+          <div class="form-row-3">
             <div>
-              <label class="form-label">役職名 2（日本語） <span class="req">*必須</span></label>
-              <input type="text" id="roleName2" class="form-input" placeholder="例：クロックマスター">
+              <label class="form-label">役職1の陣営 <span class="req">*必須</span></label>
+              <select id="combiCamp1" class="form-select">
+                <option value="クルーメイト">クルーメイト</option>
+                <option value="インポスター">インポスター</option>
+                <option value="マッドメイト">マッドメイト</option>
+                <option value="第三陣営">第三陣営</option>
+              </select>
             </div>
             <div>
-              <label class="form-label">役職名 2（英語・英名） <span class="opt">任意</span></label>
-              <input type="text" id="roleNameEn2" class="form-input" placeholder="例：Clock Master">
+              <label class="form-label">役職1（日本語） <span class="req">*必須</span></label>
+              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ">
+            </div>
+            <div>
+              <label class="form-label">役職1（英語・英名） <span class="req">*必須</span></label>
+              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers">
             </div>
           </div>
         </div>
 
-        <!-- ★第三陣営用：勝利条件（二重枠なしのシンプル入力欄） -->
+        <!-- ★コンビネーション時：役職2（陣営・日本語名・英名） -->
+        <div class="form-group" id="combiRole2Group" style="display: none;">
+          <div class="form-row-3">
+            <div>
+              <label class="form-label">役職2の陣営 <span class="req">*必須</span></label>
+              <select id="combiCamp2" class="form-select">
+                <option value="クルーメイト">クルーメイト</option>
+                <option value="インポスター">インポスター</option>
+                <option value="マッドメイト">マッドメイト</option>
+                <option value="第三陣営">第三陣営</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">役職2（日本語） <span class="req">*必須</span></label>
+              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー">
+            </div>
+            <div>
+              <label class="form-label">役職2（英語・英名） <span class="req">*必須</span></label>
+              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner">
+            </div>
+          </div>
+        </div>
+
+        <!-- ★第三陣営用：勝利条件 -->
         <div class="form-group" id="winConditionGroup" style="display: none;">
           <label class="form-label">勝利条件 <span class="req">*必須</span></label>
           <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
@@ -675,13 +712,8 @@ select {
           <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
-        <!-- 提案者名 -->
-        <div class="form-group">
-          <label class="form-label">提案者のお名前 <span class="opt">任意</span></label>
-          <input type="text" id="authorName" class="form-input" placeholder="あなたの名前やDiscord名など">
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">Discordに送信する</button>
+        <!-- 送信ボタン（「提案」に変更） -->
+        <button type="submit" class="submit-btn" id="submitBtn">提案</button>
         <div id="formStatus" class="form-status">送信が完了しました！提案ありがとうございます。</div>
       </form>
     </section>
@@ -744,33 +776,52 @@ function showPage(pageName, filterCategory) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// フィルターボタン切り替え
+// フィルター切り替え
 function selectFilter(btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-// ★陣営選択による入力欄の切り替え
+// 陣営選択による入力欄切り替え
 function handleCampChange(camp) {
-  const role2Group = document.getElementById("role2Group");
-  const roleName2Input = document.getElementById("roleName2");
-  const roleNameLabel = document.getElementById("roleNameLabel");
+  const normalGroup = document.getElementById("normalRoleGroup");
+  const roleName = document.getElementById("roleName");
+  const roleNameEn = document.getElementById("roleNameEn");
+
+  const combiGroup1 = document.getElementById("combiRole1Group");
+  const combiGroup2 = document.getElementById("combiRole2Group");
+  const combiRole1 = document.getElementById("combiRoleName1");
+  const combiRoleEn1 = document.getElementById("combiRoleNameEn1");
+  const combiRole2 = document.getElementById("combiRoleName2");
+  const combiRoleEn2 = document.getElementById("combiRoleNameEn2");
 
   const winGroup = document.getElementById("winConditionGroup");
   const winInput = document.getElementById("winCondition");
 
-  // コンビネーションの場合：2つ目の入力欄を表示
   if (camp === "コンビネーション") {
-    role2Group.style.display = "block";
-    roleName2Input.required = true;
-    roleNameLabel.innerHTML = '役職名 1（日本語） <span class="req">*必須</span>';
+    normalGroup.style.display = "none";
+    roleName.required = false;
+    roleNameEn.required = false;
+
+    combiGroup1.style.display = "block";
+    combiGroup2.style.display = "block";
+    combiRole1.required = true;
+    combiRoleEn1.required = true;
+    combiRole2.required = true;
+    combiRoleEn2.required = true;
   } else {
-    role2Group.style.display = "none";
-    roleName2Input.required = false;
-    roleNameLabel.innerHTML = '役職名（日本語） <span class="req">*必須</span>';
+    normalGroup.style.display = "block";
+    roleName.required = true;
+    roleNameEn.required = true;
+
+    combiGroup1.style.display = "none";
+    combiGroup2.style.display = "none";
+    combiRole1.required = false;
+    combiRoleEn1.required = false;
+    combiRole2.required = false;
+    combiRoleEn2.required = false;
   }
 
-  // 第三陣営の場合：勝利条件入力欄を表示
   if (camp === "第三陣営") {
     winGroup.style.display = "block";
     winInput.required = true;
@@ -780,22 +831,14 @@ function handleCampChange(camp) {
   }
 }
 
-// ★Discord Webhook送信
+// Discord Webhook送信
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
   const WEBHOOK_URL = "https://discord.com/api/webhooks/1567887223309869167/OLFB4cDv941Rl_5AcTg3R1DKdHRKhf_nNRcKAkw3uxgg5FSsH0qceDaag-ab0-roq1rm";
 
   const roleCamp = document.getElementById("roleCamp").value;
-  const roleName = document.getElementById("roleName").value;
-  const roleNameEn = document.getElementById("roleNameEn").value;
-
-  const roleName2 = document.getElementById("roleName2").value;
-  const roleNameEn2 = document.getElementById("roleNameEn2").value;
-
-  const winCondition = document.getElementById("winCondition").value;
   const roleDesc = document.getElementById("roleDesc").value;
-  const authorName = document.getElementById("authorName").value || "匿名";
 
   const submitBtn = document.getElementById("submitBtn");
   const formStatus = document.getElementById("formStatus");
@@ -804,46 +847,54 @@ async function handleSuggestSubmit(event) {
   formStatus.style.display = "none";
 
   const campColors = {
-    "インポスター": 16731469,    // 赤
-    "マッドメイト": 16731469,    // 赤
-    "クルーメイト": 3718648,     // 青
-    "第三陣営": 10265775,       // 灰
-    "コンビネーション": 16777215,// 白
-    "幽霊役職": 16777215,        // 白
-    "属性": 2278750             // 緑
+    "インポスター": 16731469,
+    "マッドメイト": 16731469,
+    "クルーメイト": 3718648,
+    "第三陣営": 10265775,
+    "コンビネーション": 16777215,
+    "幽霊役職": 16777215,
+    "属性": 2278750
   };
 
-  let embedTitle = `【新役職提案】${roleName}`;
-  if (roleNameEn) embedTitle += ` (${roleNameEn})`;
-  if (roleCamp === "コンビネーション") {
-    embedTitle = `【新コンビネーション提案】${roleName} × ${roleName2}`;
-  }
-
-  const fields = [
-    { name: "陣営", value: roleCamp, inline: true },
-    { name: "提案者", value: authorName, inline: true }
-  ];
+  let embedTitle = "";
+  let fields = [{ name: "陣営", value: roleCamp, inline: true }];
 
   if (roleCamp === "コンビネーション") {
+    const camp1 = document.getElementById("combiCamp1").value;
+    const name1 = document.getElementById("combiRoleName1").value;
+    const nameEn1 = document.getElementById("combiRoleNameEn1").value;
+
+    const camp2 = document.getElementById("combiCamp2").value;
+    const name2 = document.getElementById("combiRoleName2").value;
+    const nameEn2 = document.getElementById("combiRoleNameEn2").value;
+
+    embedTitle = `【新役職提案】${name1} × ${name2}`;
+
     fields.push({
-      name: "役職 1",
-      value: `${roleName} ${roleNameEn ? `(${roleNameEn})` : ""}`,
+      name: `役職1 [${camp1}]`,
+      value: `${name1} (${nameEn1})`,
       inline: true
     });
     fields.push({
-      name: "役職 2",
-      value: `${roleName2} ${roleNameEn2 ? `(${roleNameEn2})` : ""}`,
+      name: `役職2 [${camp2}]`,
+      value: `${name2} (${nameEn2})`,
       inline: true
     });
   } else {
+    const roleName = document.getElementById("roleName").value;
+    const roleNameEn = document.getElementById("roleNameEn").value;
+
+    embedTitle = `【新役職提案】${roleName} (${roleNameEn})`;
+
     fields.push({
       name: "英語名 (英名)",
-      value: roleNameEn || "未入力",
+      value: roleNameEn,
       inline: true
     });
   }
 
   if (roleCamp === "第三陣営") {
+    const winCondition = document.getElementById("winCondition").value;
     fields.push({
       name: "勝利条件",
       value: winCondition || "未記入"
@@ -876,20 +927,20 @@ async function handleSuggestSubmit(event) {
     });
 
     if (response.ok) {
-      formStatus.textContent = "Discordに送信が完了しました！提案ありがとうございます。";
+      formStatus.textContent = "提案を送信しました！ありがとうございます。";
       formStatus.classList.add("success");
       formStatus.style.display = "block";
       document.getElementById("roleSuggestForm").reset();
       handleCampChange("クルーメイト");
     } else {
-      alert("送信に失敗しました。Webhookの設定を確認してください。");
+      alert("送信に失敗しました。設定を確認してください。");
     }
   } catch (error) {
     console.error(error);
     alert("エラーが発生しました。通信環境を確認してください。");
   } finally {
     submitBtn.disabled = false;
-    submitBtn.textContent = "Discordに送信する";
+    submitBtn.textContent = "提案";
   }
 }
 
