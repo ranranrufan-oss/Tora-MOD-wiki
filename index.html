@@ -142,16 +142,23 @@ h1 {
 
 /* アイコン枠 */
 .category-icon {
-  width: 50px;
-  height: 50px;
+  width: 52px;
+  height: 52px;
   background: var(--card-sub);
   border: 1px solid var(--border);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* アイコン画像（画像を指定した際に綺麗に収まる設定） */
+.category-icon img {
+  width: 65%;
+  height: 65%;
+  object-fit: contain;
 }
 
 /* テキストエリア */
@@ -295,7 +302,9 @@ select {
 
     <!-- インポスター -->
     <a class="role-category" href="#">
-      <div class="category-icon">🔪</div>
+      <div class="category-icon">
+        <!-- 画像を使う場合はここに <img src="knife.png" alt="インポスター"> を入れます -->
+      </div>
       <div class="category-info">
         <span class="category-name">インポスター</span>
         <span class="category-desc">インポスター陣営の役職</span>
@@ -305,7 +314,7 @@ select {
 
     <!-- マッドメイト -->
     <a class="role-category" href="#">
-      <div class="category-icon">🩸</div>
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">マッドメイト</span>
         <span class="category-desc">クルーだがインポスターを支援</span>
@@ -315,7 +324,7 @@ select {
 
     <!-- クルーメイト -->
     <a class="role-category" href="#">
-      <div class="category-icon">🧑‍🚀</div>
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">クルーメイト</span>
         <span class="category-desc">船のタスクと追放を目指す陣営</span>
@@ -325,7 +334,7 @@ select {
 
     <!-- 第三陣営 -->
     <a class="role-category" href="#">
-      <div class="category-icon">⚖️</div>
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">第三陣営</span>
         <span class="category-desc">独自勝利を目指す陣営</span>
@@ -335,7 +344,7 @@ select {
 
     <!-- 属性 -->
     <a class="role-category" href="#">
-      <div class="category-icon">✨</div>
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">属性</span>
         <span class="category-desc">役職に追加で付与される能力</span>
@@ -345,7 +354,7 @@ select {
 
     <!-- 幽霊役職 -->
     <a class="role-category" href="#">
-      <div class="category-icon">👻</div>
+      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">幽霊役職</span>
         <span class="category-desc">死亡後に発動する役職</span>
