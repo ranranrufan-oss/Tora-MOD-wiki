@@ -24,7 +24,7 @@
 
   /* ★各陣営の文字色 */
   --c-impostor: #ff4d4d; /* インポスター：赤 */
-  --c-madmate:  #ff4d4d; /* マッドメイト：赤 */
+  --c-madmate:  var(--c-impostor); /* マッドメイト：インポスターと同色 */
   --c-crewmate: #38bdf8; /* クルーメイト：青 */
   --c-neutral:  #9ca3af; /* 第三陣営：灰色 */
   --c-modifier: #22c55e; /* 属性：緑 */
@@ -201,9 +201,9 @@ header {
   background: var(--hover);
 }
 
-/* サイドバー内の文字色 */
-.menu-link.impostor { color: var(--c-impostor) !important; }
-.menu-link.madmate  { color: var(--c-madmate) !important; }
+/* ★サイドバー内の文字色（マッドメイトもインポスター色に統一） */
+.menu-link.impostor,
+.menu-link.madmate  { color: var(--c-impostor) !important; }
 .menu-link.crewmate { color: var(--c-crewmate) !important; }
 .menu-link.neutral  { color: var(--c-neutral) !important; }
 .menu-link.modifier { color: var(--c-modifier) !important; }
@@ -349,7 +349,7 @@ select {
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
 
-<!-- サイドバー（三本線メニューの中身） -->
+<!-- サイドバー -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <nav class="sidebar" id="sidebar">
