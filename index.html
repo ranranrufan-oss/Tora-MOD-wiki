@@ -308,7 +308,7 @@ h1 {
   margin: 0;
 }
 
-/* ★★★ 役職ページ（一番上の検索・フィルターUI） ★★★ */
+/* 役職ページ（一番上の検索・フィルターUI） */
 .search-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -522,12 +522,10 @@ select {
   </div>
 </nav>
 
-<!-- メイン表示領域 -->
+<!-- メインコンテンツ -->
 <main>
 
-  <!-- ===============================
-       ① トップページ（メインメニュー）
-       =============================== -->
+  <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
     <h1>Tora MOD</h1>
     <div class="subtitle">Tora MOD Official Wiki</div>
@@ -541,12 +539,12 @@ select {
       </p>
     </section>
 
-    <!-- ゲーム説明 -->
+    <!-- ★更新したゲーム説明（開発中・未完成の旨を追記） -->
     <section class="info-card">
       <h2>Tora MODとは？</h2>
       <p>
-        Among Usをさらに深く、スリリングに遊ぶために開発されている拡張MODです。<br>
-        通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しむことができます。
+        Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
+        現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
       </p>
     </section>
 
@@ -583,14 +581,12 @@ select {
     </section>
   </div>
 
-  <!-- ===============================
-       ② 役職一覧ページ（一番上に検索UI）
-       =============================== -->
+  <!-- ② 役職一覧ページ -->
   <div id="page-roles" class="page-view">
     <h1>役職一覧</h1>
     <div class="subtitle">Tora MOD Roles</div>
 
-    <!-- ★一番上に配置した検索＆フィルターUI -->
+    <!-- 一番上の検索・フィルターUI -->
     <section class="search-container">
       <div class="search-box-wrapper">
         <svg class="search-icon-svg" viewBox="0 0 24 24">
@@ -614,7 +610,6 @@ select {
       <div class="search-count">0件</div>
     </section>
 
-    <!-- 今後ここに役職リストを追加できます -->
     <section class="info-card">
       <p style="text-align: center; color: var(--sub);">役職データを掲載準備中です。</p>
     </section>
@@ -654,7 +649,6 @@ function toggleSidebar() {
 
 // ページ切り替え（トップ ⇔ 役職一覧）
 function showPage(pageName, filterCategory) {
-  // すべてのページを非表示
   document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
 
   if (pageName === 'home') {
@@ -668,7 +662,6 @@ function showPage(pageName, filterCategory) {
     }
   }
 
-  // サイドバーを閉じる
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebarOverlay");
   sidebar.classList.remove("show");
