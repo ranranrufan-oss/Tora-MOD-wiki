@@ -12,7 +12,6 @@
 }
 
 :root {
-  /* テーマ基本色 */
   --bg: #0d0e13;
   --header: #151720;
   --card: #1b202d;
@@ -23,14 +22,14 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
-  /* ★各陣営の文字・タグ色 */
-  --c-impostor:    #ff4d4d; /* インポスター：赤 */
-  --c-madmate:     var(--c-impostor); /* マッドメイト：赤（同色） */
-  --c-crewmate:    #38bdf8; /* クルーメイト：青 */
-  --c-neutral:     #9ca3af; /* 第三陣営：灰色 */
-  --c-combination: #e879f9; /* コンビネーション：紫ピンク */
-  --c-modifier:    #22c55e; /* 属性：緑 */
-  --c-ghost:       #ffffff; /* 幽霊役職：白 */
+  /* 各陣営の文字色 */
+  --c-impostor:    #ff4d4d;
+  --c-madmate:     var(--c-impostor);
+  --c-crewmate:    #38bdf8;
+  --c-neutral:     #9ca3af;
+  --c-combination: #e879f9;
+  --c-modifier:    #22c55e;
+  --c-ghost:       #ffffff;
 }
 
 body.light {
@@ -115,13 +114,12 @@ header {
   padding: 8px 14px;
   font-size: 14px;
   cursor: pointer;
-  transition: background .2s;
 }
 .settings-button:hover {
   background: var(--hover);
 }
 
-/* サイドメニュー */
+/* サイドバー */
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -198,13 +196,13 @@ header {
   border-radius: 8px;
   font-size: 15px;
   transition: background .2s;
+  cursor: pointer;
 }
 
 .menu-link:hover {
   background: var(--hover);
 }
 
-/* サイドバー内の文字色 */
 .menu-link.all         { color: var(--text) !important; font-weight: bold; }
 .menu-link.impostor,
 .menu-link.madmate     { color: var(--c-impostor) !important; }
@@ -214,7 +212,15 @@ header {
 .menu-link.modifier    { color: var(--c-modifier) !important; }
 .menu-link.ghost       { color: var(--c-ghost) !important; }
 
-/* メイン */
+/* ページ切り替え用スタイル */
+.page-view {
+  display: none;
+}
+.page-view.active {
+  display: block;
+}
+
+/* メインコンテンツ */
 main {
   max-width: 900px;
   margin: auto;
@@ -232,101 +238,7 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* ★★★ 検索・フィルターエリア ★★★ */
-.search-container {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 18px;
-  margin-bottom: 24px;
-}
-
-.search-box-wrapper {
-  position: relative;
-  margin-bottom: 14px;
-}
-
-.search-icon-svg {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  stroke: var(--sub);
-  stroke-width: 2.5;
-  fill: none;
-  pointer-events: none;
-}
-
-.search-input {
-  width: 100%;
-  background: var(--card-inner);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 12px 14px 12px 42px;
-  border-radius: 10px;
-  font-size: 15px;
-  outline: none;
-  transition: border-color .2s;
-}
-
-.search-input:focus {
-  border-color: #555f80;
-}
-
-/* フィルタータグボタン群 */
-.filter-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.filter-btn {
-  background: var(--card-inner);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 7px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all .15s ease;
-  user-select: none;
-}
-
-.filter-btn:hover {
-  background: var(--hover);
-}
-
-/* 各フィルターボタンの色 */
-.filter-btn.all.active {
-  background: #2d3345;
-  color: #ffffff;
-  border-color: #4c5673;
-}
-
-.filter-btn.impostor    { color: var(--c-impostor);    border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.madmate     { color: var(--c-madmate);     border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.crewmate    { color: var(--c-crewmate);    border-color: rgba(56, 189, 248, 0.35); }
-.filter-btn.neutral     { color: var(--c-neutral);     border-color: rgba(156, 163, 175, 0.35); }
-.filter-btn.combination { color: var(--c-combination); border-color: rgba(232, 121, 249, 0.35); }
-.filter-btn.modifier    { color: var(--c-modifier);    border-color: rgba(34, 197, 94, 0.35); }
-.filter-btn.ghost       { color: var(--c-ghost);       border-color: rgba(255, 255, 255, 0.35); }
-
-.filter-btn.active:not(.all) {
-  background: rgba(255, 255, 255, 0.1);
-  font-weight: bold;
-}
-
-.search-count {
-  font-size: 13px;
-  color: var(--sub);
-  padding-left: 2px;
-}
-
-/* カード共通スタイル */
+/* カード共通 */
 .info-card {
   margin-bottom: 24px;
   padding: 24px;
@@ -348,7 +260,7 @@ h1 {
   font-size: 15px;
 }
 
-/* 予定リストスタイル */
+/* 予定リスト */
 .plan-list {
   display: flex;
   flex-direction: column;
@@ -394,6 +306,91 @@ h1 {
   color: var(--sub);
   line-height: 1.5;
   margin: 0;
+}
+
+/* ★★★ 役職ページ（一番上の検索・フィルターUI） ★★★ */
+.search-container {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.search-box-wrapper {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.search-icon-svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  stroke: var(--sub);
+  stroke-width: 2.5;
+  fill: none;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 14px 12px 42px;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #555f80;
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.filter-btn {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-btn.all.active {
+  background: #2d3345;
+  color: #ffffff;
+  border-color: #4c5673;
+}
+
+.filter-btn.impostor    { color: var(--c-impostor);    border-color: rgba(255, 77, 77, 0.35); }
+.filter-btn.madmate     { color: var(--c-madmate);     border-color: rgba(255, 77, 77, 0.35); }
+.filter-btn.crewmate    { color: var(--c-crewmate);    border-color: rgba(56, 189, 248, 0.35); }
+.filter-btn.neutral     { color: var(--c-neutral);     border-color: rgba(156, 163, 175, 0.35); }
+.filter-btn.combination { color: var(--c-combination); border-color: rgba(232, 121, 249, 0.35); }
+.filter-btn.modifier    { color: var(--c-modifier);    border-color: rgba(34, 197, 94, 0.35); }
+.filter-btn.ghost       { color: var(--c-ghost);       border-color: rgba(255, 255, 255, 0.35); }
+
+.filter-btn.active:not(.all) {
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: bold;
+}
+
+.search-count {
+  font-size: 13px;
+  color: var(--sub);
+  padding-left: 2px;
 }
 
 /* フッター */
@@ -451,7 +448,6 @@ footer {
   color: var(--text);
   font-size: 24px;
   cursor: pointer;
-  line-height: 1;
 }
 
 .setting-row {
@@ -471,11 +467,8 @@ select {
   outline: none;
 }
 
-/* スマホ対応 */
 @media (max-width: 600px) {
-  h1 {
-    font-size: 28px;
-  }
+  h1 { font-size: 28px; }
 }
 </style>
 </head>
@@ -508,106 +501,125 @@ select {
 
   <div class="menu-section">
     <div class="menu-section-title">メイン</div>
-    <a href="#" class="menu-link" onclick="toggleSidebar()">トップページ</a>
+    <a class="menu-link" onclick="showPage('home')">トップページ</a>
   </div>
 
-  <!-- ★役職一覧（すべての役職を先頭に、コンビネーションを追加） -->
   <div class="menu-section">
     <div class="menu-section-title">役職一覧</div>
-    <a href="#" class="menu-link all"         onclick="toggleSidebar()">すべての役職</a>
-    <a href="#" class="menu-link impostor"    onclick="toggleSidebar()">インポスター</a>
-    <a href="#" class="menu-link madmate"     onclick="toggleSidebar()">マッドメイト</a>
-    <a href="#" class="menu-link crewmate"    onclick="toggleSidebar()">クルーメイト</a>
-    <a href="#" class="menu-link neutral"     onclick="toggleSidebar()">第三陣営</a>
-    <a href="#" class="menu-link combination" onclick="toggleSidebar()">コンビネーション</a>
-    <a href="#" class="menu-link modifier"    onclick="toggleSidebar()">属性</a>
-    <a href="#" class="menu-link ghost"       onclick="toggleSidebar()">幽霊役職</a>
+    <a class="menu-link all"         onclick="showPage('roles', 'all')">すべての役職</a>
+    <a class="menu-link impostor"    onclick="showPage('roles', 'impostor')">インポスター</a>
+    <a class="menu-link madmate"     onclick="showPage('roles', 'madmate')">マッドメイト</a>
+    <a class="menu-link crewmate"    onclick="showPage('roles', 'crewmate')">クルーメイト</a>
+    <a class="menu-link neutral"     onclick="showPage('roles', 'neutral')">第三陣営</a>
+    <a class="menu-link combination" onclick="showPage('roles', 'combination')">コンビネーション</a>
+    <a class="menu-link modifier"    onclick="showPage('roles', 'modifier')">属性</a>
+    <a class="menu-link ghost"       onclick="showPage('roles', 'ghost')">幽霊役職</a>
   </div>
 
   <div class="menu-section">
     <div class="menu-section-title">その他</div>
-    <a href="#" class="menu-link" onclick="toggleSidebar()">システム設定</a>
+    <a class="menu-link" onclick="toggleSidebar()">システム設定</a>
   </div>
 </nav>
 
-<!-- メインコンテンツ -->
+<!-- メイン表示領域 -->
 <main>
-  <h1>Tora MOD</h1>
-  <div class="subtitle">Tora MOD Official Wiki</div>
 
-  <!-- ★★★ 一番上に追加した検索・フィルターUI ★★★ -->
-  <section class="search-container">
-    <div class="search-box-wrapper">
-      <svg class="search-icon-svg" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input type="text" class="search-input" placeholder="役職名で検索">
-    </div>
+  <!-- ===============================
+       ① トップページ（メインメニュー）
+       =============================== -->
+  <div id="page-home" class="page-view active">
+    <h1>Tora MOD</h1>
+    <div class="subtitle">Tora MOD Official Wiki</div>
 
-    <div class="filter-tags">
-      <button class="filter-btn all active" type="button">すべての役職</button>
-      <button class="filter-btn impostor"    type="button">インポスター</button>
-      <button class="filter-btn madmate"     type="button">マッドメイト</button>
-      <button class="filter-btn crewmate"    type="button">クルーメイト</button>
-      <button class="filter-btn neutral"     type="button">第三陣営</button>
-      <button class="filter-btn combination" type="button">コンビネーション</button>
-      <button class="filter-btn modifier"    type="button">属性</button>
-      <button class="filter-btn ghost"       type="button">幽霊役職</button>
-    </div>
+    <!-- ウェルカム -->
+    <section class="info-card">
+      <h2>Welcome to Tora MOD Wiki</h2>
+      <p>
+        Tora MODに関する情報をまとめたWikiです。<br>
+        役職・システム・設定などの最新情報を随時掲載していきます。
+      </p>
+    </section>
 
-    <div class="search-count">0件</div>
-  </section>
+    <!-- ゲーム説明 -->
+    <section class="info-card">
+      <h2>Tora MODとは？</h2>
+      <p>
+        Among Usをさらに深く、スリリングに遊ぶために開発されている拡張MODです。<br>
+        通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しむことができます。
+      </p>
+    </section>
 
-  <!-- ① ウェルカムカード -->
-  <section class="info-card">
-    <h2>Welcome to Tora MOD Wiki</h2>
-    <p>
-      Tora MODに関する情報をまとめたWikiです。<br>
-      役職・システム・設定などの最新情報を随時掲載していきます。
-    </p>
-  </section>
+    <!-- 今後の予定 -->
+    <section class="info-card">
+      <h2>今後のアップデート予定</h2>
+      <p>現在、以下の要素の実装・アップデートを予定しています。</p>
 
-  <!-- ② ゲームの説明 -->
-  <section class="info-card">
-    <h2>Tora MODとは？</h2>
-    <p>
-      Among Usをさらに深く、スリリングに遊ぶために開発されている拡張MODです。<br>
-      通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しむことができます。
-    </p>
-  </section>
-
-  <!-- ③ 今後の予定（絵文字を削除） -->
-  <section class="info-card">
-    <h2>今後のアップデート予定</h2>
-    <p>現在、以下の要素の実装・アップデートを予定しています。</p>
-
-    <div class="plan-list">
-      <div class="plan-item">
-        <div class="plan-item-header">
-          <span class="plan-badge">予定</span>
-          <span class="plan-title">様々な役職の追加</span>
+      <div class="plan-list">
+        <div class="plan-item">
+          <div class="plan-item-header">
+            <span class="plan-badge">予定</span>
+            <span class="plan-title">様々な役職の追加</span>
+          </div>
+          <p class="plan-desc">クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。</p>
         </div>
-        <p class="plan-desc">クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。</p>
+
+        <div class="plan-item">
+          <div class="plan-item-header">
+            <span class="plan-badge">予定</span>
+            <span class="plan-title">便利機能の追加</span>
+          </div>
+          <p class="plan-desc">ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。</p>
+        </div>
+
+        <div class="plan-item">
+          <div class="plan-item-header">
+            <span class="plan-badge">予定</span>
+            <span class="plan-title">クライアントMODモードとホストMODモードの分離</span>
+          </div>
+          <p class="plan-desc">ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===============================
+       ② 役職一覧ページ（一番上に検索UI）
+       =============================== -->
+  <div id="page-roles" class="page-view">
+    <h1>役職一覧</h1>
+    <div class="subtitle">Tora MOD Roles</div>
+
+    <!-- ★一番上に配置した検索＆フィルターUI -->
+    <section class="search-container">
+      <div class="search-box-wrapper">
+        <svg class="search-icon-svg" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" placeholder="役職名で検索">
       </div>
 
-      <div class="plan-item">
-        <div class="plan-item-header">
-          <span class="plan-badge">予定</span>
-          <span class="plan-title">便利機能の追加</span>
-        </div>
-        <p class="plan-desc">ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。</p>
+      <div class="filter-tags">
+        <button class="filter-btn all active" type="button" onclick="selectFilter(this)">すべての役職</button>
+        <button class="filter-btn impostor"    type="button" onclick="selectFilter(this)">インポスター</button>
+        <button class="filter-btn madmate"     type="button" onclick="selectFilter(this)">マッドメイト</button>
+        <button class="filter-btn crewmate"    type="button" onclick="selectFilter(this)">クルーメイト</button>
+        <button class="filter-btn neutral"     type="button" onclick="selectFilter(this)">第三陣営</button>
+        <button class="filter-btn combination" type="button" onclick="selectFilter(this)">コンビネーション</button>
+        <button class="filter-btn modifier"    type="button" onclick="selectFilter(this)">属性</button>
+        <button class="filter-btn ghost"       type="button" onclick="selectFilter(this)">幽霊役職</button>
       </div>
 
-      <div class="plan-item">
-        <div class="plan-item-header">
-          <span class="plan-badge">予定</span>
-          <span class="plan-title">クライアントMODモードとホストMODモードの分離</span>
-        </div>
-        <p class="plan-desc">ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。</p>
-      </div>
-    </div>
-  </section>
+      <div class="search-count">0件</div>
+    </section>
+
+    <!-- 今後ここに役職リストを追加できます -->
+    <section class="info-card">
+      <p style="text-align: center; color: var(--sub);">役職データを掲載準備中です。</p>
+    </section>
+  </div>
+
 </main>
 
 <footer>
@@ -627,3 +639,80 @@ select {
         <option value="dark">ダークモード</option>
         <option value="light">ライトモード</option>
       </select>
+    </div>
+  </div>
+</div>
+
+<script>
+// サイドバー開閉
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
+
+// ページ切り替え（トップ ⇔ 役職一覧）
+function showPage(pageName, filterCategory) {
+  // すべてのページを非表示
+  document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
+
+  if (pageName === 'home') {
+    document.getElementById("page-home").classList.add("active");
+  } else if (pageName === 'roles') {
+    document.getElementById("page-roles").classList.add("active");
+    if (filterCategory) {
+      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+      const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
+      if (targetBtn) targetBtn.classList.add("active");
+    }
+  }
+
+  // サイドバーを閉じる
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.remove("show");
+  overlay.classList.remove("show");
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// フィルターボタン切り替え
+function selectFilter(btn) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+// テーマ管理
+const savedTheme = localStorage.getItem("tora-theme") || "dark";
+
+function applyTheme(theme) {
+  document.body.classList.toggle("light", theme === "light");
+  document.getElementById("themeSelect").value = theme;
+}
+
+function changeTheme(theme) {
+  localStorage.setItem("tora-theme", theme);
+  applyTheme(theme);
+}
+
+// 設定モーダル
+function openSettings() {
+  document.getElementById("settingsModal").classList.add("show");
+}
+
+function closeSettings() {
+  document.getElementById("settingsModal").classList.remove("show");
+}
+
+applyTheme(savedTheme);
+
+document.getElementById("settingsModal").addEventListener("click", function(event) {
+  if (event.target === this) {
+    closeSettings();
+  }
+});
+</script>
+
+</body>
+</html>
