@@ -18,6 +18,7 @@
   --border: #303547;
   --text: #f2f3f7;
   --sub: #9ba2b2;
+  --hover: #252c3c;
 }
 
 body.light {
@@ -27,6 +28,7 @@ body.light {
   --border: #d9dce5;
   --text: #222532;
   --sub: #697080;
+  --hover: #edf0f6;
 }
 
 body {
@@ -34,11 +36,11 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: Arial, "Noto Sans JP", sans-serif;
-  transition: background .2s, color .2s;
+  transition: .2s;
 }
 
 header {
-  height: 65px;
+  min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -93,6 +95,68 @@ h1 {
   line-height: 1.8;
 }
 
+/* 役職一覧 */
+
+.section-title {
+  font-size: 25px;
+  margin-top: 42px;
+  margin-bottom: 18px;
+}
+
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.role-category {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-height: 105px;
+  padding: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  color: var(--text);
+  text-decoration: none;
+  transition: .2s;
+}
+
+.role-category:hover {
+  background: var(--hover);
+  transform: translateY(-2px);
+}
+
+.category-icon {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 13px;
+  background: var(--bg);
+  font-size: 29px;
+}
+
+.category-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.category-description {
+  margin-top: 6px;
+  color: var(--sub);
+  font-size: 12px;
+}
+
+.arrow {
+  margin-left: auto;
+  color: var(--sub);
+  font-size: 22px;
+}
+
 footer {
   margin-top: 70px;
   padding: 25px;
@@ -103,6 +167,7 @@ footer {
 }
 
 /* 設定画面 */
+
 .modal {
   display: none;
   position: fixed;
@@ -160,6 +225,16 @@ select {
   padding: 10px;
   border-radius: 8px;
 }
+
+@media (max-width: 550px) {
+  .role-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+}
 </style>
 </head>
 
@@ -189,6 +264,68 @@ select {
     </p>
   </section>
 
+  <!-- 役職一覧 -->
+
+  <h2 class="section-title">役職一覧</h2>
+
+  <div class="role-grid">
+
+    <a class="role-category" href="#">
+      <div class="category-icon">🔪</div>
+      <div>
+        <div class="category-name">インポスター</div>
+        <div class="category-description">インポスター陣営の役職</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="role-category" href="#">
+      <div class="category-icon">🛡️</div>
+      <div>
+        <div class="category-name">マッドメイト</div>
+        <div class="category-description">マッドメイト陣営の役職</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="role-category" href="#">
+      <div class="category-icon">🚀</div>
+      <div>
+        <div class="category-name">クルーメイト</div>
+        <div class="category-description">クルーメイト陣営の役職</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="role-category" href="#">
+      <div class="category-icon">🐯</div>
+      <div>
+        <div class="category-name">第三陣営</div>
+        <div class="category-description">独立した勝利条件を持つ役職</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="role-category" href="#">
+      <div class="category-icon">✨</div>
+      <div>
+        <div class="category-name">属性</div>
+        <div class="category-description">役職に付与される特殊な属性</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+    <a class="role-category" href="#">
+      <div class="category-icon">👻</div>
+      <div>
+        <div class="category-name">幽霊役職</div>
+        <div class="category-description">死亡後に関係する役職</div>
+      </div>
+      <span class="arrow">›</span>
+    </a>
+
+  </div>
+
 </main>
 
 <footer>
@@ -196,6 +333,7 @@ select {
 </footer>
 
 <!-- 設定画面 -->
+
 <div class="modal" id="settingsModal">
   <div class="modal-content">
 
@@ -218,7 +356,6 @@ select {
 
 <script>
 
-// 保存されたテーマを読み込む
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 
 function applyTheme(theme) {
@@ -239,10 +376,8 @@ function closeSettings() {
   document.getElementById("settingsModal").classList.remove("show");
 }
 
-// 初期設定
 applyTheme(savedTheme);
 
-// 背景をタップして閉じる
 document.getElementById("settingsModal").addEventListener("click", function(event) {
   if (event.target === this) {
     closeSettings();
