@@ -23,13 +23,13 @@
   --hover: #252c3c;
 
   /* 各陣営の文字色 */
-  --c-impostor:    #ff4d4d;
-  --c-madmate:     var(--c-impostor);
-  --c-crewmate:    #38bdf8;
-  --c-neutral:     #9ca3af;
-  --c-combination: #e879f9;
-  --c-modifier:    #22c55e;
-  --c-ghost:       #ffffff;
+  --c-impostor:    #ff4d4d; /* インポスター：赤 */
+  --c-madmate:     var(--c-impostor); /* マッドメイト：赤（同色） */
+  --c-crewmate:    #38bdf8; /* クルーメイト：青 */
+  --c-neutral:     #9ca3af; /* 第三陣営：灰色 */
+  --c-ghost:       #ffffff; /* 幽霊役職：白 */
+  --c-combination: var(--c-ghost); /* コンビネーション：白 */
+  --c-modifier:    #22c55e; /* 属性：緑 */
 }
 
 body.light {
@@ -42,7 +42,7 @@ body.light {
   --text: #222532;
   --sub: #697080;
   --hover: #edf0f6;
-  --c-ghost: #4b5563;
+  --c-ghost: #4b5563; /* ライトモード時のみ見えやすさのため濃いグレーに調整 */
 }
 
 body {
@@ -378,7 +378,7 @@ h1 {
 .filter-btn.madmate     { color: var(--c-madmate);     border-color: rgba(255, 77, 77, 0.35); }
 .filter-btn.crewmate    { color: var(--c-crewmate);    border-color: rgba(56, 189, 248, 0.35); }
 .filter-btn.neutral     { color: var(--c-neutral);     border-color: rgba(156, 163, 175, 0.35); }
-.filter-btn.combination { color: var(--c-combination); border-color: rgba(232, 121, 249, 0.35); }
+.filter-btn.combination { color: var(--c-combination); border-color: rgba(255, 255, 255, 0.35); }
 .filter-btn.modifier    { color: var(--c-modifier);    border-color: rgba(34, 197, 94, 0.35); }
 .filter-btn.ghost       { color: var(--c-ghost);       border-color: rgba(255, 255, 255, 0.35); }
 
@@ -539,7 +539,7 @@ select {
       </p>
     </section>
 
-    <!-- ★更新したゲーム説明（開発中・未完成の旨を追記） -->
+    <!-- ゲーム説明 -->
     <section class="info-card">
       <h2>Tora MODとは？</h2>
       <p>
@@ -586,7 +586,7 @@ select {
     <h1>役職一覧</h1>
     <div class="subtitle">Tora MOD Roles</div>
 
-    <!-- 一番上の検索・フィルターUI -->
+    <!-- 検索・フィルターUI -->
     <section class="search-container">
       <div class="search-box-wrapper">
         <svg class="search-icon-svg" viewBox="0 0 24 24">
