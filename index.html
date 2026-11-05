@@ -19,6 +19,9 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
+  /* ★Toraカラー（指定色） */
+  --c-tora: #DDBB99;
+
   /* 陣営色 */
   --c-impostor:    #ff4d4d;
   --c-madmate:     var(--c-impostor);
@@ -40,6 +43,7 @@ body.light {
   --sub: #697080;
   --hover: #edf0f6;
   --c-ghost: #4b5563;
+  --c-tora: #c29668; /* ライトモード時に見えやすいよう少し濃いめに調整 */
 }
 
 body {
@@ -48,6 +52,11 @@ body {
   color: var(--text);
   font-family: Arial, "Noto Sans JP", sans-serif;
   transition: background .2s, color .2s;
+}
+
+/* ★Tora専用の文字色クラス */
+.tora-text {
+  color: var(--c-tora) !important;
 }
 
 header {
@@ -335,7 +344,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
 
-/* ★設定項目エリアの拡張スタイル */
+/* 設定項目エリア */
 .setting-items-container { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
 
 .setting-item-card {
@@ -474,6 +483,7 @@ select {
 
 <body>
 
+<!-- ヘッダー -->
 <header>
   <div class="header-left">
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
@@ -481,7 +491,8 @@ select {
       <span class="menu-bar"></span>
       <span class="menu-bar"></span>
     </button>
-    <span class="header-title">Tora MOD</span>
+    <!-- ★ヘッダーのToraを#DDBB99に変更 -->
+    <span class="header-title"><span class="tora-text">Tora</span> MOD</span>
   </div>
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
@@ -522,19 +533,20 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
-    <h1>Tora MOD</h1>
-    <div class="subtitle">Tora MOD Official Wiki</div>
+    <!-- ★見出しのToraを#DDBB99に変更 -->
+    <h1><span class="tora-text">Tora</span> MOD</h1>
+    <div class="subtitle"><span class="tora-text">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2>Welcome to Tora MOD Wiki</h2>
+      <h2>Welcome to <span class="tora-text">Tora</span> MOD Wiki</h2>
       <p>
-        Tora MODに関する情報をまとめたWikiです。<br>
+        <span class="tora-text">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
       </p>
     </section>
 
     <section class="info-card">
-      <h2>Tora MODとは？</h2>
+      <h2><span class="tora-text">Tora</span> MODとは？</h2>
       <p>
         Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
         現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
@@ -576,7 +588,7 @@ select {
   <!-- ② 役職一覧ページ -->
   <div id="page-roles" class="page-view">
     <h1>役職一覧</h1>
-    <div class="subtitle">Tora MOD Roles</div>
+    <div class="subtitle"><span class="tora-text">Tora</span> MOD Roles</div>
 
     <section class="search-container">
       <div class="search-box-wrapper">
@@ -616,19 +628,16 @@ select {
       
       <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)">
         
-        <!-- 一番上の切り替えタブ（役職提案 ⇔ 移植案） -->
         <div class="suggest-type-switch">
           <button type="button" class="type-switch-btn active" id="btnTypeRole" onclick="switchProposalType('role')">役職提案</button>
           <button type="button" class="type-switch-btn" id="btnTypePort" onclick="switchProposalType('port')">移植案</button>
         </div>
 
-        <!-- 移植案の移植元入力欄 -->
         <div class="form-group" id="originModGroup" style="display: none;">
           <label class="form-label">移植元のMOD名・ゲーム名 <span class="req">*必須</span></label>
           <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
         </div>
 
-        <!-- 対応MODモード -->
         <div class="form-group">
           <label class="form-label">対応モード <span class="req">*必須</span></label>
           <select id="modMode" class="form-select" required>
@@ -638,7 +647,6 @@ select {
           </select>
         </div>
 
-        <!-- 陣営選択 -->
         <div class="form-group">
           <label class="form-label">陣営 <span class="req">*必須</span></label>
           <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
@@ -652,7 +660,6 @@ select {
           </select>
         </div>
 
-        <!-- 通常役職 -->
         <div class="form-group" id="normalRoleGroup">
           <div class="form-row">
             <div>
@@ -666,13 +673,11 @@ select {
           </div>
         </div>
 
-        <!-- 通常第三陣営の勝利条件 -->
         <div class="form-group" id="winConditionGroup" style="display: none;">
           <label class="form-label">勝利条件 <span class="req">*必須</span></label>
           <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
         </div>
 
-        <!-- コンビネーション役職1 -->
         <div class="form-group" id="combiRole1Group" style="display: none;">
           <div class="form-row-3">
             <div>
@@ -695,13 +700,11 @@ select {
           </div>
         </div>
 
-        <!-- コンビネーション役職1 勝利条件 -->
         <div class="form-group" id="combiWin1Group" style="display: none;">
           <label class="form-label">役職1の勝利条件 <span class="req">*必須</span></label>
           <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など"></textarea>
         </div>
 
-        <!-- コンビネーション役職2 -->
         <div class="form-group" id="combiRole2Group" style="display: none;">
           <div class="form-row-3">
             <div>
@@ -724,19 +727,16 @@ select {
           </div>
         </div>
 
-        <!-- コンビネーション役職2 勝利条件 -->
         <div class="form-group" id="combiWin2Group" style="display: none;">
           <label class="form-label">役職2の勝利条件 <span class="req">*必須</span></label>
           <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など"></textarea>
         </div>
 
-        <!-- 能力・説明 -->
         <div class="form-group">
           <label class="form-label">能力・説明 <span class="req">*必須</span></label>
           <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
-        <!-- ★★★ 設定項目追加エリア（間隔・最大値・自由な2択に対応） ★★★ -->
         <div class="form-group">
           <label class="form-label">役職の設定項目 <span class="opt">任意（ゲーム内設定）</span></label>
           <div id="settingItemsContainer" class="setting-items-container"></div>
@@ -751,8 +751,9 @@ select {
 
 </main>
 
+<!-- フッター -->
 <footer>
-  Tora MOD Wiki
+  <span class="tora-text">Tora</span> MOD Wiki
 </footer>
 
 <div class="modal" id="settingsModal">
@@ -913,7 +914,6 @@ function handleCombiCampChange() {
   }
 }
 
-// ★設定項目の追加処理（数値：間隔・最大値・単位 / 2択：カスタム選択肢）
 let settingItemCount = 0;
 function addSettingItem() {
   settingItemCount++;
@@ -928,7 +928,6 @@ function addSettingItem() {
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
     
-    <!-- 上段：項目名と形式 -->
     <div class="setting-main-row">
       <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)" required>
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
@@ -937,14 +936,12 @@ function addSettingItem() {
       </select>
     </div>
 
-    <!-- 下段A：数値の場合（間隔・最大値・単位） -->
     <div class="setting-detail-grid setting-detail-number">
       <input type="text" class="form-input setting-step" placeholder="数字の間隔 (例: 2.5, 5, 1)">
       <input type="text" class="form-input setting-max" placeholder="最大値 (例: 60, 10)">
       <input type="text" class="form-input setting-unit" placeholder="単位 (例: 秒, 回, %)">
     </div>
 
-    <!-- 下段B：2択の場合（選択肢1・選択肢2） -->
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
       <input type="text" class="form-input setting-choice1" placeholder="選択肢 1 (例: ON、はい、有効)">
       <input type="text" class="form-input setting-choice2" placeholder="選択肢 2 (例: OFF、いいえ、無効)">
@@ -972,7 +969,6 @@ function toggleSettingType(selectEl) {
   }
 }
 
-// 送信処理
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
@@ -1085,7 +1081,6 @@ async function handleSuggestSubmit(event) {
     value: roleDesc
   });
 
-  // ★設定項目の取得とEmbed追加（間隔・最大値・自由な2択の反映）
   const settingCards = document.querySelectorAll(".setting-item-card");
   if (settingCards.length > 0) {
     let settingText = "";
