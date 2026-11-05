@@ -19,14 +19,14 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
-  /* 各陣営の色 */
-  --c-impostor:    #ff4d4d;
-  --c-madmate:     var(--c-impostor);
-  --c-crewmate:    #38bdf8;
-  --c-neutral:     #9ca3af;
-  --c-ghost:       #ffffff;
-  --c-combination: var(--c-ghost);
-  --c-modifier:    #22c55e;
+  /* 各陣営のカラー設定 */
+  --c-impostor:    #ff4d4d; /* インポスター：赤 */
+  --c-madmate:     var(--c-impostor); /* マッドメイト：赤 */
+  --c-crewmate:    #38bdf8; /* クルーメイト：青 */
+  --c-neutral:     #9ca3af; /* 第三陣営：灰色 */
+  --c-ghost:       #ffffff; /* 幽霊役職：白 */
+  --c-combination: var(--c-ghost); /* コンビネーション：白 */
+  --c-modifier:    #22c55e; /* 属性：緑 */
 }
 
 body.light {
@@ -39,7 +39,7 @@ body.light {
   --text: #222532;
   --sub: #697080;
   --hover: #edf0f6;
-  --c-ghost: #4b5563;
+  --c-ghost: #4b5563; /* ライトモード時のみ白は見えなくなるため濃いグレー */
 }
 
 body {
@@ -195,7 +195,7 @@ header {
 .page-view { display: none; }
 .page-view.active { display: block; }
 
-/* メイン */
+/* メインコンテンツ */
 main {
   max-width: 900px;
   margin: auto;
@@ -328,7 +328,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
 .search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
 
-/* 提案フォーム */
+/* 提案フォーム（二重枠なし） */
 .form-group { margin-bottom: 18px; }
 
 .form-label {
@@ -417,7 +417,7 @@ footer {
   font-size: 13px;
 }
 
-/* モーダル */
+/* 設定モーダル */
 .modal {
   display: none;
   position: fixed;
@@ -640,7 +640,7 @@ select {
           </select>
         </div>
 
-        <!-- 通常時の役職名と英名 -->
+        <!-- 通常時の役職名と英名（両方必須） -->
         <div class="form-group" id="normalRoleGroup">
           <div class="form-row">
             <div>
@@ -654,7 +654,7 @@ select {
           </div>
         </div>
 
-        <!-- ★コンビネーション時：役職1（陣営・日本語名・英名） -->
+        <!-- コンビネーション時：役職1（陣営・日本語名・英名） -->
         <div class="form-group" id="combiRole1Group" style="display: none;">
           <div class="form-row-3">
             <div>
@@ -677,7 +677,7 @@ select {
           </div>
         </div>
 
-        <!-- ★コンビネーション時：役職2（陣営・日本語名・英名） -->
+        <!-- コンビネーション時：役職2（陣営・日本語名・英名） -->
         <div class="form-group" id="combiRole2Group" style="display: none;">
           <div class="form-row-3">
             <div>
@@ -700,7 +700,7 @@ select {
           </div>
         </div>
 
-        <!-- ★第三陣営用：勝利条件 -->
+        <!-- 第三陣営用：勝利条件 -->
         <div class="form-group" id="winConditionGroup" style="display: none;">
           <label class="form-label">勝利条件 <span class="req">*必須</span></label>
           <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
@@ -712,7 +712,6 @@ select {
           <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
-        <!-- 送信ボタン（「提案」に変更） -->
         <button type="submit" class="submit-btn" id="submitBtn">提案</button>
         <div id="formStatus" class="form-status">送信が完了しました！提案ありがとうございます。</div>
       </form>
