@@ -4,7 +4,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Tora MOD Wiki</title>
 
 <style>
@@ -20,7 +19,11 @@ body {
 }
 
 header {
-  padding: 20px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  padding: 0 22px;
+  background: #151720;
   border-bottom: 1px solid #30333d;
   font-size: 23px;
   font-weight: bold;
@@ -29,18 +32,43 @@ header {
 main {
   max-width: 1100px;
   margin: auto;
-  padding: 25px 18px;
+  padding: 35px 20px;
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #9ba2b2;
+  font-size: 15px;
+}
+
+.welcome {
+  margin-top: 35px;
+  padding: 25px;
+  background: #1b202d;
+  border: 1px solid #303547;
+  border-radius: 15px;
+}
+
+.welcome h2 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.welcome p {
+  color: #c4c9d4;
+  line-height: 1.8;
 }
 
 footer {
-  border-top: 1px solid #30333d;
+  margin-top: 70px;
   padding: 25px;
   text-align: center;
   color: #777e8d;
+  border-top: 1px solid #30333d;
   font-size: 13px;
 }
 </style>
@@ -49,17 +77,30 @@ footer {
 <body>
 
 <header>
-Tora MOD Wiki
+  Tora MOD
 </header>
 
 <main>
 
-<h1>Tora MOD Wiki</h1>
+  <h1>Tora MOD</h1>
+
+  <div class="subtitle">
+    Tora MOD Official Wiki
+  </div>
+
+  <section class="welcome">
+    <h2>Welcome to Tora MOD Wiki</h2>
+    <p>
+      Tora MODに関する情報をまとめたWikiです。
+      <br>
+      役職・システム・設定などの情報を掲載していきます。
+    </p>
+  </section>
 
 </main>
 
 <footer>
-Tora MOD Wiki
+  Tora MOD Wiki
 </footer>
 
 </body>
