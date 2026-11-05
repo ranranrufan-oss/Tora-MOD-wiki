@@ -965,6 +965,7 @@ function toggleSettingType(selectEl) {
   }
 }
 
+// ★★★ 送信処理（Bot生存の厳格チェック＆Webhook送信） ★★★
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
@@ -978,13 +979,27 @@ async function handleSuggestSubmit(event) {
   submitBtn.textContent = "送信中...";
   formStatus.style.display = "none";
 
+  // ①【超重要】Botが実際に生きているか厳格にチェック！
+  // 返事が来ない、エラー、または online でない場合は即座に中断してエラーを出す
   if (BOT_SERVER_URL) {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
-      await fetch(BOT_SERVER_URL, { method: "GET", mode: "no-cors", signal: controller.signal });
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // 3秒でタイムアウト判定
+      
+      const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
+      const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
       clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error("Bot is down");
+      }
+      
+      const data = await response.json();
+      if (!data || data.status !== "online") {
+        throw new Error("Bot status not online");
+      }
     } catch (e) {
+      // Botが落ちている場合は、Webhookを一切送らずにメッセージを出して終了！
       alert(BOT_OFFLINE_MSG);
       submitBtn.disabled = false;
       submitBtn.textContent = "提案";
@@ -992,6 +1007,7 @@ async function handleSuggestSubmit(event) {
     }
   }
 
+  // ② 提案データの準備（Botが生きている場合のみここを実行）
   const modMode = document.getElementById("modMode").value;
   const roleCamp = document.getElementById("roleCamp").value;
   const roleDesc = document.getElementById("roleDesc").value;
@@ -1124,6 +1140,7 @@ async function handleSuggestSubmit(event) {
     ]
   };
 
+  // ③ Webhook送信実行
   try {
     const response = await fetch(WEBHOOK_URL, {
       method: "POST",
