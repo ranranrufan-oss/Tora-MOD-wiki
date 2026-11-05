@@ -16,7 +16,7 @@
   --bg: #0d0e13;
   --header: #151720;
   --card: #1b202d;
-  --card-sub: #12151e;
+  --sidebar-bg: #151822;
   --border: #303547;
   --text: #f2f3f7;
   --sub: #9ba2b2;
@@ -25,7 +25,7 @@
   /* ★各陣営の文字色 */
   --c-impostor: #ff4d4d; /* インポスター：赤 */
   --c-madmate:  #ff4d4d; /* マッドメイト：赤 */
-  --c-crewmate: #38bdf8; /* クルーメイト：青（水色） */
+  --c-crewmate: #38bdf8; /* クルーメイト：青 */
   --c-neutral:  #9ca3af; /* 第三陣営：灰色 */
   --c-modifier: #22c55e; /* 属性：緑 */
   --c-ghost:    #ffffff; /* 幽霊役職：白 */
@@ -35,11 +35,11 @@ body.light {
   --bg: #f3f4f7;
   --header: #ffffff;
   --card: #ffffff;
-  --card-sub: #edf0f6;
+  --sidebar-bg: #ffffff;
   --border: #d9dce5;
   --text: #222532;
   --sub: #697080;
-  --hover: #f7f8fb;
+  --hover: #edf0f6;
   --c-ghost: #4b5563; /* ライトモード時のみ白は見えなくなるため濃いグレー */
 }
 
@@ -57,10 +57,49 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 22px;
+  padding: 0 16px;
   background: var(--header);
   border-bottom: 1px solid var(--border);
-  font-size: 22px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 三本線（ハンバーガー）ボタン */
+.menu-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 38px;
+  height: 34px;
+  border-radius: 8px;
+  transition: background .2s;
+}
+
+.menu-button:hover {
+  background: var(--card);
+}
+
+.menu-bar {
+  display: block;
+  width: 100%;
+  height: 2.5px;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+.header-title {
+  font-size: 20px;
   font-weight: bold;
 }
 
@@ -77,6 +116,100 @@ header {
 .settings-button:hover {
   background: var(--hover);
 }
+
+/* ★サイドメニュー（三本線を押した時に開くメニュー） */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 200;
+}
+
+.sidebar-overlay.show {
+  display: block;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+  z-index: 201;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.sidebar.show {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.sidebar-close {
+  background: none;
+  border: none;
+  color: var(--sub);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.menu-section {
+  margin-bottom: 24px;
+}
+
+.menu-section-title {
+  font-size: 12px;
+  color: var(--sub);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  font-weight: bold;
+  padding-left: 8px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: background .2s;
+}
+
+.menu-link:hover {
+  background: var(--hover);
+}
+
+/* サイドバー内の役職文字色 */
+.menu-link.impostor { color: var(--c-impostor); }
+.menu-link.madmate  { color: var(--c-madmate); }
+.menu-link.crewmate { color: var(--c-crewmate); }
+.menu-link.neutral  { color: var(--c-neutral); }
+.menu-link.modifier { color: var(--c-modifier); }
+.menu-link.ghost    { color: var(--c-ghost); }
 
 /* メイン */
 main {
@@ -130,12 +263,12 @@ h1 {
   gap: 14px;
 }
 
-/* 役職カード本体 */
+/* 役職カード本体（謎の枠を削除し、パディング調整） */
 .role-category {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
+  justify-content: space-between;
+  padding: 18px 22px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -148,19 +281,6 @@ h1 {
   background: var(--hover);
   transform: translateY(-2px);
   border-color: #4a526d;
-}
-
-/* アイコン枠 */
-.category-icon {
-  width: 52px;
-  height: 52px;
-  background: var(--card-sub);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 /* テキストエリア */
@@ -187,10 +307,10 @@ h1 {
   margin-left: auto;
   color: var(--sub);
   font-size: 22px;
-  padding-left: 8px;
+  padding-left: 12px;
 }
 
-/* ★★★ 文字色の指定（確実に色が変わるように !important を付与） ★★★ */
+/* ★★★ 文字色の指定 ★★★ */
 .role-category.impostor .category-name {
   color: var(--c-impostor) !important;
 }
@@ -230,7 +350,7 @@ footer {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  z-index: 100;
+  z-index: 300;
 }
 
 .modal.show {
@@ -299,11 +419,53 @@ select {
 
 <body>
 
+<!-- ヘッダー -->
 <header>
-  <span>Tora MOD</span>
+  <div class="header-left">
+    <!-- 三本線ボタン -->
+    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+      <span class="menu-bar"></span>
+    </button>
+    <span class="header-title">Tora MOD</span>
+  </div>
+
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
 
+<!-- ★サイドバー（三本線メニューの中身） -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h3>メニュー</h3>
+    <button class="sidebar-close" onclick="toggleSidebar()">×</button>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-section-title">メイン</div>
+    <a href="#" class="menu-link" onclick="toggleSidebar()">トップページ</a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-section-title">役職一覧</div>
+    <a href="#impostor" class="menu-link impostor" onclick="toggleSidebar()">インポスター</a>
+    <a href="#madmate"  class="menu-link madmate"  onclick="toggleSidebar()">マッドメイト</a>
+    <a href="#crewmate" class="menu-link crewmate" onclick="toggleSidebar()">クルーメイト</a>
+    <a href="#neutral"  class="menu-link neutral"  onclick="toggleSidebar()">第三陣営</a>
+    <a href="#modifier" class="menu-link modifier" onclick="toggleSidebar()">属性</a>
+    <a href="#ghost"    class="menu-link ghost"    onclick="toggleSidebar()">幽霊役職</a>
+  </div>
+
+  <div class="menu-section">
+    <div class="menu-section-title">その他</div>
+    <a href="#" class="menu-link" onclick="toggleSidebar()">システム設定</a>
+    <a href="#" class="menu-link" onclick="toggleSidebar()">アップデート履歴</a>
+  </div>
+</nav>
+
+<!-- メインコンテンツ -->
 <main>
   <h1>Tora MOD</h1>
   <div class="subtitle">Tora MOD Official Wiki</div>
@@ -324,7 +486,6 @@ select {
 
     <!-- インポスター（赤） -->
     <a class="role-category impostor" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">インポスター</span>
         <span class="category-desc">インポスター陣営の役職</span>
@@ -334,7 +495,6 @@ select {
 
     <!-- マッドメイト（赤） -->
     <a class="role-category madmate" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">マッドメイト</span>
         <span class="category-desc">クルーだがインポスターを支援</span>
@@ -344,7 +504,6 @@ select {
 
     <!-- クルーメイト（青） -->
     <a class="role-category crewmate" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">クルーメイト</span>
         <span class="category-desc">船のタスクと追放を目指す陣営</span>
@@ -354,7 +513,6 @@ select {
 
     <!-- 第三陣営（灰色） -->
     <a class="role-category neutral" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">第三陣営</span>
         <span class="category-desc">独自勝利を目指す陣営</span>
@@ -364,7 +522,6 @@ select {
 
     <!-- 属性（緑） -->
     <a class="role-category modifier" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">属性</span>
         <span class="category-desc">役職に追加で付与される能力</span>
@@ -374,7 +531,6 @@ select {
 
     <!-- 幽霊役職（白） -->
     <a class="role-category ghost" href="#">
-      <div class="category-icon"></div>
       <div class="category-info">
         <span class="category-name">幽霊役職</span>
         <span class="category-desc">死亡後に発動する役職</span>
@@ -407,6 +563,15 @@ select {
 </div>
 
 <script>
+// サイドバーの開閉
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("sidebarOverlay");
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
+
+// テーマ管理
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 
 function applyTheme(theme) {
@@ -419,6 +584,7 @@ function changeTheme(theme) {
   applyTheme(theme);
 }
 
+// 設定モーダル
 function openSettings() {
   document.getElementById("settingsModal").classList.add("show");
 }
