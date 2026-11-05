@@ -284,7 +284,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
 .form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; font-weight: normal; }
 
-/* ★最上部の提案種別切り替えタブ */
 .suggest-type-switch {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -336,8 +335,9 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
 
-/* 設定項目追加 */
-.setting-items-container { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+/* ★設定項目エリアの拡張スタイル */
+.setting-items-container { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+
 .setting-item-card {
   background: var(--card-inner);
   border: 1px solid var(--border);
@@ -347,6 +347,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   flex-direction: column;
   gap: 10px;
 }
+
 .setting-item-header { display: flex; justify-content: space-between; align-items: center; }
 .setting-item-title { font-size: 13px; font-weight: bold; color: var(--sub); }
 .setting-item-del-btn {
@@ -357,10 +358,31 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   cursor: pointer;
   line-height: 1;
 }
-.setting-item-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 8px; }
-@media (max-width: 600px) {
-  .setting-item-grid { grid-template-columns: 1fr; }
+
+.setting-main-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 10px;
 }
+
+.setting-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.setting-detail-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 600px) {
+  .setting-main-row { grid-template-columns: 1fr; }
+  .setting-detail-grid { grid-template-columns: 1fr; }
+  .setting-detail-grid-2 { grid-template-columns: 1fr; }
+}
+
 .add-setting-btn {
   background: transparent;
   border: 1px dashed #38bdf8;
@@ -594,19 +616,19 @@ select {
       
       <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)">
         
-        <!-- ★一番上の切り替えタブ（役職提案 ⇔ 移植案） -->
+        <!-- 一番上の切り替えタブ（役職提案 ⇔ 移植案） -->
         <div class="suggest-type-switch">
           <button type="button" class="type-switch-btn active" id="btnTypeRole" onclick="switchProposalType('role')">役職提案</button>
           <button type="button" class="type-switch-btn" id="btnTypePort" onclick="switchProposalType('port')">移植案</button>
         </div>
 
-        <!-- ★移植案の場合のみ表示される移植元入力欄 -->
+        <!-- 移植案の移植元入力欄 -->
         <div class="form-group" id="originModGroup" style="display: none;">
           <label class="form-label">移植元のMOD名・ゲーム名 <span class="req">*必須</span></label>
           <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
         </div>
 
-        <!-- ★対応MODモードの選択（ホストMOD / クライアントMOD / 両方） -->
+        <!-- 対応MODモード -->
         <div class="form-group">
           <label class="form-label">対応モード <span class="req">*必須</span></label>
           <select id="modMode" class="form-select" required>
@@ -714,7 +736,7 @@ select {
           <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
-        <!-- 設定項目追加 -->
+        <!-- ★★★ 設定項目追加エリア（間隔・最大値・自由な2択に対応） ★★★ -->
         <div class="form-group">
           <label class="form-label">役職の設定項目 <span class="opt">任意（ゲーム内設定）</span></label>
           <div id="settingItemsContainer" class="setting-items-container"></div>
@@ -750,7 +772,7 @@ select {
 </div>
 
 <script>
-let currentProposalType = 'role'; // 'role' または 'port'
+let currentProposalType = 'role';
 
 function switchProposalType(type) {
   currentProposalType = type;
@@ -891,6 +913,7 @@ function handleCombiCampChange() {
   }
 }
 
+// ★設定項目の追加処理（数値：間隔・最大値・単位 / 2択：カスタム選択肢）
 let settingItemCount = 0;
 function addSettingItem() {
   settingItemCount++;
@@ -904,13 +927,27 @@ function addSettingItem() {
       <span class="setting-item-title">設定項目 #${settingItemCount}</span>
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
-    <div class="setting-item-grid">
-      <input type="text" class="form-input setting-name" placeholder="項目名 (例: クールダウン)" required>
-      <select class="form-select setting-type" onchange="toggleUnitField(this)">
-        <option value="複数/数値">複数選択 / 数値</option>
-        <option value="2択(ON/OFF)">2択 (ON/OFF)</option>
+    
+    <!-- 上段：項目名と形式 -->
+    <div class="setting-main-row">
+      <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)" required>
+      <select class="form-select setting-type" onchange="toggleSettingType(this)">
+        <option value="number">数値 / スライダー</option>
+        <option value="boolean">2択 (ON/OFF、はい/いいえ 等)</option>
       </select>
+    </div>
+
+    <!-- 下段A：数値の場合（間隔・最大値・単位） -->
+    <div class="setting-detail-grid setting-detail-number">
+      <input type="text" class="form-input setting-step" placeholder="数字の間隔 (例: 2.5, 5, 1)">
+      <input type="text" class="form-input setting-max" placeholder="最大値 (例: 60, 10)">
       <input type="text" class="form-input setting-unit" placeholder="単位 (例: 秒, 回, %)">
+    </div>
+
+    <!-- 下段B：2択の場合（選択肢1・選択肢2） -->
+    <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
+      <input type="text" class="form-input setting-choice1" placeholder="選択肢 1 (例: ON、はい、有効)">
+      <input type="text" class="form-input setting-choice2" placeholder="選択肢 2 (例: OFF、いいえ、無効)">
     </div>
   `;
   container.appendChild(card);
@@ -921,15 +958,17 @@ function removeSettingItem(id) {
   if (el) el.remove();
 }
 
-function toggleUnitField(selectEl) {
-  const unitInput = selectEl.closest(".setting-item-grid").querySelector(".setting-unit");
-  if (selectEl.value === "2択(ON/OFF)") {
-    unitInput.value = "";
-    unitInput.placeholder = "単位不要";
-    unitInput.disabled = true;
+function toggleSettingType(selectEl) {
+  const card = selectEl.closest(".setting-item-card");
+  const numGrid = card.querySelector(".setting-detail-number");
+  const boolGrid = card.querySelector(".setting-detail-boolean");
+
+  if (selectEl.value === "boolean") {
+    numGrid.style.display = "none";
+    boolGrid.style.display = "grid";
   } else {
-    unitInput.placeholder = "単位 (例: 秒, 回, %)";
-    unitInput.disabled = false;
+    numGrid.style.display = "grid";
+    boolGrid.style.display = "none";
   }
 }
 
@@ -1046,18 +1085,29 @@ async function handleSuggestSubmit(event) {
     value: roleDesc
   });
 
+  // ★設定項目の取得とEmbed追加（間隔・最大値・自由な2択の反映）
   const settingCards = document.querySelectorAll(".setting-item-card");
   if (settingCards.length > 0) {
     let settingText = "";
     settingCards.forEach(card => {
       const name = card.querySelector(".setting-name").value.trim();
       const type = card.querySelector(".setting-type").value;
-      const unit = card.querySelector(".setting-unit").value.trim();
       if (name) {
-        if (type === "2択(ON/OFF)") {
-          settingText += `・**${name}**: 2択 (ON/OFF)\n`;
+        if (type === "boolean") {
+          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
+          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
+          settingText += `・**${name}**: 2択 [ ${c1} / ${c2} ]\n`;
         } else {
-          settingText += `・**${name}**: 複数/数値 ${unit ? `[単位: ${unit}]` : ""}\n`;
+          const step = card.querySelector(".setting-step").value.trim();
+          const max = card.querySelector(".setting-max").value.trim();
+          const unit = card.querySelector(".setting-unit").value.trim();
+          
+          let details = [];
+          if (max) details.push(`最大: ${max}${unit}`);
+          if (step) details.push(`間隔: ${step}${unit}`);
+          if (!max && !step && unit) details.push(`単位: ${unit}`);
+          
+          settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
         }
       }
     });
