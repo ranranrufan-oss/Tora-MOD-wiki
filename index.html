@@ -4,7 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Role Wiki</title>
+
+<title>Tora MOD Wiki</title>
 
 <style>
 * {
@@ -15,7 +16,7 @@ body {
   margin: 0;
   background: #0d0e13;
   color: #f2f3f7;
-  font-family: Arial, sans-serif;
+  font-family: Arial, "Noto Sans JP", sans-serif;
 }
 
 header {
@@ -26,121 +27,19 @@ header {
 }
 
 main {
-  max-width: 750px;
+  max-width: 1100px;
   margin: auto;
-  padding: 25px 16px;
+  padding: 25px 18px;
 }
 
 h1 {
-  font-size: 29px;
-  margin-bottom: 24px;
-}
-
-h2 {
-  font-size: 20px;
-  margin: 30px 0 15px;
-}
-
-.search {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #353947;
-  border-radius: 12px;
-  background: #191c26;
-  color: white;
-  font-size: 16px;
-}
-
-#role-list {
-  margin-top: 20px;
-}
-
-.role {
-  background: #1b202d;
-  border: 1px solid #303547;
-  border-radius: 23px;
-  margin-bottom: 20px;
-  overflow: hidden;
-}
-
-.role-button {
-  width: 100%;
-  min-height: 137px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  background: transparent;
-  border: none;
-  color: white;
-  text-align: left;
-}
-
-.role-icon {
-  width: 85px;
-  height: 85px;
-  flex-shrink: 0;
-  border-radius: 18px;
-  background: #050609;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 42px;
-}
-
-.role-info {
-  flex: 1;
-}
-
-.role-name {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.role-en {
-  color: #969dac;
-  font-size: 18px;
-}
-
-.arrow {
-  color: #aab0c0;
-  font-size: 23px;
-}
-
-.description {
-  display: none;
-  padding: 0 22px 22px;
-  color: #c4c9d4;
-  line-height: 1.8;
-}
-
-.role.open .description {
-  display: block;
-}
-
-.role.open .arrow {
-  transform: rotate(180deg);
-}
-
-.tag {
-  display: inline-block;
-  padding: 5px 12px;
-  border-radius: 8px;
-  background: #292f40;
-  color: #b8c6e8;
-  font-size: 13px;
-  margin-bottom: 12px;
-}
-
-.empty {
-  text-align: center;
-  padding: 40px 15px;
-  color: #858c9b;
+  font-size: 30px;
 }
 
 footer {
+  border-top: 1px solid #30333d;
+  padding: 25px;
   text-align: center;
-  padding: 30px;
   color: #777e8d;
   font-size: 13px;
 }
@@ -149,112 +48,19 @@ footer {
 
 <body>
 
-<header>Role Wiki</header>
+<header>
+Tora MOD Wiki
+</header>
 
 <main>
 
-<h1>Role Wiki</h1>
-
-<input
-  class="search"
-  id="search"
-  type="text"
-  placeholder="役職を検索..."
->
-
-<h2>役職一覧</h2>
-
-<div id="role-list"></div>
+<h1>Tora MOD Wiki</h1>
 
 </main>
 
 <footer>
-Role Wiki
+Tora MOD Wiki
 </footer>
-
-<script>
-
-// ここに役職を追加していく
-const roles = [];
-
-const list = document.getElementById("role-list");
-
-function showRoles(keyword = "") {
-
-  list.innerHTML = "";
-
-  const filtered = roles.filter(role =>
-    role.name.toLowerCase().includes(keyword.toLowerCase()) ||
-    role.english.toLowerCase().includes(keyword.toLowerCase())
-  );
-
-  if (filtered.length === 0) {
-    list.innerHTML =
-      '<div class="empty">役職はまだ登録されていません。</div>';
-    return;
-  }
-
-  filtered.forEach(role => {
-
-    const card = document.createElement("div");
-    card.className = "role";
-
-    const button = document.createElement("button");
-    button.className = "role-button";
-
-    const icon = document.createElement("div");
-    icon.className = "role-icon";
-    icon.textContent = role.icon;
-
-    const info = document.createElement("div");
-    info.className = "role-info";
-
-    const name = document.createElement("div");
-    name.className = "role-name";
-    name.style.color = role.color;
-    name.textContent = role.name;
-
-    const english = document.createElement("div");
-    english.className = "role-en";
-    english.textContent = "/ " + role.english;
-
-    info.append(name, english);
-
-    const arrow = document.createElement("div");
-    arrow.className = "arrow";
-    arrow.textContent = "▼";
-
-    button.append(icon, info, arrow);
-
-    const description = document.createElement("div");
-    description.className = "description";
-
-    const tag = document.createElement("div");
-    tag.className = "tag";
-    tag.textContent = role.faction;
-
-    const text = document.createElement("div");
-    text.textContent = role.description;
-
-    description.append(tag, text);
-
-    button.addEventListener("click", () => {
-      card.classList.toggle("open");
-    });
-
-    card.append(button, description);
-    list.appendChild(card);
-  });
-}
-
-document.getElementById("search")
-  .addEventListener("input", event => {
-    showRoles(event.target.value);
-  });
-
-showRoles();
-
-</script>
 
 </body>
 </html>
