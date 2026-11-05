@@ -76,25 +76,26 @@ header {
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 38px;
-  height: 34px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   border-radius: 8px;
-  transition: background .2s;
 }
 
-.menu-button:hover {
+.menu-button:active {
   background: var(--card);
 }
 
 .menu-bar {
   display: block;
-  width: 100%;
+  width: 22px;
   height: 2.5px;
-  background: var(--text);
+  background-color: var(--text);
   border-radius: 2px;
 }
 
@@ -117,12 +118,12 @@ header {
   background: var(--hover);
 }
 
-/* ★サイドメニュー（三本線を押した時に開くメニュー） */
+/* サイドメニュー */
 .sidebar-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.65);
   backdrop-filter: blur(2px);
   z-index: 200;
 }
@@ -140,7 +141,7 @@ header {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
   z-index: 201;
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left 0.25s ease-out;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -155,7 +156,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
@@ -169,28 +170,25 @@ header {
   background: none;
   border: none;
   color: var(--sub);
-  font-size: 24px;
+  font-size: 26px;
   cursor: pointer;
-  padding: 4px;
+  line-height: 1;
 }
 
 .menu-section {
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 
 .menu-section-title {
   font-size: 12px;
   color: var(--sub);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
   font-weight: bold;
+  margin-bottom: 8px;
   padding-left: 8px;
 }
 
 .menu-link {
-  display: flex;
-  align-items: center;
+  display: block;
   padding: 10px 12px;
   color: var(--text);
   text-decoration: none;
@@ -203,13 +201,13 @@ header {
   background: var(--hover);
 }
 
-/* サイドバー内の役職文字色 */
-.menu-link.impostor { color: var(--c-impostor); }
-.menu-link.madmate  { color: var(--c-madmate); }
-.menu-link.crewmate { color: var(--c-crewmate); }
-.menu-link.neutral  { color: var(--c-neutral); }
-.menu-link.modifier { color: var(--c-modifier); }
-.menu-link.ghost    { color: var(--c-ghost); }
+/* サイドバー内の文字色 */
+.menu-link.impostor { color: var(--c-impostor) !important; }
+.menu-link.madmate  { color: var(--c-madmate) !important; }
+.menu-link.crewmate { color: var(--c-crewmate) !important; }
+.menu-link.neutral  { color: var(--c-neutral) !important; }
+.menu-link.modifier { color: var(--c-modifier) !important; }
+.menu-link.ghost    { color: var(--c-ghost) !important; }
 
 /* メイン */
 main {
@@ -248,86 +246,6 @@ h1 {
   color: var(--sub);
   line-height: 1.8;
   font-size: 15px;
-}
-
-/* 役職一覧 */
-.section-title {
-  font-size: 26px;
-  margin-top: 40px;
-  margin-bottom: 18px;
-}
-
-.role-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-/* 役職カード本体（謎の枠を削除し、パディング調整） */
-.role-category {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 22px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  color: var(--text);
-  text-decoration: none;
-  transition: background .2s, transform .15s, border-color .2s;
-}
-
-.role-category:hover {
-  background: var(--hover);
-  transform: translateY(-2px);
-  border-color: #4a526d;
-}
-
-/* テキストエリア */
-.category-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  overflow: hidden;
-}
-
-.category-name {
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.3;
-}
-
-.category-desc {
-  font-size: 13px;
-  color: var(--sub);
-  line-height: 1.2;
-}
-
-.arrow {
-  margin-left: auto;
-  color: var(--sub);
-  font-size: 22px;
-  padding-left: 12px;
-}
-
-/* ★★★ 文字色の指定 ★★★ */
-.role-category.impostor .category-name {
-  color: var(--c-impostor) !important;
-}
-.role-category.madmate .category-name {
-  color: var(--c-madmate) !important;
-}
-.role-category.crewmate .category-name {
-  color: var(--c-crewmate) !important;
-}
-.role-category.neutral .category-name {
-  color: var(--c-neutral) !important;
-}
-.role-category.modifier .category-name {
-  color: var(--c-modifier) !important;
-}
-.role-category.ghost .category-name {
-  color: var(--c-ghost) !important;
 }
 
 /* フッター */
@@ -407,9 +325,6 @@ select {
 
 /* スマホ対応 */
 @media (max-width: 600px) {
-  .role-grid {
-    grid-template-columns: 1fr;
-  }
   h1 {
     font-size: 28px;
   }
@@ -434,7 +349,7 @@ select {
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
 
-<!-- ★サイドバー（三本線メニューの中身） -->
+<!-- サイドバー（三本線メニューの中身） -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <nav class="sidebar" id="sidebar">
@@ -450,18 +365,17 @@ select {
 
   <div class="menu-section">
     <div class="menu-section-title">役職一覧</div>
-    <a href="#impostor" class="menu-link impostor" onclick="toggleSidebar()">インポスター</a>
-    <a href="#madmate"  class="menu-link madmate"  onclick="toggleSidebar()">マッドメイト</a>
-    <a href="#crewmate" class="menu-link crewmate" onclick="toggleSidebar()">クルーメイト</a>
-    <a href="#neutral"  class="menu-link neutral"  onclick="toggleSidebar()">第三陣営</a>
-    <a href="#modifier" class="menu-link modifier" onclick="toggleSidebar()">属性</a>
-    <a href="#ghost"    class="menu-link ghost"    onclick="toggleSidebar()">幽霊役職</a>
+    <a href="#" class="menu-link impostor" onclick="toggleSidebar()">インポスター</a>
+    <a href="#" class="menu-link madmate"  onclick="toggleSidebar()">マッドメイト</a>
+    <a href="#" class="menu-link crewmate" onclick="toggleSidebar()">クルーメイト</a>
+    <a href="#" class="menu-link neutral"  onclick="toggleSidebar()">第三陣営</a>
+    <a href="#" class="menu-link modifier" onclick="toggleSidebar()">属性</a>
+    <a href="#" class="menu-link ghost"    onclick="toggleSidebar()">幽霊役職</a>
   </div>
 
   <div class="menu-section">
     <div class="menu-section-title">その他</div>
     <a href="#" class="menu-link" onclick="toggleSidebar()">システム設定</a>
-    <a href="#" class="menu-link" onclick="toggleSidebar()">アップデート履歴</a>
   </div>
 </nav>
 
@@ -478,67 +392,6 @@ select {
       役職・システム・設定などの情報を掲載していきます。
     </p>
   </section>
-
-  <!-- 役職一覧 -->
-  <h2 class="section-title">役職一覧</h2>
-
-  <div class="role-grid">
-
-    <!-- インポスター（赤） -->
-    <a class="role-category impostor" href="#">
-      <div class="category-info">
-        <span class="category-name">インポスター</span>
-        <span class="category-desc">インポスター陣営の役職</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-    <!-- マッドメイト（赤） -->
-    <a class="role-category madmate" href="#">
-      <div class="category-info">
-        <span class="category-name">マッドメイト</span>
-        <span class="category-desc">クルーだがインポスターを支援</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-    <!-- クルーメイト（青） -->
-    <a class="role-category crewmate" href="#">
-      <div class="category-info">
-        <span class="category-name">クルーメイト</span>
-        <span class="category-desc">船のタスクと追放を目指す陣営</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-    <!-- 第三陣営（灰色） -->
-    <a class="role-category neutral" href="#">
-      <div class="category-info">
-        <span class="category-name">第三陣営</span>
-        <span class="category-desc">独自勝利を目指す陣営</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-    <!-- 属性（緑） -->
-    <a class="role-category modifier" href="#">
-      <div class="category-info">
-        <span class="category-name">属性</span>
-        <span class="category-desc">役職に追加で付与される能力</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-    <!-- 幽霊役職（白） -->
-    <a class="role-category ghost" href="#">
-      <div class="category-info">
-        <span class="category-name">幽霊役職</span>
-        <span class="category-desc">死亡後に発動する役職</span>
-      </div>
-      <span class="arrow">›</span>
-    </a>
-
-  </div>
 </main>
 
 <footer>
@@ -563,7 +416,7 @@ select {
 </div>
 
 <script>
-// サイドバーの開閉
+// サイドバー開閉
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   const overlay = document.getElementById("sidebarOverlay");
