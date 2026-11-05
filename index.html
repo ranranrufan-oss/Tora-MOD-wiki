@@ -19,7 +19,7 @@
   --sub: #9ba2b2;
   --hover: #252c3c;
 
-  /* ★Toraカラー（指定色） */
+  /* ★Toraカラー */
   --c-tora: #DDBB99;
 
   /* 陣営色 */
@@ -43,7 +43,7 @@ body.light {
   --sub: #697080;
   --hover: #edf0f6;
   --c-ghost: #4b5563;
-  --c-tora: #c29668; /* ライトモード時に見えやすいよう少し濃いめに調整 */
+  --c-tora: #b88652;
 }
 
 body {
@@ -54,9 +54,8 @@ body {
   transition: background .2s, color .2s;
 }
 
-/* ★Tora専用の文字色クラス */
 .tora-text {
-  color: var(--c-tora) !important;
+  color: #DDBB99 !important;
 }
 
 header {
@@ -491,8 +490,7 @@ select {
       <span class="menu-bar"></span>
       <span class="menu-bar"></span>
     </button>
-    <!-- ★ヘッダーのToraを#DDBB99に変更 -->
-    <span class="header-title"><span class="tora-text">Tora</span> MOD</span>
+    <span class="header-title"><span style="color: #DDBB99 !important;">Tora</span> MOD</span>
   </div>
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
@@ -533,20 +531,19 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
-    <!-- ★見出しのToraを#DDBB99に変更 -->
-    <h1><span class="tora-text">Tora</span> MOD</h1>
-    <div class="subtitle"><span class="tora-text">Tora</span> MOD Official Wiki</div>
+    <h1><span style="color: #DDBB99 !important;">Tora</span> MOD</h1>
+    <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2>Welcome to <span class="tora-text">Tora</span> MOD Wiki</h2>
+      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
       <p>
-        <span class="tora-text">Tora</span> MODに関する情報をまとめたWikiです。<br>
+        <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
       </p>
     </section>
 
     <section class="info-card">
-      <h2><span class="tora-text">Tora</span> MODとは？</h2>
+      <h2><span style="color: #DDBB99 !important;">Tora</span> MODとは？</h2>
       <p>
         Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
         現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
@@ -588,7 +585,7 @@ select {
   <!-- ② 役職一覧ページ -->
   <div id="page-roles" class="page-view">
     <h1>役職一覧</h1>
-    <div class="subtitle"><span class="tora-text">Tora</span> MOD Roles</div>
+    <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
     <section class="search-container">
       <div class="search-box-wrapper">
@@ -751,9 +748,8 @@ select {
 
 </main>
 
-<!-- フッター -->
 <footer>
-  <span class="tora-text">Tora</span> MOD Wiki
+  <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki
 </footer>
 
 <div class="modal" id="settingsModal">
