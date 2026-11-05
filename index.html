@@ -745,21 +745,16 @@ function handleCampChange(camp) {
   }
 }
 
-// ★★★ Discord Webhook送信 ＆ Bot落ち検知 ★★★
+// ★★★ Discord Webhook送信 ＆ Bot落ち自動検知 ★★★
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
   const WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
   
-  // 指定のエラー文
-  const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
+  // ★Replitで取得したBotのURLを設定済み！
+  const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
 
-  /* 
-    【Bot生存確認用URL（任意）】
-    ReplitなどのBotのURL（例: https://xxx.replit.app）が分かったらここに入れると、
-    送信前に自動でBotが起きているか確認し、落ちていれば送信を停止してメッセージを出します。
-  */
-  const BOT_SERVER_URL = ""; 
+  const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
   const submitBtn = document.getElementById("submitBtn");
   const formStatus = document.getElementById("formStatus");
@@ -767,10 +762,14 @@ async function handleSuggestSubmit(event) {
   submitBtn.textContent = "送信中...";
   formStatus.style.display = "none";
 
-  // ① Bot生存確認（URL設定時のみ）
+  // ① 送信前にBotが起きているか自動確認
   if (BOT_SERVER_URL) {
     try {
-      const check = await fetch(BOT_SERVER_URL, { method: "GET", mode: "no-cors" });
+      // 3秒以内に返事がなければダウンと判定
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      await fetch(BOT_SERVER_URL, { method: "GET", mode: "no-cors", signal: controller.signal });
+      clearTimeout(timeoutId);
     } catch (e) {
       alert(BOT_OFFLINE_MSG);
       submitBtn.disabled = false;
@@ -856,7 +855,7 @@ async function handleSuggestSubmit(event) {
     ]
   };
 
-  // ③ Webhook送信実行
+  // ③ 送信実行
   try {
     const response = await fetch(WEBHOOK_URL, {
       method: "POST",
@@ -871,11 +870,9 @@ async function handleSuggestSubmit(event) {
       document.getElementById("roleSuggestForm").reset();
       handleCampChange("クルーメイト");
     } else {
-      // 送信失敗時
       alert(BOT_OFFLINE_MSG);
     }
   } catch (error) {
-    // ネットワークエラー・Botダウン時
     alert(BOT_OFFLINE_MSG);
   } finally {
     submitBtn.disabled = false;
