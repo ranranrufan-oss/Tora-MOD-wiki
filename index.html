@@ -165,7 +165,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
 
-/* 予定リスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex;
@@ -283,6 +282,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   .form-row, .form-row-3 { grid-template-columns: 1fr; }
   h1 { font-size: 28px; }
 }
+
 .form-input, .form-textarea, .form-select {
   width: 100%;
   background: var(--card-inner);
@@ -296,11 +296,51 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
-.log-textarea {
-  font-family: Consolas, Monaco, monospace;
+
+/* ★ファイルアップロード枠スタイル */
+.file-upload-box {
+  background: var(--card-inner);
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+}
+.file-upload-box:hover {
+  border-color: #38bdf8;
+  background: var(--hover);
+}
+.file-upload-box input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.file-upload-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+  color: var(--sub);
+}
+.file-upload-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text);
+}
+.file-upload-sub {
+  font-size: 12px;
+  color: var(--sub);
+  margin-top: 4px;
+}
+.file-selected-name {
+  margin-top: 10px;
   font-size: 13px;
-  background: #090b10;
-  color: #a5b4fc;
+  color: #38bdf8;
+  font-weight: bold;
+  word-break: break-all;
 }
 
 /* 設定項目エリア */
@@ -680,35 +720,45 @@ select {
     </section>
   </div>
 
-  <!-- ④ バグ報告ページ -->
+  <!-- ④ ★★★ バグ報告ページ（すべて必須＆ファイル選択式） ★★★ -->
   <div id="page-bug" class="page-view">
     <h1>バグ報告</h1>
     <div class="subtitle">Bug Report</div>
 
     <section class="info-card">
-      <p style="margin-bottom: 20px;">ゲーム中に発生した不具合やエラーを報告してください。何試合目・何ターン目かの情報や、ログがあると修正がスムーズになります！</p>
+      <p style="margin-bottom: 20px;">ゲーム中に発生した不具合やエラーを報告してください。すべて必須項目です。</p>
 
       <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
         
         <div class="form-row">
+          <!-- ★何試合目か（必須） -->
           <div class="form-group">
-            <label class="form-label">何試合目か <span class="opt">任意</span></label>
-            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など">
+            <label class="form-label">何試合目か <span class="req">*必須</span></label>
+            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
           </div>
+          <!-- ★何ターン目か（必須） -->
           <div class="form-group">
-            <label class="form-label">何ターン目か <span class="opt">任意</span></label>
-            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など">
+            <label class="form-label">何ターン目か <span class="req">*必須</span></label>
+            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
           </div>
         </div>
 
+        <!-- ★バグ内容（必須） -->
         <div class="form-group">
           <label class="form-label">バグ内容・発生状況 <span class="req">*必須</span></label>
           <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
         </div>
 
+        <!-- ★ログファイル選択（PCはエクスプローラー、スマホはファイル選択が開く / 必須） -->
         <div class="form-group">
-          <label class="form-label">ログの貼り付け <span class="opt">任意（BepInExなどのログ）</span></label>
-          <textarea id="bugLog" class="form-textarea log-textarea" style="min-height: 140px;" placeholder="エラーログがある場合はここに全文貼り付けてください"></textarea>
+          <label class="form-label">ログファイル <span class="req">*必須（.log / .txt）</span></label>
+          <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
+            <input type="file" id="bugLogFile" accept=".log,.txt" required onchange="handleFileSelected(this)">
+            <div class="file-upload-icon">📁</div>
+            <div class="file-upload-text">クリックしてログファイルを選択</div>
+            <div class="file-upload-sub">PCならエクスプローラー、スマホならファイルアプリが開きます</div>
+            <div id="selectedFileName" class="file-selected-name" style="display: none;"></div>
+          </div>
         </div>
 
         <button type="submit" class="submit-btn danger" id="bugSubmitBtn">バグを報告する</button>
@@ -896,7 +946,6 @@ function addSettingItem() {
       <span class="setting-item-title">設定項目 #${settingItemCount}</span>
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
-    
     <div class="setting-main-row">
       <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)" required>
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
@@ -904,13 +953,11 @@ function addSettingItem() {
         <option value="boolean">2択 (ON/OFF、はい/いいえ 等)</option>
       </select>
     </div>
-
     <div class="setting-detail-grid setting-detail-number">
       <input type="text" class="form-input setting-step" placeholder="数字の間隔 (例: 2.5, 5, 1)">
       <input type="text" class="form-input setting-max" placeholder="最大値 (例: 60, 10)">
       <input type="text" class="form-input setting-unit" placeholder="単位 (例: 秒, 回, %)">
     </div>
-
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
       <input type="text" class="form-input setting-choice1" placeholder="選択肢 1 (例: ON、はい、有効)">
       <input type="text" class="form-input setting-choice2" placeholder="選択肢 2 (例: OFF、いいえ、無効)">
@@ -938,13 +985,24 @@ function toggleSettingType(selectEl) {
   }
 }
 
-// ★★★ Webhook URL設定（役職提案用とバグ報告用で分離） ★★★
+// ★ファイル選択時のファイル名表示処理
+function handleFileSelected(input) {
+  const nameDisplay = document.getElementById("selectedFileName");
+  if (input.files && input.files[0]) {
+    nameDisplay.textContent = `選択中: ${input.files[0].name}`;
+    nameDisplay.style.display = "block";
+  } else {
+    nameDisplay.textContent = "";
+    nameDisplay.style.display = "none";
+  }
+}
+
+// Webhook設定
 const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
 const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1567935043404570734/R3xk7q01Y1fPGxYAXlXlBP8hhtbfAcRYMb4ngphiTnbuP9W84gCAWGn0EoaW43Lmyjz8";
 const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
-// Bot生存確認
 async function checkBotAlive() {
   if (!BOT_SERVER_URL) return true;
   try {
@@ -1109,7 +1167,7 @@ async function handleSuggestSubmit(event) {
   }
 }
 
-// ② バグ報告の送信処理
+// ② ★★★ バグ報告の送信処理（ファイル添付・すべて必須対応） ★★★
 async function handleBugSubmit(event) {
   event.preventDefault();
 
@@ -1127,51 +1185,55 @@ async function handleBugSubmit(event) {
     return;
   }
 
-  const match = document.getElementById("bugMatch").value.trim() || "未記入";
-  const turn = document.getElementById("bugTurn").value.trim() || "未記入";
+  const match = document.getElementById("bugMatch").value.trim();
+  const turn = document.getElementById("bugTurn").value.trim();
   const desc = document.getElementById("bugDesc").value.trim();
-  const log = document.getElementById("bugLog").value.trim();
+  const fileInput = document.getElementById("bugLogFile");
 
-  const fields = [
-    { name: "何試合目か", value: match, inline: true },
-    { name: "何ターン目か", value: turn, inline: true },
-    { name: "バグ内容・発生状況", value: desc, inline: false }
-  ];
-
-  if (log) {
-    const trimmedLog = log.length > 950 ? log.substring(0, 950) + "\n...（以降省略）" : log;
-    fields.push({
-      name: "📋 エラーログ",
-      value: `\`\`\`text\n${trimmedLog}\n\`\`\``,
-      inline: false
-    });
+  if (!fileInput.files || !fileInput.files[0]) {
+    alert("ログファイルを選択してください。");
+    submitBtn.disabled = false;
+    submitBtn.textContent = "バグを報告する";
+    return;
   }
 
+  const logFile = fileInput.files[0];
+
+  // Discordにファイル付きで送信するためのFormData作成
+  const formData = new FormData();
   const payload = {
     username: "Tora MOD バグ報告",
     embeds: [
       {
         title: "🐛【バグ報告】不具合が報告されました",
         color: 15631988,
-        fields: fields,
+        fields: [
+          { name: "何試合目か", value: `${match} 試合目`, inline: true },
+          { name: "何ターン目か", value: `${turn} ターン目`, inline: true },
+          { name: "バグ内容・発生状況", value: desc, inline: false },
+          { name: "添付ログファイル", value: logFile.name, inline: false }
+        ],
         footer: { text: "Tora MOD Official Wiki" },
         timestamp: new Date().toISOString()
       }
     ]
   };
 
+  formData.append("payload_json", JSON.stringify(payload));
+  formData.append("files[0]", logFile, logFile.name);
+
   try {
     const response = await fetch(BUG_WEBHOOK_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: formData // Content-Typeは自動付与
     });
 
     if (response.ok) {
-      formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
+      formStatus.textContent = "バグ報告とログファイルを送信しました。ご協力ありがとうございます！";
       formStatus.classList.add("success");
       formStatus.style.display = "block";
       document.getElementById("bugReportForm").reset();
+      document.getElementById("selectedFileName").style.display = "none";
     } else {
       alert(BOT_OFFLINE_MSG);
     }
