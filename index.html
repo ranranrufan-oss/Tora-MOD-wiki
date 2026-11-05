@@ -393,9 +393,16 @@ h1 {
   padding-left: 2px;
 }
 
-/* 提案フォームスタイル */
+/* ★★★ 提案フォームスタイル ★★★ */
 .form-group {
   margin-bottom: 18px;
+}
+
+.form-group.highlight-box {
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
 }
 
 .form-label {
@@ -405,9 +412,29 @@ h1 {
   margin-bottom: 8px;
 }
 
-.form-label span {
+.form-label span.req {
   color: #ff4d4d;
   font-size: 12px;
+  margin-left: 4px;
+}
+
+.form-label span.opt {
+  color: var(--sub);
+  font-size: 12px;
+  margin-left: 4px;
+  font-weight: normal;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .form-input,
@@ -422,6 +449,10 @@ h1 {
   font-size: 15px;
   outline: none;
   font-family: inherit;
+}
+
+.form-group.highlight-box .form-input {
+  background: var(--card);
 }
 
 .form-input:focus,
@@ -446,6 +477,7 @@ h1 {
   font-weight: bold;
   cursor: pointer;
   transition: opacity .2s;
+  margin-top: 10px;
 }
 
 .submit-btn:hover {
@@ -686,7 +718,7 @@ select {
     </section>
   </div>
 
-  <!-- ③ 役職提案ページ -->
+  <!-- ③ ★★★ 役職提案ページ（動的切り替え対応） ★★★ -->
   <div id="page-suggest" class="page-view">
     <h1>役職の提案</h1>
     <div class="subtitle">Role Suggestion</div>
@@ -696,14 +728,11 @@ select {
       <p>あなたが考えたオリジナルの役職や能力を教えてください！採用されたアイデアはMOD内に実装される可能性があります。</p>
       
       <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)" style="margin-top: 20px;">
+        
+        <!-- 陣営選択 -->
         <div class="form-group">
-          <label class="form-label">役職名 <span>*必須</span></label>
-          <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">陣営 <span>*必須</span></label>
-          <select id="roleCamp" class="form-select" required>
+          <label class="form-label">陣営 <span class="req">*必須</span></label>
+          <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
             <option value="クルーメイト">クルーメイト</option>
             <option value="インポスター">インポスター</option>
             <option value="マッドメイト">マッドメイト</option>
@@ -714,13 +743,49 @@ select {
           </select>
         </div>
 
-        <div class="form-group">
-          <label class="form-label">能力・説明 <span>*必須</span></label>
-          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、勝利条件などを詳しく書いてください" required></textarea>
+        <!-- 役職名（1人目 / 通常） -->
+        <div class="form-group" id="role1Group">
+          <div class="form-row">
+            <div>
+              <label class="form-label" id="roleNameLabel">役職名（日本語） <span class="req">*必須</span></label>
+              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
+            </div>
+            <div>
+              <label class="form-label" id="roleNameEnLabel">役職名（英語・英名） <span class="opt">任意</span></label>
+              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler">
+            </div>
+          </div>
         </div>
 
+        <!-- ★コンビネーション選択時のみ表示：役職名（2人目） -->
+        <div class="form-group highlight-box" id="role2Group" style="display: none;">
+          <div class="form-row">
+            <div>
+              <label class="form-label">相方の役職名（日本語） <span class="req">*必須</span></label>
+              <input type="text" id="roleName2" class="form-input" placeholder="例：クロックマスター">
+            </div>
+            <div>
+              <label class="form-label">相方の英語名（英名） <span class="opt">任意</span></label>
+              <input type="text" id="roleNameEn2" class="form-input" placeholder="例：Clock Master">
+            </div>
+          </div>
+        </div>
+
+        <!-- ★第三陣営選択時のみ表示：勝利条件 -->
+        <div class="form-group highlight-box" id="winConditionGroup" style="display: none;">
+          <label class="form-label">勝利条件 <span class="req">*必須</span></label>
+          <textarea id="winCondition" class="form-textarea" style="min-height: 80px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
+        </div>
+
+        <!-- 能力・説明 -->
         <div class="form-group">
-          <label class="form-label">提案者のお名前（任意）</label>
+          <label class="form-label">能力・説明 <span class="req">*必須</span></label>
+          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
+        </div>
+
+        <!-- 提案者名 -->
+        <div class="form-group">
+          <label class="form-label">提案者のお名前 <span class="opt">任意</span></label>
           <input type="text" id="authorName" class="form-input" placeholder="あなたの名前やDiscord名など">
         </div>
 
@@ -793,14 +858,50 @@ function selectFilter(btn) {
   btn.classList.add("active");
 }
 
-// ★★★ 役職提案の送信処理（いただいたWebhook URLを設定済み） ★★★
+// ★★★ 陣営選択による入力欄の動的切り替え ★★★
+function handleCampChange(camp) {
+  const role2Group = document.getElementById("role2Group");
+  const roleName2Input = document.getElementById("roleName2");
+  const roleNameLabel = document.getElementById("roleNameLabel");
+
+  const winGroup = document.getElementById("winConditionGroup");
+  const winInput = document.getElementById("winCondition");
+
+  // コンビネーションの場合：2つ目の役職入力欄を表示
+  if (camp === "コンビネーション") {
+    role2Group.style.display = "block";
+    roleName2Input.required = true;
+    roleNameLabel.innerHTML = '役職名 1（日本語） <span class="req">*必須</span>';
+  } else {
+    role2Group.style.display = "none";
+    roleName2Input.required = false;
+    roleNameLabel.innerHTML = '役職名（日本語） <span class="req">*必須</span>';
+  }
+
+  // 第三陣営の場合：勝利条件入力欄を表示
+  if (camp === "第三陣営") {
+    winGroup.style.display = "block";
+    winInput.required = true;
+  } else {
+    winGroup.style.display = "none";
+    winInput.required = false;
+  }
+}
+
+// ★★★ 役職提案の送信処理（Discord Webhook） ★★★
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
   const WEBHOOK_URL = "https://discord.com/api/webhooks/1567887223309869167/OLFB4cDv941Rl_5AcTg3R1DKdHRKhf_nNRcKAkw3uxgg5FSsH0qceDaag-ab0-roq1rm";
 
-  const roleName = document.getElementById("roleName").value;
   const roleCamp = document.getElementById("roleCamp").value;
+  const roleName = document.getElementById("roleName").value;
+  const roleNameEn = document.getElementById("roleNameEn").value;
+
+  const roleName2 = document.getElementById("roleName2").value;
+  const roleNameEn2 = document.getElementById("roleNameEn2").value;
+
+  const winCondition = document.getElementById("winCondition").value;
   const roleDesc = document.getElementById("roleDesc").value;
   const authorName = document.getElementById("authorName").value || "匿名";
 
@@ -810,7 +911,6 @@ async function handleSuggestSubmit(event) {
   submitBtn.textContent = "送信中...";
   formStatus.style.display = "none";
 
-  // 陣営ごとの埋め込みカラー
   const campColors = {
     "インポスター": 16731469,    // 赤
     "マッドメイト": 16731469,    // 赤
@@ -821,17 +921,57 @@ async function handleSuggestSubmit(event) {
     "属性": 2278750             // 緑
   };
 
+  // タイトル作成
+  let embedTitle = `【新役職提案】${roleName}`;
+  if (roleNameEn) embedTitle += ` (${roleNameEn})`;
+  if (roleCamp === "コンビネーション") {
+    embedTitle = `【新コンビネーション提案】${roleName} × ${roleName2}`;
+  }
+
+  // フィールドの組み立て
+  const fields = [
+    { name: "陣営", value: roleCamp, inline: true },
+    { name: "提案者", value: authorName, inline: true }
+  ];
+
+  if (roleCamp === "コンビネーション") {
+    fields.push({
+      name: "役職 1",
+      value: `${roleName} ${roleNameEn ? `(${roleNameEn})` : ""}`,
+      inline: true
+    });
+    fields.push({
+      name: "役職 2 (相方)",
+      value: `${roleName2} ${roleNameEn2 ? `(${roleNameEn2})` : ""}`,
+      inline: true
+    });
+  } else {
+    fields.push({
+      name: "英語名 (英名)",
+      value: roleNameEn || "未入力",
+      inline: true
+    });
+  }
+
+  if (roleCamp === "第三陣営") {
+    fields.push({
+      name: "勝利条件",
+      value: winCondition || "未記入"
+    });
+  }
+
+  fields.push({
+    name: "能力・詳細説明",
+    value: roleDesc
+  });
+
   const payload = {
     username: "Tora MOD 役職提案",
     embeds: [
       {
-        title: `【新役職提案】${roleName}`,
+        title: embedTitle,
         color: campColors[roleCamp] || 3718648,
-        fields: [
-          { name: "陣営", value: roleCamp, inline: true },
-          { name: "提案者", value: authorName, inline: true },
-          { name: "能力・詳細説明", value: roleDesc }
-        ],
+        fields: fields,
         footer: { text: "Tora MOD Official Wiki" },
         timestamp: new Date().toISOString()
       }
@@ -850,6 +990,7 @@ async function handleSuggestSubmit(event) {
       formStatus.classList.add("success");
       formStatus.style.display = "block";
       document.getElementById("roleSuggestForm").reset();
+      handleCampChange("クルーメイト"); // フォームリセット時に表示を元に戻す
     } else {
       alert("送信に失敗しました。Webhookの設定を確認してください。");
     }
