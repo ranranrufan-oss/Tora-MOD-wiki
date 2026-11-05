@@ -50,7 +50,6 @@ body {
   transition: background .2s, color .2s;
 }
 
-/* ヘッダー */
 header {
   min-height: 65px;
   display: flex;
@@ -180,7 +179,6 @@ header {
 .menu-link.ghost       { color: var(--c-ghost) !important; }
 .menu-link.suggest     { color: #38bdf8 !important; font-weight: bold; }
 
-/* ページ切り替え */
 .page-view { display: none; }
 .page-view.active { display: block; }
 
@@ -193,7 +191,6 @@ main {
 h1 { font-size: 34px; margin: 0 0 6px 0; }
 .subtitle { color: var(--sub); font-size: 15px; margin-bottom: 24px; }
 
-/* カード共通 */
 .info-card {
   margin-bottom: 24px;
   padding: 24px;
@@ -204,7 +201,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
 
-/* 予定リスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex;
@@ -228,7 +224,6 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .plan-title { font-size: 15px; font-weight: bold; color: var(--text); }
 .plan-desc { font-size: 13px; color: var(--sub); line-height: 1.5; margin: 0; }
 
-/* 検索UI */
 .search-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -348,7 +343,6 @@ footer {
   font-size: 13px;
 }
 
-/* 設定モーダル */
 .modal {
   display: none;
   position: fixed;
@@ -395,7 +389,6 @@ select {
 
 <body>
 
-<!-- ヘッダー -->
 <header>
   <div class="header-left">
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
@@ -408,7 +401,6 @@ select {
   <button class="settings-button" onclick="openSettings()">設定</button>
 </header>
 
-<!-- サイドバー -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <nav class="sidebar" id="sidebar">
@@ -441,7 +433,6 @@ select {
   </div>
 </nav>
 
-<!-- メインコンテンツ -->
 <main>
 
   <!-- ① トップページ -->
@@ -569,12 +560,18 @@ select {
           </div>
         </div>
 
+        <!-- 通常第三陣営の勝利条件 -->
+        <div class="form-group" id="winConditionGroup" style="display: none;">
+          <label class="form-label">勝利条件 <span class="req">*必須</span></label>
+          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
+        </div>
+
         <!-- コンビネーション役職1 -->
         <div class="form-group" id="combiRole1Group" style="display: none;">
           <div class="form-row-3">
             <div>
               <label class="form-label">役職1の陣営 <span class="req">*必須</span></label>
-              <select id="combiCamp1" class="form-select">
+              <select id="combiCamp1" class="form-select" onchange="handleCombiCampChange()">
                 <option value="クルーメイト">クルーメイト</option>
                 <option value="インポスター">インポスター</option>
                 <option value="マッドメイト">マッドメイト</option>
@@ -592,12 +589,18 @@ select {
           </div>
         </div>
 
+        <!-- ★コンビネーション役職1が第三陣営時の勝利条件 -->
+        <div class="form-group" id="combiWin1Group" style="display: none;">
+          <label class="form-label">役職1の勝利条件 <span class="req">*必須</span></label>
+          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など"></textarea>
+        </div>
+
         <!-- コンビネーション役職2 -->
         <div class="form-group" id="combiRole2Group" style="display: none;">
           <div class="form-row-3">
             <div>
               <label class="form-label">役職2の陣営 <span class="req">*必須</span></label>
-              <select id="combiCamp2" class="form-select">
+              <select id="combiCamp2" class="form-select" onchange="handleCombiCampChange()">
                 <option value="クルーメイト">クルーメイト</option>
                 <option value="インポスター">インポスター</option>
                 <option value="マッドメイト">マッドメイト</option>
@@ -615,10 +618,10 @@ select {
           </div>
         </div>
 
-        <!-- 第三陣営勝利条件 -->
-        <div class="form-group" id="winConditionGroup" style="display: none;">
-          <label class="form-label">勝利条件 <span class="req">*必須</span></label>
-          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
+        <!-- ★コンビネーション役職2が第三陣営時の勝利条件 -->
+        <div class="form-group" id="combiWin2Group" style="display: none;">
+          <label class="form-label">役職2の勝利条件 <span class="req">*必須</span></label>
+          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など"></textarea>
         </div>
 
         <!-- 能力・説明 -->
@@ -639,7 +642,6 @@ select {
   Tora MOD Wiki
 </footer>
 
-<!-- 設定モーダル -->
 <div class="modal" id="settingsModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -657,15 +659,11 @@ select {
 </div>
 
 <script>
-// サイドバー開閉
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  sidebar.classList.toggle("show");
-  overlay.classList.toggle("show");
+  document.getElementById("sidebar").classList.toggle("show");
+  document.getElementById("sidebarOverlay").classList.toggle("show");
 }
 
-// ページ切り替え
 function showPage(pageName, filterCategory) {
   document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
 
@@ -682,21 +680,17 @@ function showPage(pageName, filterCategory) {
     document.getElementById("page-suggest").classList.add("active");
   }
 
-  const sidebar = document.getElementById("sidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  sidebar.classList.remove("show");
-  overlay.classList.remove("show");
-
+  document.getElementById("sidebar").classList.remove("show");
+  document.getElementById("sidebarOverlay").classList.remove("show");
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// フィルター切り替え
 function selectFilter(btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
 }
 
-// 陣営選択による入力欄切り替え
+// 陣営切り替え
 function handleCampChange(camp) {
   const normalGroup = document.getElementById("normalRoleGroup");
   const roleName = document.getElementById("roleName");
@@ -716,6 +710,8 @@ function handleCampChange(camp) {
     normalGroup.style.display = "none";
     roleName.required = false;
     roleNameEn.required = false;
+    winGroup.style.display = "none";
+    winInput.required = false;
 
     combiGroup1.style.display = "block";
     combiGroup2.style.display = "block";
@@ -723,6 +719,8 @@ function handleCampChange(camp) {
     combiRoleEn1.required = true;
     combiRole2.required = true;
     combiRoleEn2.required = true;
+
+    handleCombiCampChange();
   } else {
     normalGroup.style.display = "block";
     roleName.required = true;
@@ -734,26 +732,54 @@ function handleCampChange(camp) {
     combiRoleEn1.required = false;
     combiRole2.required = false;
     combiRoleEn2.required = false;
-  }
 
-  if (camp === "第三陣営") {
-    winGroup.style.display = "block";
-    winInput.required = true;
-  } else {
-    winGroup.style.display = "none";
-    winInput.required = false;
+    document.getElementById("combiWin1Group").style.display = "none";
+    document.getElementById("combiWin1").required = false;
+    document.getElementById("combiWin2Group").style.display = "none";
+    document.getElementById("combiWin2").required = false;
+
+    if (camp === "第三陣営") {
+      winGroup.style.display = "block";
+      winInput.required = true;
+    } else {
+      winGroup.style.display = "none";
+      winInput.required = false;
+    }
   }
 }
 
-// ★★★ Discord Webhook送信 ＆ Bot落ち自動検知 ★★★
+// ★コンビネーションの第三陣営チェック
+function handleCombiCampChange() {
+  const camp1 = document.getElementById("combiCamp1").value;
+  const camp2 = document.getElementById("combiCamp2").value;
+
+  const win1Group = document.getElementById("combiWin1Group");
+  const win1Input = document.getElementById("combiWin1");
+  if (camp1 === "第三陣営") {
+    win1Group.style.display = "block";
+    win1Input.required = true;
+  } else {
+    win1Group.style.display = "none";
+    win1Input.required = false;
+  }
+
+  const win2Group = document.getElementById("combiWin2Group");
+  const win2Input = document.getElementById("combiWin2");
+  if (camp2 === "第三陣営") {
+    win2Group.style.display = "block";
+    win2Input.required = true;
+  } else {
+    win2Group.style.display = "none";
+    win2Input.required = false;
+  }
+}
+
+// 送信処理
 async function handleSuggestSubmit(event) {
   event.preventDefault();
 
   const WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
-  
-  // ★Replitで取得したBotのURLを設定済み！
   const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
-
   const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
   const submitBtn = document.getElementById("submitBtn");
@@ -762,10 +788,9 @@ async function handleSuggestSubmit(event) {
   submitBtn.textContent = "送信中...";
   formStatus.style.display = "none";
 
-  // ① 送信前にBotが起きているか自動確認
+  // ① Bot生存確認
   if (BOT_SERVER_URL) {
     try {
-      // 3秒以内に返事がなければダウンと判定
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 3500);
       await fetch(BOT_SERVER_URL, { method: "GET", mode: "no-cors", signal: controller.signal });
@@ -811,11 +836,24 @@ async function handleSuggestSubmit(event) {
       value: `${name1} (${nameEn1})`,
       inline: true
     });
+    if (camp1 === "第三陣営") {
+      fields.push({
+        name: "役職1の勝利条件",
+        value: document.getElementById("combiWin1").value || "未記入"
+      });
+    }
+
     fields.push({
       name: `役職2 [${camp2}]`,
       value: `${name2} (${nameEn2})`,
       inline: true
     });
+    if (camp2 === "第三陣営") {
+      fields.push({
+        name: "役職2の勝利条件",
+        value: document.getElementById("combiWin2").value || "未記入"
+      });
+    }
   } else {
     const roleName = document.getElementById("roleName").value;
     const roleNameEn = document.getElementById("roleNameEn").value;
@@ -827,14 +865,13 @@ async function handleSuggestSubmit(event) {
       value: roleNameEn,
       inline: true
     });
-  }
 
-  if (roleCamp === "第三陣営") {
-    const winCondition = document.getElementById("winCondition").value;
-    fields.push({
-      name: "勝利条件",
-      value: winCondition || "未記入"
-    });
+    if (roleCamp === "第三陣営") {
+      fields.push({
+        name: "勝利条件",
+        value: document.getElementById("winCondition").value || "未記入"
+      });
+    }
   }
 
   fields.push({
@@ -855,7 +892,7 @@ async function handleSuggestSubmit(event) {
     ]
   };
 
-  // ③ 送信実行
+  // ③ 送信
   try {
     const response = await fetch(WEBHOOK_URL, {
       method: "POST",
@@ -880,34 +917,22 @@ async function handleSuggestSubmit(event) {
   }
 }
 
-// テーマ管理
+// テーマ
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
-
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
   document.getElementById("themeSelect").value = theme;
 }
-
 function changeTheme(theme) {
   localStorage.setItem("tora-theme", theme);
   applyTheme(theme);
 }
-
-// 設定モーダル
-function openSettings() {
-  document.getElementById("settingsModal").classList.add("show");
-}
-
-function closeSettings() {
-  document.getElementById("settingsModal").classList.remove("show");
-}
+function openSettings() { document.getElementById("settingsModal").classList.add("show"); }
+function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
 
 applyTheme(savedTheme);
-
-document.getElementById("settingsModal").addEventListener("click", function(event) {
-  if (event.target === this) {
-    closeSettings();
-  }
+document.getElementById("settingsModal").addEventListener("click", function(e) {
+  if (e.target === this) closeSettings();
 });
 </script>
 
