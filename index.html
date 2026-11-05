@@ -23,13 +23,13 @@
   --hover: #252c3c;
 
   /* 各陣営の文字色 */
-  --c-impostor:    #ff4d4d; /* インポスター：赤 */
-  --c-madmate:     var(--c-impostor); /* マッドメイト：赤（同色） */
-  --c-crewmate:    #38bdf8; /* クルーメイト：青 */
-  --c-neutral:     #9ca3af; /* 第三陣営：灰色 */
-  --c-ghost:       #ffffff; /* 幽霊役職：白 */
-  --c-combination: var(--c-ghost); /* コンビネーション：白 */
-  --c-modifier:    #22c55e; /* 属性：緑 */
+  --c-impostor:    #ff4d4d;
+  --c-madmate:     var(--c-impostor);
+  --c-crewmate:    #38bdf8;
+  --c-neutral:     #9ca3af;
+  --c-ghost:       #ffffff;
+  --c-combination: var(--c-ghost);
+  --c-modifier:    #22c55e;
 }
 
 body.light {
@@ -42,7 +42,7 @@ body.light {
   --text: #222532;
   --sub: #697080;
   --hover: #edf0f6;
-  --c-ghost: #4b5563; /* ライトモード時のみ見えやすさのため濃いグレーに調整 */
+  --c-ghost: #4b5563;
 }
 
 body {
@@ -73,7 +73,6 @@ header {
   gap: 12px;
 }
 
-/* 三本線ボタン */
 .menu-button {
   background: transparent;
   border: none;
@@ -211,8 +210,9 @@ header {
 .menu-link.combination { color: var(--c-combination) !important; }
 .menu-link.modifier    { color: var(--c-modifier) !important; }
 .menu-link.ghost       { color: var(--c-ghost) !important; }
+.menu-link.suggest     { color: #38bdf8 !important; font-weight: bold; }
 
-/* ページ切り替え用スタイル */
+/* ページ切り替え */
 .page-view {
   display: none;
 }
@@ -308,7 +308,7 @@ h1 {
   margin: 0;
 }
 
-/* 役職ページ（一番上の検索・フィルターUI） */
+/* 役職ページ（検索・フィルターUI） */
 .search-container {
   background: var(--card);
   border: 1px solid var(--border);
@@ -391,6 +391,81 @@ h1 {
   font-size: 13px;
   color: var(--sub);
   padding-left: 2px;
+}
+
+/* 提案フォームスタイル */
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-label span {
+  color: #ff4d4d;
+  font-size: 12px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  background: var(--card-inner);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: #38bdf8;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.submit-btn {
+  width: 100%;
+  background: #38bdf8;
+  color: #0b1120;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+
+.submit-btn:hover {
+  opacity: 0.9;
+}
+
+.form-status {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  display: none;
+}
+
+.form-status.success {
+  display: block;
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid #22c55e;
 }
 
 /* フッター */
@@ -478,7 +553,6 @@ select {
 <!-- ヘッダー -->
 <header>
   <div class="header-left">
-    <!-- 三本線ボタン -->
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
       <span class="menu-bar"></span>
       <span class="menu-bar"></span>
@@ -502,6 +576,7 @@ select {
   <div class="menu-section">
     <div class="menu-section-title">メイン</div>
     <a class="menu-link" onclick="showPage('home')">トップページ</a>
+    <a class="menu-link suggest" onclick="showPage('suggest')">役職を提案する</a>
   </div>
 
   <div class="menu-section">
@@ -530,7 +605,6 @@ select {
     <h1>Tora MOD</h1>
     <div class="subtitle">Tora MOD Official Wiki</div>
 
-    <!-- ウェルカム -->
     <section class="info-card">
       <h2>Welcome to Tora MOD Wiki</h2>
       <p>
@@ -539,7 +613,6 @@ select {
       </p>
     </section>
 
-    <!-- ゲーム説明 -->
     <section class="info-card">
       <h2>Tora MODとは？</h2>
       <p>
@@ -548,7 +621,6 @@ select {
       </p>
     </section>
 
-    <!-- 今後の予定 -->
     <section class="info-card">
       <h2>今後のアップデート予定</h2>
       <p>現在、以下の要素の実装・アップデートを予定しています。</p>
@@ -586,7 +658,6 @@ select {
     <h1>役職一覧</h1>
     <div class="subtitle">Tora MOD Roles</div>
 
-    <!-- 検索・フィルターUI -->
     <section class="search-container">
       <div class="search-box-wrapper">
         <svg class="search-icon-svg" viewBox="0 0 24 24">
@@ -612,6 +683,50 @@ select {
 
     <section class="info-card">
       <p style="text-align: center; color: var(--sub);">役職データを掲載準備中です。</p>
+    </section>
+  </div>
+
+  <!-- ③ 役職提案ページ -->
+  <div id="page-suggest" class="page-view">
+    <h1>役職の提案</h1>
+    <div class="subtitle">Role Suggestion</div>
+
+    <section class="info-card">
+      <h2>新しい役職のアイデアを募集！</h2>
+      <p>あなたが考えたオリジナルの役職や能力を教えてください！採用されたアイデアはMOD内に実装される可能性があります。</p>
+      
+      <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)" style="margin-top: 20px;">
+        <div class="form-group">
+          <label class="form-label">役職名 <span>*必須</span></label>
+          <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">陣営 <span>*必須</span></label>
+          <select id="roleCamp" class="form-select" required>
+            <option value="クルーメイト">クルーメイト</option>
+            <option value="インポスター">インポスター</option>
+            <option value="マッドメイト">マッドメイト</option>
+            <option value="第三陣営">第三陣営</option>
+            <option value="コンビネーション">コンビネーション</option>
+            <option value="属性">属性</option>
+            <option value="幽霊役職">幽霊役職</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">能力・説明 <span>*必須</span></label>
+          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、勝利条件などを詳しく書いてください" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">提案者のお名前（任意）</label>
+          <input type="text" id="authorName" class="form-input" placeholder="あなたの名前やDiscord名など">
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Discordに送信する</button>
+        <div id="formStatus" class="form-status">送信が完了しました！提案ありがとうございます。</div>
+      </form>
     </section>
   </div>
 
@@ -647,7 +762,7 @@ function toggleSidebar() {
   overlay.classList.toggle("show");
 }
 
-// ページ切り替え（トップ ⇔ 役職一覧）
+// ページ切り替え
 function showPage(pageName, filterCategory) {
   document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
 
@@ -660,6 +775,8 @@ function showPage(pageName, filterCategory) {
       const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
       if (targetBtn) targetBtn.classList.add("active");
     }
+  } else if (pageName === 'suggest') {
+    document.getElementById("page-suggest").classList.add("active");
   }
 
   const sidebar = document.getElementById("sidebar");
@@ -674,6 +791,75 @@ function showPage(pageName, filterCategory) {
 function selectFilter(btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
+}
+
+// ★★★ 役職提案の送信処理（いただいたWebhook URLを設定済み） ★★★
+async function handleSuggestSubmit(event) {
+  event.preventDefault();
+
+  const WEBHOOK_URL = "https://discord.com/api/webhooks/1567887223309869167/OLFB4cDv941Rl_5AcTg3R1DKdHRKhf_nNRcKAkw3uxgg5FSsH0qceDaag-ab0-roq1rm";
+
+  const roleName = document.getElementById("roleName").value;
+  const roleCamp = document.getElementById("roleCamp").value;
+  const roleDesc = document.getElementById("roleDesc").value;
+  const authorName = document.getElementById("authorName").value || "匿名";
+
+  const submitBtn = document.getElementById("submitBtn");
+  const formStatus = document.getElementById("formStatus");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "送信中...";
+  formStatus.style.display = "none";
+
+  // 陣営ごとの埋め込みカラー
+  const campColors = {
+    "インポスター": 16731469,    // 赤
+    "マッドメイト": 16731469,    // 赤
+    "クルーメイト": 3718648,     // 青
+    "第三陣営": 10265775,       // 灰
+    "コンビネーション": 16777215,// 白
+    "幽霊役職": 16777215,        // 白
+    "属性": 2278750             // 緑
+  };
+
+  const payload = {
+    username: "Tora MOD 役職提案",
+    embeds: [
+      {
+        title: `【新役職提案】${roleName}`,
+        color: campColors[roleCamp] || 3718648,
+        fields: [
+          { name: "陣営", value: roleCamp, inline: true },
+          { name: "提案者", value: authorName, inline: true },
+          { name: "能力・詳細説明", value: roleDesc }
+        ],
+        footer: { text: "Tora MOD Official Wiki" },
+        timestamp: new Date().toISOString()
+      }
+    ]
+  };
+
+  try {
+    const response = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (response.ok) {
+      formStatus.textContent = "Discordに送信が完了しました！提案ありがとうございます。";
+      formStatus.classList.add("success");
+      formStatus.style.display = "block";
+      document.getElementById("roleSuggestForm").reset();
+    } else {
+      alert("送信に失敗しました。Webhookの設定を確認してください。");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("エラーが発生しました。通信環境を確認してください。");
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Discordに送信する";
+  }
 }
 
 // テーマ管理
