@@ -124,7 +124,21 @@ header {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.sidebar-header h3 { margin: 0; font-size: 18px; }
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 18px;
+  cursor: pointer;
+  user-select: none;
+}
+.admin-badge {
+  font-size: 11px;
+  background: #ff4d4d;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
 .sidebar-close { background: none; border: none; color: var(--sub); font-size: 26px; cursor: pointer; }
 .menu-section { margin-bottom: 22px; }
 .menu-section-title { font-size: 12px; color: var(--sub); font-weight: bold; margin-bottom: 8px; padding-left: 8px; }
@@ -165,6 +179,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
 
+/* 予定リスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex;
@@ -297,7 +312,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
 
-/* ★ファイルアップロード枠スタイル */
+/* ファイルアップロード枠 */
 .file-upload-box {
   background: var(--card-inner);
   border: 2px dashed var(--border);
@@ -308,10 +323,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   transition: border-color .2s, background .2s;
   position: relative;
 }
-.file-upload-box:hover {
-  border-color: #38bdf8;
-  background: var(--hover);
-}
+.file-upload-box:hover { border-color: #38bdf8; background: var(--hover); }
 .file-upload-box input[type="file"] {
   position: absolute;
   inset: 0;
@@ -320,21 +332,9 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   opacity: 0;
   cursor: pointer;
 }
-.file-upload-icon {
-  font-size: 28px;
-  margin-bottom: 6px;
-  color: var(--sub);
-}
-.file-upload-text {
-  font-size: 14px;
-  font-weight: bold;
-  color: var(--text);
-}
-.file-upload-sub {
-  font-size: 12px;
-  color: var(--sub);
-  margin-top: 4px;
-}
+.file-upload-icon { font-size: 28px; margin-bottom: 6px; color: var(--sub); }
+.file-upload-text { font-size: 14px; font-weight: bold; color: var(--text); }
+.file-upload-sub { font-size: 12px; color: var(--sub); margin-top: 4px; }
 .file-selected-name {
   margin-top: 10px;
   font-size: 13px;
@@ -472,7 +472,8 @@ select {
 
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h3>メニュー</h3>
+    <!-- ★10回タップで管理者キー判定 -->
+    <h3 onclick="handleMenuSecretTap()">メニュー <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
     <button class="sidebar-close" onclick="toggleSidebar()">×</button>
   </div>
 
@@ -720,7 +721,7 @@ select {
     </section>
   </div>
 
-  <!-- ④ ★★★ バグ報告ページ（すべて必須＆ファイル選択式） ★★★ -->
+  <!-- ④ バグ報告ページ -->
   <div id="page-bug" class="page-view">
     <h1>バグ報告</h1>
     <div class="subtitle">Bug Report</div>
@@ -731,25 +732,21 @@ select {
       <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
         
         <div class="form-row">
-          <!-- ★何試合目か（必須） -->
           <div class="form-group">
             <label class="form-label">何試合目か <span class="req">*必須</span></label>
             <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
           </div>
-          <!-- ★何ターン目か（必須） -->
           <div class="form-group">
             <label class="form-label">何ターン目か <span class="req">*必須</span></label>
             <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
           </div>
         </div>
 
-        <!-- ★バグ内容（必須） -->
         <div class="form-group">
           <label class="form-label">バグ内容・発生状況 <span class="req">*必須</span></label>
           <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
         </div>
 
-        <!-- ★ログファイル選択（PCはエクスプローラー、スマホはファイル選択が開く / 必須） -->
         <div class="form-group">
           <label class="form-label">ログファイル <span class="req">*必須（.log / .txt）</span></label>
           <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
@@ -790,6 +787,50 @@ select {
 </div>
 
 <script>
+// ★★★ 管理者モード制御 ★★★
+let isAdmin = localStorage.getItem("tora-is-admin") === "true";
+let menuSecretTapCount = 0;
+let menuSecretTimeout;
+
+function updateAdminUI() {
+  const badge = document.getElementById("adminBadge");
+  if (badge) badge.style.display = isAdmin ? "inline-block" : "none";
+
+  // 管理者モードの場合、フォームのrequired属性を外して未入力でも送信できるようにする
+  const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
+  reqInputs.forEach(el => {
+    el.required = !isAdmin;
+  });
+}
+
+function handleMenuSecretTap() {
+  menuSecretTapCount++;
+  clearTimeout(menuSecretTimeout);
+  menuSecretTimeout = setTimeout(() => { menuSecretTapCount = 0; }, 3500);
+
+  if (menuSecretTapCount >= 10) {
+    menuSecretTapCount = 0;
+    if (isAdmin) {
+      if (confirm("現在【管理者モード】です。管理者モードを解除しますか？")) {
+        isAdmin = false;
+        localStorage.removeItem("tora-is-admin");
+        updateAdminUI();
+        alert("管理者モードを解除しました。");
+      }
+    } else {
+      const key = prompt("管理者キーを入力してください:");
+      if (key === "torahakawaii") {
+        isAdmin = true;
+        localStorage.setItem("tora-is-admin", "true");
+        updateAdminUI();
+        alert("🎉 管理者モードを有効化しました！\n役職提案やバグ報告を【未入力のままでも確定・送信】できます。");
+      } else if (key !== null) {
+        alert("管理者キーが正しくありません。");
+      }
+    }
+  }
+}
+
 let currentProposalType = 'role';
 
 function switchProposalType(type) {
@@ -805,7 +846,7 @@ function switchProposalType(type) {
     btnPort.classList.add("active");
     btnRole.classList.remove("active");
     originGroup.style.display = "block";
-    originInput.required = true;
+    originInput.required = !isAdmin;
     title.textContent = "役職の移植案";
     subtitle.textContent = "Role Porting Suggestion";
   } else {
@@ -875,16 +916,16 @@ function handleCampChange(camp) {
 
     combiGroup1.style.display = "block";
     combiGroup2.style.display = "block";
-    combiRole1.required = true;
-    combiRoleEn1.required = true;
-    combiRole2.required = true;
-    combiRoleEn2.required = true;
+    combiRole1.required = !isAdmin;
+    combiRoleEn1.required = !isAdmin;
+    combiRole2.required = !isAdmin;
+    combiRoleEn2.required = !isAdmin;
 
     handleCombiCampChange();
   } else {
     normalGroup.style.display = "block";
-    roleName.required = true;
-    roleNameEn.required = true;
+    roleName.required = !isAdmin;
+    roleNameEn.required = !isAdmin;
 
     combiGroup1.style.display = "none";
     combiGroup2.style.display = "none";
@@ -900,7 +941,7 @@ function handleCampChange(camp) {
 
     if (camp === "第三陣営") {
       winGroup.style.display = "block";
-      winInput.required = true;
+      winInput.required = !isAdmin;
     } else {
       winGroup.style.display = "none";
       winInput.required = false;
@@ -916,7 +957,7 @@ function handleCombiCampChange() {
   const win1Input = document.getElementById("combiWin1");
   if (camp1 === "第三陣営") {
     win1Group.style.display = "block";
-    win1Input.required = true;
+    win1Input.required = !isAdmin;
   } else {
     win1Group.style.display = "none";
     win1Input.required = false;
@@ -926,7 +967,7 @@ function handleCombiCampChange() {
   const win2Input = document.getElementById("combiWin2");
   if (camp2 === "第三陣営") {
     win2Group.style.display = "block";
-    win2Input.required = true;
+    win2Input.required = !isAdmin;
   } else {
     win2Group.style.display = "none";
     win2Input.required = false;
@@ -947,7 +988,7 @@ function addSettingItem() {
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
     <div class="setting-main-row">
-      <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)" required>
+      <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)">
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
         <option value="number">数値 / スライダー</option>
         <option value="boolean">2択 (ON/OFF、はい/いいえ 等)</option>
@@ -985,7 +1026,6 @@ function toggleSettingType(selectEl) {
   }
 }
 
-// ★ファイル選択時のファイル名表示処理
 function handleFileSelected(input) {
   const nameDisplay = document.getElementById("selectedFileName");
   if (input.files && input.files[0]) {
@@ -1004,6 +1044,7 @@ const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
 async function checkBotAlive() {
+  if (isAdmin) return true; // 管理者は生存確認もスルー可能
   if (!BOT_SERVER_URL) return true;
   try {
     const controller = new AbortController();
@@ -1040,7 +1081,7 @@ async function handleSuggestSubmit(event) {
 
   const modMode = document.getElementById("modMode").value;
   const roleCamp = document.getElementById("roleCamp").value;
-  const roleDesc = document.getElementById("roleDesc").value;
+  const roleDesc = document.getElementById("roleDesc").value.trim() || (isAdmin ? "（未入力 - 管理者送信）" : "");
 
   const campColors = {
     "インポスター": 16731469,
@@ -1060,40 +1101,40 @@ async function handleSuggestSubmit(event) {
   ];
 
   if (currentProposalType === 'port') {
-    const originName = document.getElementById("originModName").value;
-    fields.push({ name: "移植元", value: originName || "未記入", inline: false });
+    const originName = document.getElementById("originModName").value.trim() || (isAdmin ? "未入力(管理者)" : "未記入");
+    fields.push({ name: "移植元", value: originName, inline: false });
   }
 
   if (roleCamp === "コンビネーション") {
     const camp1 = document.getElementById("combiCamp1").value;
-    const name1 = document.getElementById("combiRoleName1").value;
-    const nameEn1 = document.getElementById("combiRoleNameEn1").value;
+    const name1 = document.getElementById("combiRoleName1").value.trim() || (isAdmin ? "役職1(未入力)" : "");
+    const nameEn1 = document.getElementById("combiRoleNameEn1").value.trim();
 
     const camp2 = document.getElementById("combiCamp2").value;
-    const name2 = document.getElementById("combiRoleName2").value;
-    const nameEn2 = document.getElementById("combiRoleNameEn2").value;
+    const name2 = document.getElementById("combiRoleName2").value.trim() || (isAdmin ? "役職2(未入力)" : "");
+    const nameEn2 = document.getElementById("combiRoleNameEn2").value.trim();
 
     embedTitle = currentProposalType === 'port' ? `【移植案】${name1} × ${name2}` : `【新役職提案】${name1} × ${name2}`;
 
-    fields.push({ name: `役職1 [${camp1}]`, value: `${name1} (${nameEn1})`, inline: true });
+    fields.push({ name: `役職1 [${camp1}]`, value: `${name1} ${nameEn1 ? `(${nameEn1})` : ""}`, inline: true });
     if (camp1 === "第三陣営") {
-      fields.push({ name: "役職1の勝利条件", value: document.getElementById("combiWin1").value || "未記入" });
+      fields.push({ name: "役職1の勝利条件", value: document.getElementById("combiWin1").value.trim() || "未記入" });
     }
 
-    fields.push({ name: `役職2 [${camp2}]`, value: `${name2} (${nameEn2})`, inline: true });
+    fields.push({ name: `役職2 [${camp2}]`, value: `${name2} ${nameEn2 ? `(${nameEn2})` : ""}`, inline: true });
     if (camp2 === "第三陣営") {
-      fields.push({ name: "役職2の勝利条件", value: document.getElementById("combiWin2").value || "未記入" });
+      fields.push({ name: "役職2の勝利条件", value: document.getElementById("combiWin2").value.trim() || "未記入" });
     }
   } else {
-    const roleName = document.getElementById("roleName").value;
-    const roleNameEn = document.getElementById("roleNameEn").value;
+    const roleName = document.getElementById("roleName").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
+    const roleNameEn = document.getElementById("roleNameEn").value.trim() || (isAdmin ? "Unspecified" : "");
 
     embedTitle = currentProposalType === 'port' ? `【移植案】${roleName} (${roleNameEn})` : `【新役職提案】${roleName} (${roleNameEn})`;
 
     fields.push({ name: "英語名 (英名)", value: roleNameEn, inline: true });
 
     if (roleCamp === "第三陣営") {
-      fields.push({ name: "勝利条件", value: document.getElementById("winCondition").value || "未記入" });
+      fields.push({ name: "勝利条件", value: document.getElementById("winCondition").value.trim() || "未記入" });
     }
   }
 
@@ -1129,13 +1170,13 @@ async function handleSuggestSubmit(event) {
   }
 
   const payload = {
-    username: "Tora MOD 提案システム",
+    username: "Tora MOD 提案システム" + (isAdmin ? " [ADMIN]" : ""),
     embeds: [
       {
         title: embedTitle,
         color: campColors[roleCamp] || 3718648,
         fields: fields,
-        footer: { text: "Tora MOD Official Wiki" },
+        footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
         timestamp: new Date().toISOString()
       }
     ]
@@ -1167,7 +1208,7 @@ async function handleSuggestSubmit(event) {
   }
 }
 
-// ② ★★★ バグ報告の送信処理（ファイル添付・すべて必須対応） ★★★
+// ② バグ報告の送信処理（管理者時はファイルなし・未入力でも可能）
 async function handleBugSubmit(event) {
   event.preventDefault();
 
@@ -1185,51 +1226,57 @@ async function handleBugSubmit(event) {
     return;
   }
 
-  const match = document.getElementById("bugMatch").value.trim();
-  const turn = document.getElementById("bugTurn").value.trim();
-  const desc = document.getElementById("bugDesc").value.trim();
+  const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
+  const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
+  const desc = document.getElementById("bugDesc").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
   const fileInput = document.getElementById("bugLogFile");
 
-  if (!fileInput.files || !fileInput.files[0]) {
+  if (!isAdmin && (!fileInput.files || !fileInput.files[0])) {
     alert("ログファイルを選択してください。");
     submitBtn.disabled = false;
     submitBtn.textContent = "バグを報告する";
     return;
   }
 
-  const logFile = fileInput.files[0];
+  const hasFile = fileInput.files && fileInput.files[0];
+  const logFile = hasFile ? fileInput.files[0] : null;
 
-  // Discordにファイル付きで送信するためのFormData作成
-  const formData = new FormData();
   const payload = {
-    username: "Tora MOD バグ報告",
+    username: "Tora MOD バグ報告" + (isAdmin ? " [ADMIN]" : ""),
     embeds: [
       {
         title: "🐛【バグ報告】不具合が報告されました",
         color: 15631988,
         fields: [
-          { name: "何試合目か", value: `${match} 試合目`, inline: true },
-          { name: "何ターン目か", value: `${turn} ターン目`, inline: true },
-          { name: "バグ内容・発生状況", value: desc, inline: false },
-          { name: "添付ログファイル", value: logFile.name, inline: false }
+          { name: "何試合目か", value: `${match || "未記入"} 試合目`, inline: true },
+          { name: "何ターン目か", value: `${turn || "未記入"} ターン目`, inline: true },
+          { name: "バグ内容・発生状況", value: desc || "未記入", inline: false },
+          { name: "添付ログファイル", value: logFile ? logFile.name : "（未添付 - 管理者送信）", inline: false }
         ],
-        footer: { text: "Tora MOD Official Wiki" },
+        footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
         timestamp: new Date().toISOString()
       }
     ]
   };
 
-  formData.append("payload_json", JSON.stringify(payload));
-  formData.append("files[0]", logFile, logFile.name);
-
   try {
-    const response = await fetch(BUG_WEBHOOK_URL, {
-      method: "POST",
-      body: formData // Content-Typeは自動付与
-    });
+    let response;
+    if (hasFile) {
+      const formData = new FormData();
+      formData.append("payload_json", JSON.stringify(payload));
+      formData.append("files[0]", logFile, logFile.name);
+      response = await fetch(BUG_WEBHOOK_URL, { method: "POST", body: formData });
+    } else {
+      // ファイル未添付（管理者モード時）
+      response = await fetch(BUG_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+    }
 
     if (response.ok) {
-      formStatus.textContent = "バグ報告とログファイルを送信しました。ご協力ありがとうございます！";
+      formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
       formStatus.classList.add("success");
       formStatus.style.display = "block";
       document.getElementById("bugReportForm").reset();
@@ -1245,6 +1292,7 @@ async function handleBugSubmit(event) {
   }
 }
 
+// テーマ管理
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
@@ -1258,6 +1306,8 @@ function openSettings() { document.getElementById("settingsModal").classList.add
 function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
 
 applyTheme(savedTheme);
+updateAdminUI(); // 初期化時に管理者モード適用
+
 document.getElementById("settingsModal").addEventListener("click", function(e) {
   if (e.target === this) closeSettings();
 });
