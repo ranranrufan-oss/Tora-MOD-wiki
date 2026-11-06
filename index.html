@@ -48,7 +48,6 @@ body {
 }
 .tora-text { color: #DDBB99 !important; }
 
-/* ヘッダー */
 header {
   min-height: 65px;
   display: flex;
@@ -312,7 +311,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
 
-/* ファイルアップロード枠 */
+/* ファイル選択枠 */
 .file-upload-box {
   background: var(--card-inner);
   border: 2px dashed var(--border);
@@ -455,7 +454,6 @@ select {
 
 <body>
 
-<!-- ヘッダー -->
 <header>
   <div class="header-left">
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
@@ -472,7 +470,6 @@ select {
 
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <!-- ★10回タップで管理者キー判定 -->
     <h3 onclick="handleMenuSecretTap()">メニュー <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
     <button class="sidebar-close" onclick="toggleSidebar()">×</button>
   </div>
@@ -787,7 +784,6 @@ select {
 </div>
 
 <script>
-// ★★★ 管理者モード制御 ★★★
 let isAdmin = localStorage.getItem("tora-is-admin") === "true";
 let menuSecretTapCount = 0;
 let menuSecretTimeout;
@@ -796,7 +792,6 @@ function updateAdminUI() {
   const badge = document.getElementById("adminBadge");
   if (badge) badge.style.display = isAdmin ? "inline-block" : "none";
 
-  // 管理者モードの場合、フォームのrequired属性を外して未入力でも送信できるようにする
   const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
   reqInputs.forEach(el => {
     el.required = !isAdmin;
@@ -1044,7 +1039,7 @@ const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
 async function checkBotAlive() {
-  if (isAdmin) return true; // 管理者は生存確認もスルー可能
+  if (isAdmin) return true;
   if (!BOT_SERVER_URL) return true;
   try {
     const controller = new AbortController();
@@ -1208,7 +1203,7 @@ async function handleSuggestSubmit(event) {
   }
 }
 
-// ② バグ報告の送信処理（管理者時はファイルなし・未入力でも可能）
+// ② ★★★ バグ報告の送信処理（ブラウザ制限を完全回避する確実なJSON方式） ★★★
 async function handleBugSubmit(event) {
   event.preventDefault();
 
@@ -1241,39 +1236,59 @@ async function handleBugSubmit(event) {
   const hasFile = fileInput.files && fileInput.files[0];
   const logFile = hasFile ? fileInput.files[0] : null;
 
+  // ログファイルの中身を安全に読み取る
+  let logContent = "";
+  if (logFile) {
+    try {
+      logContent = await logFile.text();
+    } catch (e) {
+      logContent = "（ログの読み込みに失敗しました）";
+    }
+  }
+
+  // 1000文字以内に安全にトリミング（Discord制限対策）
+  const trimmedLog = logContent.length > 950 ? logContent.substring(0, 950) + "\n...（以降省略）" : logContent;
+
+  const fields = [
+    { name: "試合数", value: `${match || "未記入"} 試合目`, inline: true },
+    { name: "発生ターン", value: `${turn || "未記入"} ターン目`, inline: true },
+    { name: "バグ内容・発生状況", value: desc || "未記入", inline: false }
+  ];
+
+  if (logFile) {
+    fields.push({
+      name: `📋 ログ (${logFile.name} - ${Math.round(logFile.size / 1024)} KB)`,
+      value: trimmedLog ? `\`\`\`text\n${trimmedLog}\n\`\`\`` : "（ログは空でした）",
+      inline: false
+    });
+  } else {
+    fields.push({
+      name: "📋 ログ",
+      value: "（未添付 - 管理者送信）",
+      inline: false
+    });
+  }
+
   const payload = {
     username: "Tora MOD バグ報告" + (isAdmin ? " [ADMIN]" : ""),
     embeds: [
       {
         title: "🐛【バグ報告】不具合が報告されました",
         color: 15631988,
-        fields: [
-          { name: "何試合目か", value: `${match || "未記入"} 試合目`, inline: true },
-          { name: "何ターン目か", value: `${turn || "未記入"} ターン目`, inline: true },
-          { name: "バグ内容・発生状況", value: desc || "未記入", inline: false },
-          { name: "添付ログファイル", value: logFile ? logFile.name : "（未添付 - 管理者送信）", inline: false }
-        ],
+        fields: fields,
         footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
         timestamp: new Date().toISOString()
       }
     ]
   };
 
+  // 役職提案と全く同じ安全なJSON送信（CORSエラーを回避！）
   try {
-    let response;
-    if (hasFile) {
-      const formData = new FormData();
-      formData.append("payload_json", JSON.stringify(payload));
-      formData.append("files[0]", logFile, logFile.name);
-      response = await fetch(BUG_WEBHOOK_URL, { method: "POST", body: formData });
-    } else {
-      // ファイル未添付（管理者モード時）
-      response = await fetch(BUG_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    }
+    const response = await fetch(BUG_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
 
     if (response.ok) {
       formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
@@ -1306,7 +1321,7 @@ function openSettings() { document.getElementById("settingsModal").classList.add
 function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
 
 applyTheme(savedTheme);
-updateAdminUI(); // 初期化時に管理者モード適用
+updateAdminUI();
 
 document.getElementById("settingsModal").addEventListener("click", function(e) {
   if (e.target === this) closeSettings();
