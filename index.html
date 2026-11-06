@@ -1,1095 +1,546 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tora MOD Wiki</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tora MOD Wiki</title>
+  <style>
+    :root {
+      --bg-color: #0f1117;
+      --card-bg: #1a1d26;
+      --card-border: #2a2e3d;
+      --accent: #5865F2; /* Discord Blurple */
+      --accent-hover: #4752c4;
+      --text-main: #e4e6eb;
+      --text-sub: #9ca3af;
+      --danger: #ed4245;
+      --success: #57f287;
+      --warning: #fee75c;
+    }
 
-<style>
-* { box-sizing: border-box; }
-:root {
-  --bg: #0d0e13; --header: #151720; --card: #1b202d; --card-inner: #151824;
-  --sidebar-bg: #151822; --border: #303547; --text: #f2f3f7; --sub: #9ba2b2; --hover: #252c3c;
-  --c-tora: #DDBB99; --c-impostor: #ff4d4d; --c-madmate: var(--c-impostor);
-  --c-crewmate: #38bdf8; --c-neutral: #9ca3af; --c-ghost: #ffffff;
-  --c-combination: var(--c-ghost); --c-modifier: #22c55e;
-}
-body.light {
-  --bg: #f3f4f7; --header: #ffffff; --card: #ffffff; --card-inner: #f8f9fc;
-  --sidebar-bg: #ffffff; --border: #d9dce5; --text: #222532; --sub: #697080;
-  --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
-}
-body {
-  margin: 0; background: var(--bg); color: var(--text);
-  font-family: Arial, "Noto Sans JP", sans-serif; transition: background .2s, color .2s;
-}
-.tora-text { color: #DDBB99 !important; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* ヘッダー */
-header {
-  min-height: 65px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 16px; background: var(--header); border-bottom: 1px solid var(--border);
-  position: sticky; top: 0; z-index: 50;
-}
-.header-left { display: flex; align-items: center; gap: 12px; }
-.menu-button {
-  background: transparent; border: none; cursor: pointer; display: flex;
-  flex-direction: column; justify-content: center; align-items: center;
-  gap: 5px; width: 40px; height: 40px; padding: 0; border-radius: 8px;
-}
-.menu-button:active { background: var(--card); }
-.menu-bar { display: block; width: 22px; height: 2.5px; background-color: var(--text); border-radius: 2px; }
-.header-title { font-size: 20px; font-weight: bold; }
-.settings-button {
-  background: var(--card); border: 1px solid var(--border); color: var(--text);
-  border-radius: 10px; padding: 8px 14px; font-size: 14px; cursor: pointer;
-}
-.settings-button:hover { background: var(--hover); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-/* サイドバー */
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(2px); z-index: 200;
-}
-.sidebar-overlay.show { display: block; }
-.sidebar {
-  position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
-  background: var(--sidebar-bg); border-right: 1px solid var(--border);
-  z-index: 201; transition: left 0.25s ease-out; padding: 20px;
-  display: flex; flex-direction: column; overflow-y: auto;
-}
-.sidebar.show { left: 0; }
-.sidebar-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
-}
-.sidebar-header h3 { margin: 0; font-size: 18px; cursor: pointer; user-select: none; }
-.admin-badge {
-  font-size: 11px; background: #ff4d4d; color: #fff; padding: 2px 6px;
-  border-radius: 4px; margin-left: 6px; vertical-align: middle;
-}
-.sidebar-close { background: none; border: none; color: var(--sub); font-size: 26px; cursor: pointer; }
-.menu-section { margin-bottom: 22px; }
-.menu-section-title { font-size: 12px; color: var(--sub); font-weight: bold; margin-bottom: 8px; padding-left: 8px; }
-.menu-link {
-  display: block; padding: 10px 12px; color: var(--text); text-decoration: none;
-  border-radius: 8px; font-size: 15px; transition: background .2s; cursor: pointer;
-}
-.menu-link:hover { background: var(--hover); }
-.menu-link.all { color: var(--text) !important; font-weight: bold; }
-.menu-link.impostor, .menu-link.madmate { color: var(--c-impostor) !important; }
-.menu-link.crewmate { color: var(--c-crewmate) !important; }
-.menu-link.neutral { color: var(--c-neutral) !important; }
-.menu-link.combination { color: var(--c-combination) !important; }
-.menu-link.modifier { color: var(--c-modifier) !important; }
-.menu-link.ghost { color: var(--c-ghost) !important; }
-.menu-link.suggest { color: #38bdf8 !important; font-weight: bold; }
-.menu-link.bug { color: #f87171 !important; font-weight: bold; }
-.menu-link.bug-list { color: #fbbf24 !important; font-weight: bold; }
+    /* ナビゲーションバー */
+    header {
+      background-color: rgba(26, 29, 38, 0.95);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
 
-.page-view { display: none; }
-.page-view.active { display: block; }
-main { max-width: 900px; margin: auto; padding: 24px 20px 40px; }
-h1 { font-size: 34px; margin: 0 0 6px 0; }
-.subtitle { color: var(--sub); font-size: 15px; margin-bottom: 24px; }
+    nav {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+    }
 
-.info-card {
-  margin-bottom: 24px; padding: 24px; background: var(--card);
-  border: 1px solid var(--border); border-radius: 16px;
-}
-.info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
-.info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
+    .logo {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
 
-.plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
-.plan-item {
-  display: flex; flex-direction: column; gap: 6px; padding: 14px 16px;
-  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
-}
-.plan-item-header { display: flex; align-items: center; gap: 10px; }
-.plan-badge {
-  padding: 2px 8px; font-size: 11px; font-weight: bold; border-radius: 6px;
-  background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
-}
-.plan-title { font-size: 15px; font-weight: bold; color: var(--text); }
-.plan-desc { font-size: 13px; color: var(--sub); line-height: 1.5; margin: 0; }
+    .nav-links {
+      display: flex;
+      gap: 12px;
+      list-style: none;
+    }
 
-/* 検索UI */
-.search-container {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 18px; margin-bottom: 24px;
-}
-.search-box-wrapper { position: relative; margin-bottom: 14px; }
-.search-icon-svg {
-  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-  width: 18px; height: 18px; stroke: var(--sub); stroke-width: 2.5; fill: none; pointer-events: none;
-}
-.search-input {
-  width: 100%; background: var(--card-inner); border: 1px solid var(--border);
-  color: var(--text); padding: 12px 14px 12px 42px; border-radius: 10px; font-size: 15px; outline: none;
-}
-.search-input:focus { border-color: #555f80; }
-.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.filter-btn {
-  background: var(--card-inner); border: 1px solid var(--border); color: var(--text);
-  padding: 7px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; user-select: none;
-}
-.filter-btn.all.active { background: #2d3345; color: #fff; border-color: #4c5673; }
-.filter-btn.impostor { color: var(--c-impostor); border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.madmate { color: var(--c-madmate); border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.crewmate { color: var(--c-crewmate); border-color: rgba(56, 189, 248, 0.35); }
-.filter-btn.neutral { color: var(--c-neutral); border-color: rgba(156, 163, 175, 0.35); }
-.filter-btn.combination { color: var(--c-combination); border-color: rgba(255, 255, 255, 0.35); }
-.filter-btn.modifier { color: var(--c-modifier); border-color: rgba(34, 197, 94, 0.35); }
-.filter-btn.ghost { color: var(--c-ghost); border-color: rgba(255, 255, 255, 0.35); }
-.filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
-.search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
+    .nav-links a {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
 
-/* フォーム共通 */
-.form-group { margin-bottom: 18px; }
-.form-label { display: block; font-size: 14px; font-weight: bold; margin-bottom: 8px; }
-.form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
-.form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; font-weight: normal; }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-.suggest-type-switch {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--card-inner);
-  padding: 6px; border-radius: 12px; margin-bottom: 22px; border: 1px solid var(--border);
-}
-.type-switch-btn {
-  background: transparent; border: none; color: var(--sub); padding: 10px 14px;
-  border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all .2s;
-}
-.type-switch-btn.active {
-  background: var(--card); color: var(--text); box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid var(--border);
-}
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 12px; }
-@media (max-width: 600px) {
-  .form-row, .form-row-3 { grid-template-columns: 1fr; }
-  h1 { font-size: 28px; }
-}
-.form-input, .form-textarea, .form-select {
-  width: 100%; background: var(--card-inner); border: 1px solid var(--border);
-  color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: 15px;
-  outline: none; font-family: inherit;
-}
-.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
-.form-textarea { resize: vertical; min-height: 120px; }
+    /* メインコンテナ */
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px;
+      flex: 1;
+      width: 100%;
+    }
 
-/* ファイル選択枠 */
-.file-upload-box {
-  background: var(--card-inner); border: 2px dashed var(--border); border-radius: 12px;
-  padding: 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; position: relative;
-}
-.file-upload-box:hover { border-color: #38bdf8; background: var(--hover); }
-.file-upload-box input[type="file"] {
-  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
-}
-.file-upload-icon { font-size: 28px; margin-bottom: 6px; color: var(--sub); }
-.file-upload-text { font-size: 14px; font-weight: bold; color: var(--text); }
-.file-upload-sub { font-size: 12px; color: var(--sub); margin-top: 4px; }
-.file-selected-name { margin-top: 10px; font-size: 13px; color: #38bdf8; font-weight: bold; word-break: break-all; }
+    .page {
+      display: none;
+      animation: fadeIn 0.2s ease-in-out;
+    }
 
-/* 設定項目エリア */
-.setting-items-container { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
-.setting-item-card {
-  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px; display: flex; flex-direction: column; gap: 10px;
-}
-.setting-item-header { display: flex; justify-content: space-between; align-items: center; }
-.setting-item-title { font-size: 13px; font-weight: bold; color: var(--sub); }
-.setting-item-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; }
-.setting-main-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
-.setting-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.setting-detail-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-@media (max-width: 600px) {
-  .setting-main-row { grid-template-columns: 1fr; }
-  .setting-detail-grid, .setting-detail-grid-2 { grid-template-columns: 1fr; }
-}
-.add-setting-btn {
-  background: transparent; border: 1px dashed #38bdf8; color: #38bdf8; padding: 10px;
-  border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px;
-}
-.add-setting-btn:hover { background: rgba(56, 189, 248, 0.1); }
+    .page.active {
+      display: block;
+    }
 
-.submit-btn {
-  width: 100%; background: #38bdf8; color: #0b1120; border: none; padding: 14px;
-  border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 14px;
-}
-.submit-btn.danger { background: #ef4444; color: #fff; }
-.submit-btn:hover { opacity: 0.9; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-.form-status {
-  margin-top: 14px; padding: 12px; border-radius: 8px; font-size: 14px; text-align: center; display: none;
-}
-.form-status.success { display: block; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+    /* カード・セクション */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
 
-/* バグ一覧表示エリア */
-.bug-list-container { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
-.bug-card {
-  background: var(--card-inner); border: 1px solid var(--border); border-left: 4px solid #fbbf24;
-  border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;
-}
-.bug-card-header { display: flex; justify-content: space-between; align-items: center; }
-.bug-badges { display: flex; gap: 8px; }
-.bug-tag {
-  background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);
-  padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: bold;
-}
-.bug-date { font-size: 12px; color: var(--sub); }
-.bug-desc { font-size: 14px; color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; }
+    h1 { font-size: 1.8rem; margin-bottom: 12px; color: #fff; }
+    h2 { font-size: 1.3rem; margin-bottom: 14px; color: #fff; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
+    p { margin-bottom: 12px; color: var(--text-main); }
+    .subtext { color: var(--text-sub); font-size: 0.9rem; }
 
-footer {
-  margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
-  border-top: 1px solid var(--border); font-size: 13px;
-}
-.modal {
-  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px); align-items: center; justify-content: center; padding: 20px; z-index: 300;
-}
-.modal.show { display: flex; }
-.modal-content {
-  width: 100%; max-width: 400px; background: var(--card); color: var(--text);
-  border: 1px solid var(--border); border-radius: 16px; padding: 24px;
-}
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-header h2 { margin: 0; font-size: 20px; }
-.close { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
-.setting-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-select {
-  background: var(--bg); color: var(--text); border: 1px solid var(--border);
-  padding: 8px 12px; border-radius: 8px; font-size: 14px; outline: none;
-}
-</style>
+    /* フォーム要素 */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .required {
+      color: var(--danger);
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      background: #12141a;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .file-dropzone {
+      border: 2px dashed var(--card-border);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #12141a;
+      transition: border-color 0.2s;
+    }
+
+    .file-dropzone:hover {
+      border-color: var(--accent);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .alert.success {
+      background: rgba(87, 242, 135, 0.15);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+
+    /* バグ一覧 */
+    .bug-list-item {
+      background: #12141a;
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--danger);
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .bug-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+
+    .bug-badge {
+      background: rgba(237, 66, 69, 0.2);
+      color: var(--danger);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .bug-desc {
+      white-space: pre-wrap;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .admin-bar {
+      display: none;
+      background: rgba(254, 231, 92, 0.1);
+      border: 1px solid var(--warning);
+      color: var(--warning);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-sub);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: auto;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- ヘッダー -->
-<header>
-  <div class="header-left">
-    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
-      <span class="menu-bar"></span>
-      <span class="menu-bar"></span>
-      <span class="menu-bar"></span>
-    </button>
-    <span class="header-title"><span style="color: #DDBB99 !important;">Tora</span> MOD</span>
-  </div>
-  <button class="settings-button" onclick="openSettings()">設定</button>
-</header>
+  <!-- ナビゲーション -->
+  <header>
+    <nav>
+      <a href="#home" class="logo">🐯 Tora MOD Wiki</a>
+      <ul class="nav-links">
+        <li><a href="#home" id="nav-home">ホーム</a></li>
+        <li><a href="#bug-report" id="nav-bug-report">バグ報告</a></li>
+        <li><a href="#bug-list" id="nav-bug-list">バグ一覧（対応中）</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <main>
+    <div id="adminNotice" class="admin-bar">🔑 管理者モードが有効化されています。</div>
 
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <h3 onclick="handleMenuSecretTap()">メニュー <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
-    <button class="sidebar-close" onclick="toggleSidebar()">×</button>
-  </div>
-
-  <div class="menu-section">
-    <div class="menu-section-title">メイン</div>
-    <a class="menu-link" onclick="showPage('home')">トップページ</a>
-    <a class="menu-link suggest" onclick="showPage('suggest')">役職を提案する</a>
-    <a class="menu-link bug" onclick="showPage('bug')">バグ報告</a>
-    <a class="menu-link bug-list" onclick="showPage('bug-list')">バグ一覧（対応中）</a>
-  </div>
-
-  <div class="menu-section">
-    <div class="menu-section-title">役職一覧</div>
-    <a class="menu-link all"         onclick="showPage('roles', 'all')">すべての役職</a>
-    <a class="menu-link impostor"    onclick="showPage('roles', 'impostor')">インポスター</a>
-    <a class="menu-link madmate"     onclick="showPage('roles', 'madmate')">マッドメイト</a>
-    <a class="menu-link crewmate"    onclick="showPage('roles', 'crewmate')">クルーメイト</a>
-    <a class="menu-link neutral"     onclick="showPage('roles', 'neutral')">第三陣営</a>
-    <a class="menu-link combination" onclick="showPage('roles', 'combination')">コンビネーション</a>
-    <a class="menu-link modifier"    onclick="showPage('roles', 'modifier')">属性</a>
-    <a class="menu-link ghost"       onclick="showPage('roles', 'ghost')">幽霊役職</a>
-  </div>
-
-  <div class="menu-section">
-    <div class="menu-section-title">その他</div>
-    <a class="menu-link" onclick="toggleSidebar()">システム設定</a>
-  </div>
-</nav>
-
-<main>
-
-  <!-- ① トップページ -->
-  <div id="page-home" class="page-view active">
-    <h1><span style="color: #DDBB99 !important;">Tora</span> MOD</h1>
-    <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
-
-    <section class="info-card">
-      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
-      <p>
-        <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
-        役職・システム・設定などの最新情報を随時掲載していきます。
-      </p>
-    </section>
-
-    <section class="info-card">
-      <h2><span style="color: #DDBB99 !important;">Tora</span> MODとは？</h2>
-      <p>
-        Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
-        現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
-      </p>
-    </section>
-
-    <section class="info-card">
-      <h2>今後のアップデート予定</h2>
-      <p>現在、以下の要素の実装・アップデートを予定しています。</p>
-      <div class="plan-list">
-        <div class="plan-item">
-          <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">様々な役職の追加</span>
-          </div>
-          <p class="plan-desc">クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。</p>
-        </div>
-        <div class="plan-item">
-          <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">便利機能の追加</span>
-          </div>
-          <p class="plan-desc">ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。</p>
-        </div>
-        <div class="plan-item">
-          <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">クライアントMODモードとホストMODモードの分離</span>
-          </div>
-          <p class="plan-desc">ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。</p>
-        </div>
+    <!-- ホーム -->
+    <section id="page-home" class="page">
+      <div class="card">
+        <h1>Tora MOD へようこそ</h1>
+        <p>このサイトは Tora MOD の公式ドキュメントおよびバグ報告窓口です。</p>
+        <p>プレイ中に不具合やエラーを発見した場合は、上部メニューの「バグ報告」よりお知らせください。</p>
+      </div>
+      <div class="card">
+        <h2>クイックリンク</h2>
+        <p>・<strong>バグ報告：</strong> ログファイルと一緒に不具合の内容を開発チームに送信できます。</p>
+        <p>・<strong>バグ一覧：</strong> 現在チームが把握・対応中のバグ状況を確認できます。</p>
       </div>
     </section>
-  </div>
 
-  <!-- ② 役職一覧ページ -->
-  <div id="page-roles" class="page-view">
-    <h1>役職一覧</h1>
-    <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
+    <!-- バグ報告フォーム -->
+    <section id="page-bug-report" class="page">
+      <div class="card">
+        <h1>🐛 バグを報告する</h1>
+        <p class="subtext">送信された報告はDiscordの開発チャンネルへ直接通知されます。</p>
 
-    <section class="search-container">
-      <div class="search-box-wrapper">
-        <svg class="search-icon-svg" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" class="search-input" placeholder="役職名で検索">
-      </div>
-
-      <div class="filter-tags">
-        <button class="filter-btn all active" type="button" onclick="selectFilter(this)">すべての役職</button>
-        <button class="filter-btn impostor"    type="button" onclick="selectFilter(this)">インポスター</button>
-        <button class="filter-btn madmate"     type="button" onclick="selectFilter(this)">マッドメイト</button>
-        <button class="filter-btn crewmate"    type="button" onclick="selectFilter(this)">クルーメイト</button>
-        <button class="filter-btn neutral"     type="button" onclick="selectFilter(this)">第三陣営</button>
-        <button class="filter-btn combination" type="button" onclick="selectFilter(this)">コンビネーション</button>
-        <button class="filter-btn modifier"    type="button" onclick="selectFilter(this)">属性</button>
-        <button class="filter-btn ghost"       type="button" onclick="selectFilter(this)">幽霊役職</button>
-      </div>
-
-      <div class="search-count">0件</div>
-    </section>
-
-    <section class="info-card">
-      <p style="text-align: center; color: var(--sub);">役職データを掲載準備中です。</p>
-    </section>
-  </div>
-
-  <!-- ③ 役職提案ページ -->
-  <div id="page-suggest" class="page-view">
-    <h1 id="suggestPageTitle">役職の提案</h1>
-    <div class="subtitle" id="suggestPageSubtitle">Role Suggestion</div>
-
-    <section class="info-card">
-      <p id="suggestPageDesc" style="margin-bottom: 20px;">オリジナルの役職や能力、他MODからの移植案を募集しています！採用されたアイデアはMOD内に実装される可能性があります。</p>
-      
-      <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)">
-        <div class="suggest-type-switch">
-          <button type="button" class="type-switch-btn active" id="btnTypeRole" onclick="switchProposalType('role')">役職提案</button>
-          <button type="button" class="type-switch-btn" id="btnTypePort" onclick="switchProposalType('port')">移植案</button>
-        </div>
-
-        <div class="form-group" id="originModGroup" style="display: none;">
-          <label class="form-label">移植元のMOD名・ゲーム名 <span class="req">*必須</span></label>
-          <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">対応モード <span class="req">*必須</span></label>
-          <select id="modMode" class="form-select" required>
-            <option value="両方">両方 (ホスト・クライアント対応)</option>
-            <option value="ホストMOD">ホストMOD (ホストのみ導入で動作)</option>
-            <option value="クライアントMOD">クライアントMOD (全員がMOD導入必須)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">陣営 <span class="req">*必須</span></label>
-          <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
-            <option value="クルーメイト">クルーメイト</option>
-            <option value="インポスター">インポスター</option>
-            <option value="マッドメイト">マッドメイト</option>
-            <option value="第三陣営">第三陣営</option>
-            <option value="コンビネーション">コンビネーション</option>
-            <option value="属性">属性</option>
-            <option value="幽霊役職">幽霊役職</option>
-          </select>
-        </div>
-
-        <div class="form-group" id="normalRoleGroup">
-          <div class="form-row">
-            <div>
-              <label class="form-label">役職名（日本語） <span class="req">*必須</span></label>
-              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
-            </div>
-            <div>
-              <label class="form-label">役職名（英語・英名） <span class="req">*必須</span></label>
-              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" required>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" id="winConditionGroup" style="display: none;">
-          <label class="form-label">勝利条件 <span class="req">*必須</span></label>
-          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
-        </div>
-
-        <div class="form-group" id="combiRole1Group" style="display: none;">
-          <div class="form-row-3">
-            <div>
-              <label class="form-label">役職1の陣営 <span class="req">*必須</span></label>
-              <select id="combiCamp1" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト">クルーメイト</option>
-                <option value="インポスター">インポスター</option>
-                <option value="マッドメイト">マッドメイト</option>
-                <option value="第三陣営">第三陣営</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">役職1（日本語） <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ">
-            </div>
-            <div>
-              <label class="form-label">役職1（英語・英名） <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" id="combiWin1Group" style="display: none;">
-          <label class="form-label">役職1の勝利条件 <span class="req">*必須</span></label>
-          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など"></textarea>
-        </div>
-
-        <div class="form-group" id="combiRole2Group" style="display: none;">
-          <div class="form-row-3">
-            <div>
-              <label class="form-label">役職2の陣営 <span class="req">*必須</span></label>
-              <select id="combiCamp2" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト">クルーメイト</option>
-                <option value="インポスター">インポスター</option>
-                <option value="マッドメイト">マッドメイト</option>
-                <option value="第三陣営">第三陣営</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">役職2（日本語） <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー">
-            </div>
-            <div>
-              <label class="form-label">役職2（英語・英名） <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group" id="combiWin2Group" style="display: none;">
-          <label class="form-label">役職2の勝利条件 <span class="req">*必須</span></label>
-          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">能力・説明 <span class="req">*必須</span></label>
-          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">役職の設定項目 <span class="opt">任意（ゲーム内設定）</span></label>
-          <div id="settingItemsContainer" class="setting-items-container"></div>
-          <button type="button" class="add-setting-btn" onclick="addSettingItem()">＋ 設定項目を追加</button>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">提案</button>
-        <div id="formStatus" class="form-status">送信が完了しました！提案ありがとうございます。</div>
-      </form>
-    </section>
-  </div>
-
-  <!-- ④ バグ報告ページ -->
-  <div id="page-bug" class="page-view">
-    <h1>バグ報告</h1>
-    <div class="subtitle">Bug Report</div>
-
-    <section class="info-card">
-      <p style="margin-bottom: 20px;">ゲーム中に発生した不具合やエラーを報告してください。すべて必須項目です。</p>
-
-      <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
-        <div class="form-row">
+        <form id="bugReportForm" onsubmit="handleBugSubmit(event)" style="margin-top: 20px;">
           <div class="form-group">
-            <label class="form-label">何試合目か <span class="req">*必須</span></label>
-            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
+            <label for="bugMatch">何試合目か <span class="required">*</span></label>
+            <input type="text" id="bugMatch" placeholder="例: 1試合目、2戦目" required>
           </div>
+
           <div class="form-group">
-            <label class="form-label">何ターン目か <span class="req">*必須</span></label>
-            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
+            <label for="bugTurn">何ターン目か <span class="required">*</span></label>
+            <input type="text" id="bugTurn" placeholder="例: 3ターン目、初手" required>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label class="form-label">バグ内容・発生状況 <span class="req">*必須</span></label>
-          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">ログファイル <span class="req">*必須（.log / .txt）</span></label>
-          <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
-            <input type="file" id="bugLogFile" accept=".log,.txt" required onchange="handleFileSelected(this)">
-            <div class="file-upload-icon">📁</div>
-            <div class="file-upload-text">クリックしてログファイルを選択</div>
-            <div class="file-upload-sub">PCならエクスプローラー、スマホならファイルアプリが開きます</div>
-            <div id="selectedFileName" class="file-selected-name" style="display: none;"></div>
+          <div class="form-group">
+            <label for="bugDesc">バグ内容・発生時の状況 <span class="required">*</span></label>
+            <textarea id="bugDesc" placeholder="どのカードを使ったとき、何が起きたか具体的に記入してください" required></textarea>
           </div>
-        </div>
 
-        <button type="submit" class="submit-btn danger" id="bugSubmitBtn">バグを報告する</button>
-        <div id="bugFormStatus" class="form-status">バグ報告を送信しました。ご協力ありがとうございます！</div>
-      </form>
-    </section>
-  </div>
+          <div class="form-group">
+            <label>ログファイル (.log, .txt) <span class="required" id="logRequiredMark">*</span></label>
+            <div class="file-dropzone" onclick="document.getElementById('bugLogFile').click()">
+              <p id="fileLabel">📁 クリックしてログファイルを選択</p>
+              <p id="selectedFileName" style="display:none; color: var(--accent); font-weight: bold; margin-top: 6px;"></p>
+            </div>
+            <input type="file" id="bugLogFile" accept=".log,.txt" onchange="handleFileSelected(event)">
+          </div>
 
-  <!-- ⑤ ★★★ バグ一覧ページ（対応中バグをBotから自動取得） ★★★ -->
-  <div id="page-bug-list" class="page-view">
-    <h1>バグ一覧（対応中）</h1>
-    <div class="subtitle">Known Bugs</div>
-
-    <section class="info-card">
-      <p>現在開発チームが確認中・対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
-      <div id="bugListDisplay" class="bug-list-container">
-        <p style="color: var(--sub); text-align: center;">読み込み中...</p>
+          <button type="submit" id="bugSubmitBtn" class="btn">バグを報告する</button>
+          <div id="bugFormStatus" class="alert"></div>
+        </form>
       </div>
     </section>
-  </div>
 
-</main>
+    <!-- バグ一覧（対応中） -->
+    <section id="page-bug-list" class="page">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h1>対応中のバグ一覧</h1>
+          <button onclick="fetchBugList()" class="btn" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">🔄 更新</button>
+        </div>
+        <p class="subtext" style="margin-bottom: 20px;">
+          現在開発チームが確認中・対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。
+        </p>
+        <div id="bugListContainer">
+          <p class="subtext">読み込み中...</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<footer>
-  <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki
-</footer>
+  <footer>
+    &copy; Tora MOD Project. All rights reserved.
+  </footer>
 
-<div class="modal" id="settingsModal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>設定</h2>
-      <button class="close" onclick="closeSettings()">×</button>
-    </div>
-    <div class="setting-row">
-      <span>テーマ</span>
-      <select id="themeSelect" onchange="changeTheme(this.value)">
-        <option value="dark">ダークモード</option>
-        <option value="light">ライトモード</option>
-      </select>
-    </div>
-  </div>
-</div>
+  <script>
+    /* =========================================================
+       設定（Replit BotサーバーURL）
+    ========================================================= */
+    const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev";
+    const BOT_OFFLINE_MSG = "Botサーバーが起動していないかオフラインです。しばらく待ってから再度お試しください。";
 
-<script>
-let isAdmin = localStorage.getItem("tora-is-admin") === "true";
-let menuSecretTapCount = 0;
-let menuSecretTimeout;
+    // URLに ?admin=1 が付いていると管理者扱い
+    const urlParams = new URLSearchParams(window.location.search);
+    const isAdmin = urlParams.get("admin") === "1";
 
-function updateAdminUI() {
-  const badge = document.getElementById("adminBadge");
-  if (badge) badge.style.display = isAdmin ? "inline-block" : "none";
-  const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
-  reqInputs.forEach(el => { el.required = !isAdmin; });
-}
-
-function handleMenuSecretTap() {
-  menuSecretTapCount++;
-  clearTimeout(menuSecretTimeout);
-  menuSecretTimeout = setTimeout(() => { menuSecretTapCount = 0; }, 3500);
-
-  if (menuSecretTapCount >= 10) {
-    menuSecretTapCount = 0;
     if (isAdmin) {
-      if (confirm("現在【管理者モード】です。管理者モードを解除しますか？")) {
-        isAdmin = false;
-        localStorage.removeItem("tora-is-admin");
-        updateAdminUI();
-        alert("管理者モードを解除しました。");
+      document.getElementById("adminNotice").style.display = "block";
+      const mark = document.getElementById("logRequiredMark");
+      if (mark) mark.style.display = "none";
+    }
+
+    /* ルーティング（タブ切り替え） */
+    function route() {
+      const hash = window.location.hash || "#home";
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.querySelectorAll(".nav-links a").forEach(a => a.classList.remove("active"));
+
+      const targetPage = document.getElementById("page-" + hash.replace("#", ""));
+      const targetNav = document.getElementById("nav-" + hash.replace("#", ""));
+
+      if (targetPage) targetPage.classList.add("active");
+      if (targetNav) targetNav.classList.add("active");
+
+      if (hash === "#bug-list") {
+        fetchBugList();
       }
-    } else {
-      const key = prompt("管理者キーを入力してください:");
-      if (key === "torahakawaii") {
-        isAdmin = true;
-        localStorage.setItem("tora-is-admin", "true");
-        updateAdminUI();
-        alert("🎉 管理者モードを有効化しました！\n役職提案やバグ報告を【未入力のままでも確定・送信】できます。");
-      } else if (key !== null) {
-        alert("管理者キーが正しくありません。");
+    }
+
+    window.addEventListener("hashchange", route);
+    window.addEventListener("DOMContentLoaded", route);
+
+    /* サーバー死活チェック */
+    async function checkBotAlive() {
+      try {
+        const res = await fetch(`${BOT_SERVER_URL}/health`, { method: "GET", cache: "no-store" });
+        return res.ok;
+      } catch (e) {
+        return false;
       }
     }
-  }
-}
 
-let currentProposalType = 'role';
-function switchProposalType(type) {
-  currentProposalType = type;
-  const btnRole = document.getElementById("btnTypeRole");
-  const btnPort = document.getElementById("btnTypePort");
-  const originGroup = document.getElementById("originModGroup");
-  const originInput = document.getElementById("originModName");
-  const title = document.getElementById("suggestPageTitle");
-  const subtitle = document.getElementById("suggestPageSubtitle");
-
-  if (type === 'port') {
-    btnPort.classList.add("active");
-    btnRole.classList.remove("active");
-    originGroup.style.display = "block";
-    originInput.required = !isAdmin;
-    title.textContent = "役職の移植案";
-    subtitle.textContent = "Role Porting Suggestion";
-  } else {
-    btnRole.classList.add("active");
-    btnPort.classList.remove("active");
-    originGroup.style.display = "none";
-    originInput.required = false;
-    title.textContent = "役職の提案";
-    subtitle.textContent = "Role Suggestion";
-  }
-}
-
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("show");
-  document.getElementById("sidebarOverlay").classList.toggle("show");
-}
-
-function showPage(pageName, filterCategory) {
-  document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
-
-  if (pageName === 'home') {
-    document.getElementById("page-home").classList.add("active");
-  } else if (pageName === 'roles') {
-    document.getElementById("page-roles").classList.add("active");
-    if (filterCategory) {
-      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-      const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
-      if (targetBtn) targetBtn.classList.add("active");
+    /* ファイル選択時の表示更新 */
+    function handleFileSelected(e) {
+      const file = e.target.files[0];
+      const nameEl = document.getElementById("selectedFileName");
+      const labelEl = document.getElementById("fileLabel");
+      if (file) {
+        nameEl.textContent = `選択中: ${file.name} (${Math.round(file.size / 1024)} KB)`;
+        nameEl.style.display = "block";
+        labelEl.style.display = "none";
+      } else {
+        nameEl.style.display = "none";
+        labelEl.style.display = "block";
+      }
     }
-  } else if (pageName === 'suggest') {
-    document.getElementById("page-suggest").classList.add("active");
-  } else if (pageName === 'bug') {
-    document.getElementById("page-bug").classList.add("active");
-  } else if (pageName === 'bug-list') {
-    document.getElementById("page-bug-list").classList.add("active");
-    fetchBugList(); // バグ一覧ページを開いた時に最新データを取得
-  }
 
-  document.getElementById("sidebar").classList.remove("show");
-  document.getElementById("sidebarOverlay").classList.remove("show");
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    /* ① バグ報告 送信処理（Replit BotサーバーのAPIにPOST） */
+    async function handleBugSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById("bugSubmitBtn");
+      const formStatus = document.getElementById("bugFormStatus");
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = "送信中...";
+      formStatus.style.display = "none";
 
-function selectFilter(btn) {
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-}
+      // Botの死活チェック
+      const isAlive = await checkBotAlive();
+      if (!isAlive) {
+        alert(BOT_OFFLINE_MSG);
+        submitBtn.disabled = false;
+        submitBtn.textContent = "バグを報告する";
+        return;
+      }
 
-function handleCampChange(camp) {
-  const normalGroup = document.getElementById("normalRoleGroup");
-  const roleName = document.getElementById("roleName");
-  const roleNameEn = document.getElementById("roleNameEn");
-  const combiGroup1 = document.getElementById("combiRole1Group");
-  const combiGroup2 = document.getElementById("combiRole2Group");
-  const combiRole1 = document.getElementById("combiRoleName1");
-  const combiRoleEn1 = document.getElementById("combiRoleNameEn1");
-  const combiRole2 = document.getElementById("combiRoleName2");
-  const combiRoleEn2 = document.getElementById("combiRoleNameEn2");
-  const winGroup = document.getElementById("winConditionGroup");
-  const winInput = document.getElementById("winCondition");
+      const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
+      const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
+      const desc = document.getElementById("bugDesc").value.trim() || (isAdmin ? "未入力(管理者)" : "");
+      const fileInput = document.getElementById("bugLogFile");
 
-  if (camp === "コンビネーション") {
-    normalGroup.style.display = "none";
-    roleName.required = false; roleNameEn.required = false;
-    winGroup.style.display = "none"; winInput.required = false;
-    combiGroup1.style.display = "block"; combiGroup2.style.display = "block";
-    combiRole1.required = !isAdmin; combiRoleEn1.required = !isAdmin;
-    combiRole2.required = !isAdmin; combiRoleEn2.required = !isAdmin;
-    handleCombiCampChange();
-  } else {
-    normalGroup.style.display = "block";
-    roleName.required = !isAdmin; roleNameEn.required = !isAdmin;
-    combiGroup1.style.display = "none"; combiGroup2.style.display = "none";
-    combiRole1.required = false; combiRoleEn1.required = false;
-    combiRole2.required = false; combiRoleEn2.required = false;
-    document.getElementById("combiWin1Group").style.display = "none";
-    document.getElementById("combiWin1").required = false;
-    document.getElementById("combiWin2Group").style.display = "none";
-    document.getElementById("combiWin2").required = false;
-    if (camp === "第三陣営") {
-      winGroup.style.display = "block"; winInput.required = !isAdmin;
-    } else {
-      winGroup.style.display = "none"; winInput.required = false;
-    }
-  }
-}
+      if (!isAdmin && (!fileInput.files || !fileInput.files[0])) {
+        alert("ログファイルを選択してください。");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "バグを報告する";
+        return;
+      }
 
-function handleCombiCampChange() {
-  const camp1 = document.getElementById("combiCamp1").value;
-  const camp2 = document.getElementById("combiCamp2").value;
-  const win1Group = document.getElementById("combiWin1Group");
-  const win1Input = document.getElementById("combiWin1");
-  win1Group.style.display = camp1 === "第三陣営" ? "block" : "none";
-  win1Input.required = (camp1 === "第三陣営" && !isAdmin);
-
-  const win2Group = document.getElementById("combiWin2Group");
-  const win2Input = document.getElementById("combiWin2");
-  win2Group.style.display = camp2 === "第三陣営" ? "block" : "none";
-  win2Input.required = (camp2 === "第三陣営" && !isAdmin);
-}
-
-let settingItemCount = 0;
-function addSettingItem() {
-  settingItemCount++;
-  const container = document.getElementById("settingItemsContainer");
-  const card = document.createElement("div");
-  card.className = "setting-item-card";
-  card.id = `setting-item-${settingItemCount}`;
-  card.innerHTML = `
-    <div class="setting-item-header">
-      <span class="setting-item-title">設定項目 #${settingItemCount}</span>
-      <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
-    </div>
-    <div class="setting-main-row">
-      <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)">
-      <select class="form-select setting-type" onchange="toggleSettingType(this)">
-        <option value="number">数値 / スライダー</option>
-        <option value="boolean">2択 (ON/OFF、はい/いいえ 等)</option>
-      </select>
-    </div>
-    <div class="setting-detail-grid setting-detail-number">
-      <input type="text" class="form-input setting-step" placeholder="数字の間隔 (例: 2.5, 5, 1)">
-      <input type="text" class="form-input setting-max" placeholder="最大値 (例: 60, 10)">
-      <input type="text" class="form-input setting-unit" placeholder="単位 (例: 秒, 回, %)">
-    </div>
-    <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
-      <input type="text" class="form-input setting-choice1" placeholder="選択肢 1 (例: ON、はい、有効)">
-      <input type="text" class="form-input setting-choice2" placeholder="選択肢 2 (例: OFF、いいえ、無効)">
-    </div>
-  `;
-  container.appendChild(card);
-}
-
-function removeSettingItem(id) {
-  const el = document.getElementById(id);
-  if (el) el.remove();
-}
-
-function toggleSettingType(selectEl) {
-  const card = selectEl.closest(".setting-item-card");
-  const numGrid = card.querySelector(".setting-detail-number");
-  const boolGrid = card.querySelector(".setting-detail-boolean");
-  if (selectEl.value === "boolean") {
-    numGrid.style.display = "none"; boolGrid.style.display = "grid";
-  } else {
-    numGrid.style.display = "grid"; boolGrid.style.display = "none";
-  }
-}
-
-function handleFileSelected(input) {
-  const nameDisplay = document.getElementById("selectedFileName");
-  if (input.files && input.files[0]) {
-    nameDisplay.textContent = `選択中: ${input.files[0].name}`;
-    nameDisplay.style.display = "block";
-  } else {
-    nameDisplay.textContent = "";
-    nameDisplay.style.display = "none";
-  }
-}
-
-/* ★★★ Webhook & Bot設定 ★★★ */
-const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
-const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
-const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
-const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
-
-async function checkBotAlive() {
-  if (isAdmin) return true;
-  if (!BOT_SERVER_URL) return true;
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
-    const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
-    const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
-    clearTimeout(timeoutId);
-    if (!response.ok) return false;
-    const data = await response.json();
-    return data && data.status === "online";
-  } catch (e) {
-    return false;
-  }
-}
-
-/* ① 役職提案 送信処理 */
-async function handleSuggestSubmit(event) {
-  event.preventDefault();
-  const submitBtn = document.getElementById("submitBtn");
-  const formStatus = document.getElementById("formStatus");
-  submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
-
-  const isAlive = await checkBotAlive();
-  if (!isAlive) {
-    alert(BOT_OFFLINE_MSG);
-    submitBtn.disabled = false; submitBtn.textContent = "提案";
-    return;
-  }
-
-  const modMode = document.getElementById("modMode").value;
-  const roleCamp = document.getElementById("roleCamp").value;
-  const roleDesc = document.getElementById("roleDesc").value.trim() || (isAdmin ? "（未入力 - 管理者送信）" : "");
-
-  const campColors = {
-    "インポスター": 16731469, "マッドメイト": 16731469, "クルーメイト": 3718648,
-    "第三陣営": 10265775, "コンビネーション": 16777215, "幽霊役職": 16777215, "属性": 2278750
-  };
-
-  let embedTitle = "";
-  let fields = [
-    { name: "種別", value: currentProposalType === 'port' ? "🔄 移植案" : "💡 役職提案", inline: true },
-    { name: "対応モード", value: modMode, inline: true },
-    { name: "陣営", value: roleCamp, inline: true }
-  ];
-
-  if (currentProposalType === 'port') {
-    const originName = document.getElementById("originModName").value.trim() || (isAdmin ? "未入力(管理者)" : "未記入");
-    fields.push({ name: "移植元", value: originName, inline: false });
-  }
-
-  if (roleCamp === "コンビネーション") {
-    const camp1 = document.getElementById("combiCamp1").value;
-    const name1 = document.getElementById("combiRoleName1").value.trim() || (isAdmin ? "役職1(未入力)" : "");
-    const nameEn1 = document.getElementById("combiRoleNameEn1").value.trim();
-    const camp2 = document.getElementById("combiCamp2").value;
-    const name2 = document.getElementById("combiRoleName2").value.trim() || (isAdmin ? "役職2(未入力)" : "");
-    const nameEn2 = document.getElementById("combiRoleNameEn2").value.trim();
-
-    embedTitle = currentProposalType === 'port' ? `【移植案】${name1} × ${name2}` : `【新役職提案】${name1} × ${name2}`;
-    fields.push({ name: `役職1 [${camp1}]`, value: `${name1} ${nameEn1 ? `(${nameEn1})` : ""}`, inline: true });
-    if (camp1 === "第三陣営") {
-      fields.push({ name: "役職1の勝利条件", value: document.getElementById("combiWin1").value.trim() || "未記入" });
-    }
-    fields.push({ name: `役職2 [${camp2}]`, value: `${name2} ${nameEn2 ? `(${nameEn2})` : ""}`, inline: true });
-    if (camp2 === "第三陣営") {
-      fields.push({ name: "役職2の勝利条件", value: document.getElementById("combiWin2").value.trim() || "未記入" });
-    }
-  } else {
-    const roleName = document.getElementById("roleName").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
-    const roleNameEn = document.getElementById("roleNameEn").value.trim() || (isAdmin ? "Unspecified" : "");
-    embedTitle = currentProposalType === 'port' ? `【移植案】${roleName} (${roleNameEn})` : `【新役職提案】${roleName} (${roleNameEn})`;
-    fields.push({ name: "英語名 (英名)", value: roleNameEn, inline: true });
-    if (roleCamp === "第三陣営") {
-      fields.push({ name: "勝利条件", value: document.getElementById("winCondition").value.trim() || "未記入" });
-    }
-  }
-
-  fields.push({ name: "能力・詳細説明", value: roleDesc });
-
-  const settingCards = document.querySelectorAll(".setting-item-card");
-  if (settingCards.length > 0) {
-    let settingText = "";
-    settingCards.forEach(card => {
-      const name = card.querySelector(".setting-name").value.trim();
-      const type = card.querySelector(".setting-type").value;
-      if (name) {
-        if (type === "boolean") {
-          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
-          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
-          settingText += `・**${name}**: 2択 [ ${c1} / ${c2} ]\n`;
-        } else {
-          const step = card.querySelector(".setting-step").value.trim();
-          const max = card.querySelector(".setting-max").value.trim();
-          const unit = card.querySelector(".setting-unit").value.trim();
-          let details = [];
-          if (max) details.push(`最大: ${max}${unit}`);
-          if (step) details.push(`間隔: ${step}${unit}`);
-          if (!max && !step && unit) details.push(`単位: ${unit}`);
-          settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
+      const logFile = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+      let logContent = "";
+      if (logFile) {
+        try {
+          logContent = await logFile.text();
+        } catch (e) {
+          logContent = "（ログファイルの読み込みに失敗しました）";
         }
       }
-    });
-    if (settingText) fields.push({ name: "⚙️ ゲーム内設定項目", value: settingText });
-  }
 
-  const payload = {
-    username: "Tora MOD 提案システム" + (isAdmin ? " [ADMIN]" : ""),
-    embeds: [{
-      title: embedTitle, color: campColors[roleCamp] || 3718648, fields: fields,
-      footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
-      timestamp: new Date().toISOString()
-    }]
-  };
+      // Discordの文字数制限に配慮（900文字程度で抜粋）
+      const trimmedLog = logContent.length > 900 
+        ? logContent.substring(0, 900) + "\n...（以降省略）" 
+        : logContent;
 
-  try {
-    const response = await fetch(SUGGEST_WEBHOOK_URL, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
-    });
-    if (response.ok) {
-      formStatus.textContent = "提案を送信しました！ありがとうございます。";
-      formStatus.classList.add("success"); formStatus.style.display = "block";
-      document.getElementById("roleSuggestForm").reset();
-      document.getElementById("settingItemsContainer").innerHTML = "";
-      switchProposalType('role'); handleCampChange("クルーメイト");
-    } else { alert(BOT_OFFLINE_MSG); }
-  } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = "提案"; }
-}
+      // Botサーバー（Replit）に送るペイロード
+      const payload = {
+        match: match,
+        turn: turn,
+        desc: desc,
+        logExcerpt: trimmedLog
+      };
 
-/* ② バグ報告 送信処理 */
-async function handleBugSubmit(event) {
-  event.preventDefault();
-  const submitBtn = document.getElementById("bugSubmitBtn");
-  const formStatus = document.getElementById("bugFormStatus");
-  submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
+      try {
+        const reportUrl = `${BOT_SERVER_URL}/api/report-bug`;
+        const res = await fetch(reportUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
 
-  const isAlive = await checkBotAlive();
-  if (!isAlive) {
-    alert(BOT_OFFLINE_MSG);
-    submitBtn.disabled = false; submitBtn.textContent = "バグを報告する";
-    return;
-  }
-
-  const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
-  const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
-  const desc = document.getElementById("bugDesc").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
-  const fileInput = document.getElementById("bugLogFile");
-
-  if (!isAdmin && (!fileInput.files || !fileInput.files[0])) {
-    alert("ログファイルを選択してください。");
-    submitBtn.disabled = false; submitBtn.textContent = "バグを報告する";
-    return;
-  }
-
-  const logFile = (fileInput.files && fileInput.files[0]) ? fileInput.files[0] : null;
-  let logContent = "";
-  if (logFile) {
-    try { logContent = await logFile.text(); }
-    catch (e) { logContent = "（ログの読み込みに失敗しました）"; }
-  }
-
-  const trimmedLog = logContent.length > 950 ? logContent.substring(0, 950) + "\n...（以降省略）" : logContent;
-
-  const fields = [
-    { name: "何試合目か", value: `${match || "未記入"} 試合目`, inline: true },
-    { name: "何ターン目か", value: `${turn || "未記入"} ターン目`, inline: true },
-    { name: "添付ファイル名", value: logFile ? `${logFile.name} (${Math.round(logFile.size / 1024)} KB)` : "未添付", inline: false },
-    { name: "バグ内容・発生状況", value: desc || "未記入", inline: false }
-  ];
-
-  if (logFile) {
-    fields.push({
-      name: "📋 ログ内容（抜粋）",
-      value: trimmedLog ? `\`\`\`text\n${trimmedLog}\n\`\`\`` : "（空のログ）",
-      inline: false
-    });
-  }
-
-  const payload = {
-    username: "Tora MOD バグ報告" + (isAdmin ? " [ADMIN]" : ""),
-    embeds: [{
-      title: "🐛【バグ報告】不具合が報告されました", color: 15631988, fields: fields,
-      footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
-      timestamp: new Date().toISOString()
-    }]
-  };
-
-  try {
-    const response = await fetch(BUG_WEBHOOK_URL, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
-    });
-    if (response.ok) {
-      formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
-      formStatus.classList.add("success"); formStatus.style.display = "block";
-      document.getElementById("bugReportForm").reset();
-      document.getElementById("selectedFileName").style.display = "none";
-    } else { alert(BOT_OFFLINE_MSG); }
-  } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = "バグを報告する"; }
-}
-
-/* ③ ★★★ バグ一覧の自動取得と表示 ★★★ */
-async function fetchBugList() {
-  const container = document.getElementById("bugListDisplay");
-  if (!container) return;
-  container.innerHTML = '<p style="color: var(--sub); text-align: center;">Botから最新のバグ一覧を取得中...</p>';
-
-  if (!BOT_SERVER_URL) {
-    container.innerHTML = '<p style="color: var(--sub); text-align: center;">Botサーバーが未設定です。</p>';
-    return;
-  }
-
-  try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error();
-    const bugs = await response.json();
-
-    if (!bugs || bugs.length === 0) {
-      container.innerHTML = '<p style="color: var(--sub); text-align: center;">現在、対応中のバグはありません！✨</p>';
-      return;
+        if (res.ok) {
+          formStatus.textContent = "✅ バグ報告を送信しました。ご協力ありがとうございます！";
+          formStatus.className = "alert success";
+          formStatus.style.display = "block";
+          document.getElementById("bugReportForm").reset();
+          document.getElementById("selectedFileName").style.display = "none";
+          document.getElementById("fileLabel").style.display = "block";
+        } else {
+          alert("送信に失敗しました。サーバー側の状態を確認してください。");
+        }
+      } catch (err) {
+        alert(BOT_OFFLINE_MSG);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "バグを報告する";
+      }
     }
 
-    container.innerHTML = "";
-    bugs.forEach(bug => {
-      const card = document.createElement("div");
-      card.className = "bug-card";
-      card.innerHTML = `
-        <div class="bug-card-header">
-          <div class="bug-badges">
-            <span class="bug-tag">${bug.match || "試合数不明"}</span>
-            <span class="bug-tag">${bug.turn || "ターン不明"}</span>
+    /* ② バグ一覧 取得処理 */
+    async function fetchBugList() {
+      const container = document.getElementById("bugListContainer");
+      container.innerHTML = '<p class="subtext">データを取得しています...</p>';
+
+      try {
+        const res = await fetch(`${BOT_SERVER_URL}/api/bugs`, { cache: "no-store" });
+        if (!res.ok) throw new Error();
+
+        const bugs = await res.json();
+        if (!bugs || bugs.length === 0) {
+          container.innerHTML = '<p class="subtext">現在、対応中のバグはありません。🎉</p>';
+          return;
+        }
+
+        container.innerHTML = bugs.map(bug => `
+          <div class="bug-list-item">
+            <div class="bug-header">
+              <span><strong>${escapeHtml(bug.match || '')}</strong> / <strong>${escapeHtml(bug.turn || '')}</strong></span>
+              <span class="bug-badge">対応中</span>
+            </div>
+            <div class="bug-desc">${escapeHtml(bug.desc || '詳細なし')}</div>
+            <div class="subtext" style="font-size: 0.75rem; margin-top: 8px;">報告日: ${escapeHtml(bug.date || '不明')}</div>
           </div>
-          <span class="bug-date">${bug.date || ""}</span>
-        </div>
-        <p class="bug-desc">${bug.desc || "詳細なし"}</p>
-      `;
-      container.appendChild(card);
-    });
-  } catch (e) {
-    container.innerHTML = '<p style="color: #ff4d4d; text-align: center;">現在Botがオフラインのためバグ一覧を取得できませんでした。</p>';
-  }
-}
+        `).join("");
+      } catch (err) {
+        container.innerHTML = `<p class="subtext" style="color: var(--danger);">${BOT_OFFLINE_MSG}</p>`;
+      }
+    }
 
-// テーマ管理
-const savedTheme = localStorage.getItem("tora-theme") || "dark";
-function applyTheme(theme) {
-  document.body.classList.toggle("light", theme === "light");
-  document.getElementById("themeSelect").value = theme;
-}
-function changeTheme(theme) {
-  localStorage.setItem("tora-theme", theme);
-  applyTheme(theme);
-}
-function openSettings() { document.getElementById("settingsModal").classList.add("show"); }
-function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
-
-applyTheme(savedTheme);
-updateAdminUI();
-
-document.getElementById("settingsModal").addEventListener("click", function(e) {
-  if (e.target === this) closeSettings();
-});
-</script>
-
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
 </body>
 </html>
