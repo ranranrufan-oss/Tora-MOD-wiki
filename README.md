@@ -1,2 +1,1 @@
-# Tora-MOD-wiki
-Tora MOD wiki
+https://ranranrufan-oss.github.io/Tora-MOD-wiki/
