@@ -223,20 +223,15 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 }
 .form-status.success { display: block; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
 
-/* バグ一覧表示エリア */
-.bug-list-container { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+/* ★★★ バグ一覧表示エリア（バグ内容のみシンプル表示） ★★★ */
+.bug-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .bug-card {
   background: var(--card-inner); border: 1px solid var(--border); border-left: 4px solid #fbbf24;
-  border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;
+  border-radius: 12px; padding: 16px; display: flex; flex-direction: column;
 }
-.bug-card-header { display: flex; justify-content: space-between; align-items: center; }
-.bug-badges { display: flex; gap: 8px; }
-.bug-tag {
-  background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3);
-  padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: bold;
+.bug-desc {
+  font-size: 15px; color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-all;
 }
-.bug-date { font-size: 12px; color: var(--sub); }
-.bug-desc { font-size: 14px; color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; }
 
 footer {
   margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
@@ -264,6 +259,7 @@ select {
 
 <body>
 
+<!-- ヘッダー -->
 <header>
   <div class="header-left">
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
@@ -983,7 +979,7 @@ async function handleBugSubmit(event) {
   finally { submitBtn.disabled = false; submitBtn.textContent = "バグを報告する"; }
 }
 
-/* ③ バグ一覧の自動取得と表示 */
+/* ③ ★★★ バグ一覧の自動取得と表示（バグ内容のみシンプル表示） ★★★ */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
@@ -1004,16 +1000,8 @@ async function fetchBugList() {
     bugs.forEach(bug => {
       const card = document.createElement("div");
       card.className = "bug-card";
-      card.innerHTML = `
-        <div class="bug-card-header">
-          <div class="bug-badges">
-            <span class="bug-tag">${bug.match || "試合数不明"}</span>
-            <span class="bug-tag">${bug.turn || "ターン不明"}</span>
-          </div>
-          <span class="bug-date">${bug.date || ""}</span>
-        </div>
-        <p class="bug-desc">${bug.desc || "詳細なし"}</p>
-      `;
+      // ★バグ内容のみを表示
+      card.innerHTML = `<p class="bug-desc">${bug.desc || "詳細なし"}</p>`;
       container.appendChild(card);
     });
   } catch (e) {
