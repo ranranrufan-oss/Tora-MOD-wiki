@@ -568,7 +568,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑤ ★★★ バグ一覧ページ（対応中バグをBotから自動取得） ★★★ -->
+  <!-- ⑤ バグ一覧ページ -->
   <div id="page-bug-list" class="page-view">
     <h1>バグ一覧（対応中）</h1>
     <div class="subtitle">Known Bugs</div>
@@ -693,7 +693,7 @@ function showPage(pageName, filterCategory) {
     document.getElementById("page-bug").classList.add("active");
   } else if (pageName === 'bug-list') {
     document.getElementById("page-bug-list").classList.add("active");
-    fetchBugList(); // バグ一覧ページを開いた時に最新データを取得
+    fetchBugList();
   }
 
   document.getElementById("sidebar").classList.remove("show");
@@ -818,10 +818,13 @@ function handleFileSelected(input) {
   }
 }
 
-/* ★★★ Webhook & Bot設定 ★★★ */
+/* ★★★ Webhook & 発行されたBot URL設定 ★★★ */
 const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
 const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
-const BOT_SERVER_URL = "https://9f013574-31dc-4d4b-8060-a1c81372d2be-00-949kpnl2e697.pike.replit.dev/";
+
+/* ★ここにBot-Hosting.netで発行されたURLを設定済み！ */
+const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
+
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
 async function checkBotAlive() {
@@ -829,7 +832,7 @@ async function checkBotAlive() {
   if (!BOT_SERVER_URL) return true;
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const timeoutId = setTimeout(() => controller.abort(), 3500);
     const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
     const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
     clearTimeout(timeoutId);
@@ -1027,7 +1030,7 @@ async function handleBugSubmit(event) {
   finally { submitBtn.disabled = false; submitBtn.textContent = "バグを報告する"; }
 }
 
-/* ③ ★★★ バグ一覧の自動取得と表示 ★★★ */
+/* ③ バグ一覧の自動取得と表示 */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
