@@ -264,7 +264,6 @@ select {
 
 <body>
 
-<!-- ヘッダー -->
 <header>
   <div class="header-left">
     <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
@@ -574,7 +573,7 @@ select {
     <div class="subtitle">Known Bugs</div>
 
     <section class="info-card">
-      <p>現在開発チームが確認中・対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
+      <p>現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
       <div id="bugListDisplay" class="bug-list-container">
         <p style="color: var(--sub); text-align: center;">読み込み中...</p>
       </div>
@@ -635,7 +634,7 @@ function handleMenuSecretTap() {
         isAdmin = true;
         localStorage.setItem("tora-is-admin", "true");
         updateAdminUI();
-        alert("🎉 管理者モードを有効化しました！\n役職提案やバグ報告を【未入力のままでも確定・送信】できます。");
+        alert("🎉 管理者モードを有効化しました！\n未入力でも送信できます。");
       } else if (key !== null) {
         alert("管理者キーが正しくありません。");
       }
@@ -654,19 +653,13 @@ function switchProposalType(type) {
   const subtitle = document.getElementById("suggestPageSubtitle");
 
   if (type === 'port') {
-    btnPort.classList.add("active");
-    btnRole.classList.remove("active");
-    originGroup.style.display = "block";
-    originInput.required = !isAdmin;
-    title.textContent = "役職の移植案";
-    subtitle.textContent = "Role Porting Suggestion";
+    btnPort.classList.add("active"); btnRole.classList.remove("active");
+    originGroup.style.display = "block"; originInput.required = !isAdmin;
+    title.textContent = "役職の移植案"; subtitle.textContent = "Role Porting Suggestion";
   } else {
-    btnRole.classList.add("active");
-    btnPort.classList.remove("active");
-    originGroup.style.display = "none";
-    originInput.required = false;
-    title.textContent = "役職の提案";
-    subtitle.textContent = "Role Suggestion";
+    btnRole.classList.add("active"); btnPort.classList.remove("active");
+    originGroup.style.display = "none"; originInput.required = false;
+    title.textContent = "役職の提案"; subtitle.textContent = "Role Suggestion";
   }
 }
 
@@ -677,21 +670,17 @@ function toggleSidebar() {
 
 function showPage(pageName, filterCategory) {
   document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
-
-  if (pageName === 'home') {
-    document.getElementById("page-home").classList.add("active");
-  } else if (pageName === 'roles') {
+  if (pageName === 'home') document.getElementById("page-home").classList.add("active");
+  else if (pageName === 'roles') {
     document.getElementById("page-roles").classList.add("active");
     if (filterCategory) {
       document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
       const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
       if (targetBtn) targetBtn.classList.add("active");
     }
-  } else if (pageName === 'suggest') {
-    document.getElementById("page-suggest").classList.add("active");
-  } else if (pageName === 'bug') {
-    document.getElementById("page-bug").classList.add("active");
-  } else if (pageName === 'bug-list') {
+  } else if (pageName === 'suggest') document.getElementById("page-suggest").classList.add("active");
+  else if (pageName === 'bug') document.getElementById("page-bug").classList.add("active");
+  else if (pageName === 'bug-list') {
     document.getElementById("page-bug-list").classList.add("active");
     fetchBugList();
   }
@@ -720,16 +709,14 @@ function handleCampChange(camp) {
   const winInput = document.getElementById("winCondition");
 
   if (camp === "コンビネーション") {
-    normalGroup.style.display = "none";
-    roleName.required = false; roleNameEn.required = false;
+    normalGroup.style.display = "none"; roleName.required = false; roleNameEn.required = false;
     winGroup.style.display = "none"; winInput.required = false;
     combiGroup1.style.display = "block"; combiGroup2.style.display = "block";
     combiRole1.required = !isAdmin; combiRoleEn1.required = !isAdmin;
     combiRole2.required = !isAdmin; combiRoleEn2.required = !isAdmin;
     handleCombiCampChange();
   } else {
-    normalGroup.style.display = "block";
-    roleName.required = !isAdmin; roleNameEn.required = !isAdmin;
+    normalGroup.style.display = "block"; roleName.required = !isAdmin; roleNameEn.required = !isAdmin;
     combiGroup1.style.display = "none"; combiGroup2.style.display = "none";
     combiRole1.required = false; combiRoleEn1.required = false;
     combiRole2.required = false; combiRoleEn2.required = false;
@@ -818,31 +805,11 @@ function handleFileSelected(input) {
   }
 }
 
-/* ★★★ Webhook & 発行されたBot URL設定 ★★★ */
+/* ★★★ Webhook & Bot設定 ★★★ */
 const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
 const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
-
-/* ★ここにBot-Hosting.netで発行されたURLを設定済み！ */
 const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
-
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
-
-async function checkBotAlive() {
-  if (isAdmin) return true;
-  if (!BOT_SERVER_URL) return true;
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3500);
-    const checkUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'health' : BOT_SERVER_URL + '/health';
-    const response = await fetch(checkUrl, { method: "GET", signal: controller.signal });
-    clearTimeout(timeoutId);
-    if (!response.ok) return false;
-    const data = await response.json();
-    return data && data.status === "online";
-  } catch (e) {
-    return false;
-  }
-}
 
 /* ① 役職提案 送信処理 */
 async function handleSuggestSubmit(event) {
@@ -850,13 +817,6 @@ async function handleSuggestSubmit(event) {
   const submitBtn = document.getElementById("submitBtn");
   const formStatus = document.getElementById("formStatus");
   submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
-
-  const isAlive = await checkBotAlive();
-  if (!isAlive) {
-    alert(BOT_OFFLINE_MSG);
-    submitBtn.disabled = false; submitBtn.textContent = "提案";
-    return;
-  }
 
   const modMode = document.getElementById("modMode").value;
   const roleCamp = document.getElementById("roleCamp").value;
@@ -965,13 +925,6 @@ async function handleBugSubmit(event) {
   const formStatus = document.getElementById("bugFormStatus");
   submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
 
-  const isAlive = await checkBotAlive();
-  if (!isAlive) {
-    alert(BOT_OFFLINE_MSG);
-    submitBtn.disabled = false; submitBtn.textContent = "バグを報告する";
-    return;
-  }
-
   const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
   const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
   const desc = document.getElementById("bugDesc").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
@@ -1036,11 +989,6 @@ async function fetchBugList() {
   if (!container) return;
   container.innerHTML = '<p style="color: var(--sub); text-align: center;">Botから最新のバグ一覧を取得中...</p>';
 
-  if (!BOT_SERVER_URL) {
-    container.innerHTML = '<p style="color: var(--sub); text-align: center;">Botサーバーが未設定です。</p>';
-    return;
-  }
-
   try {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
     const response = await fetch(apiUrl);
@@ -1048,7 +996,7 @@ async function fetchBugList() {
     const bugs = await response.json();
 
     if (!bugs || bugs.length === 0) {
-      container.innerHTML = '<p style="color: var(--sub); text-align: center;">現在、対応中のバグはありません！✨</p>';
+      container.innerHTML = '<p style="color: var(--sub); text-align: center;">現在、対応中のバグはありません！✨<br><span style="font-size:12px;">（Discord側で「既読」ボタンを押すとここに表示されます）</span></p>';
       return;
     }
 
@@ -1069,7 +1017,7 @@ async function fetchBugList() {
       container.appendChild(card);
     });
   } catch (e) {
-    container.innerHTML = '<p style="color: #ff4d4d; text-align: center;">現在Botがオフラインのためバグ一覧を取得できませんでした。</p>';
+    container.innerHTML = '<p style="color: #ff4d4d; text-align: center;">現在Botと接続中です。数秒待ってからもう一度開いてみてください。<br><span style="font-size:12px; color:var(--sub);">※Discordで「既読」を押したバグがここに自動表示されます。</span></p>';
   }
 }
 
