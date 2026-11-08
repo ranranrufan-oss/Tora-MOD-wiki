@@ -25,7 +25,6 @@ body {
 }
 .tora-text { color: #DDBB99 !important; }
 
-/* ヘッダー */
 header {
   min-height: 65px; display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; background: var(--header); border-bottom: 1px solid var(--border);
@@ -100,6 +99,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: 20px; }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: 15px; }
 
+/* 予定・タイムラインリスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex; flex-direction: column; gap: 6px; padding: 14px 16px;
@@ -233,25 +233,63 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .bug-desc {
   font-size: 15px; color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-all; flex: 1;
 }
-.translating-hint {
-  font-size: 12px; color: var(--sub); font-style: italic; margin-left: 6px;
-}
-.bug-card-del-btn {
-  background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px;
-}
+.translating-hint { font-size: 12px; color: var(--sub); font-style: italic; margin-left: 6px; }
+.bug-card-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px; }
+.admin-bug-add-box { background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
 
-/* 管理者用バグ追加枠 */
-.admin-bug-add-box {
-  background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px;
-  padding: 16px; margin-bottom: 20px;
+/* ★F&Q（アコーディオン）スタイル */
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.faq-item {
+  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
 }
+.faq-question {
+  padding: 16px; font-weight: bold; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center; user-select: none;
+}
+.faq-question:hover { background: var(--hover); }
+.faq-arrow { color: var(--sub); transition: transform .2s; }
+.faq-item.open .faq-arrow { transform: rotate(180deg); }
+.faq-answer {
+  display: none; padding: 0 16px 16px 16px; color: var(--sub); line-height: 1.7; font-size: 14px;
+}
+.faq-item.open .faq-answer { display: block; }
+
+/* ★コマンド一覧スタイル */
+.command-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.command-card {
+  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.command-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.command-code {
+  font-family: Consolas, monospace; font-size: 15px; font-weight: bold; color: #38bdf8;
+}
+.command-desc { font-size: 13px; color: var(--sub); margin: 0; }
+.copy-btn {
+  background: var(--card); border: 1px solid var(--border); color: var(--text);
+  padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; flex-shrink: 0;
+  transition: all .2s;
+}
+.copy-btn:hover { background: var(--hover); }
+.copy-btn.copied { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
+
+/* ★導入ガイドスタイル */
+.guide-step {
+  display: flex; gap: 14px; padding: 16px; background: var(--card-inner);
+  border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px;
+}
+.step-number {
+  width: 32px; height: 32px; border-radius: 50%; background: #38bdf8;
+  color: #0b1120; font-weight: bold; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.step-content h3 { margin: 0 0 6px 0; font-size: 16px; }
+.step-content p { margin: 0; color: var(--sub); font-size: 14px; line-height: 1.6; }
 
 footer {
   margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
   border-top: 1px solid var(--border); font-size: 13px;
 }
-
-/* 設定モーダル */
 .modal {
   display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px); align-items: center; justify-content: center; padding: 20px; z-index: 300;
@@ -304,6 +342,15 @@ select {
     <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
   </div>
 
+  <!-- ★追加：サポート＆ガイドセクション -->
+  <div class="menu-section">
+    <div class="menu-section-title" data-ja="ガイド・サポート" data-en="GUIDE & SUPPORT">ガイド・サポート</div>
+    <a class="menu-link" onclick="showPage('install')" data-ja="MOD導入ガイド" data-en="Installation Guide">MOD導入ガイド</a>
+    <a class="menu-link" onclick="showPage('faq')" data-ja="よくある質問 (F&Q)" data-en="FAQ">よくある質問 (F&Q)</a>
+    <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
+    <a class="menu-link" onclick="showPage('patchnotes')" data-ja="パッチノート" data-en="Patch Notes">パッチノート</a>
+  </div>
+
   <div class="menu-section">
     <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
     <a class="menu-link all"         onclick="showPage('roles', 'all')" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
@@ -330,7 +377,7 @@ select {
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
+      <h2 data-ja="Welcome to Tora MOD Wiki" data-en="Welcome to Tora MOD Wiki">Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
       <p id="homeWelcomeDesc" data-ja="Tora MODに関する情報をまとめたWikiです。役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
         <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
@@ -598,6 +645,166 @@ select {
     </section>
   </div>
 
+  <!-- ⑥ ★新設：MOD導入ガイドページ -->
+  <div id="page-install" class="page-view">
+    <h1 data-ja="MOD導入ガイド" data-en="Installation Guide">MOD導入ガイド</h1>
+    <div class="subtitle">How to Install Tora MOD</div>
+
+    <section class="info-card">
+      <h2 data-ja="2つの参加モードについて" data-en="About the Two Modes">2つの参加モードについて</h2>
+      <p data-ja="Tora MODは、部屋のホストだけがMODを入れれば他のプレイヤー（バニラ/スマホ/Switch勢）も参加できる『ホストMODモード』と、全員がMODを入れて全機能を楽しむ『クライアントMODモード』に対応予定です。" data-en="Tora MOD plans to support 'Host-only Mode' (where only the host installs the mod, allowing mobile/vanilla players to join) and 'Client-mod Mode' (where all players install for full features).">
+        Tora MODは、部屋のホストだけがMODを入れれば他のプレイヤー（バニラ/スマホ/Switch勢）も参加できる『ホストMODモード』と、全員がMODを入れて全機能を楽しむ『クライアントMODモード』に対応予定です。
+      </p>
+    </section>
+
+    <section class="info-card">
+      <h2 data-ja="PC版の導入手順（Steam / Epic）" data-en="PC Installation Steps (Steam / Epic)">PC版の導入手順（Steam / Epic）</h2>
+      
+      <div class="guide-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 data-ja="バニラのAmong Usを用意" data-en="Prepare Clean Among Us">バニラのAmong Usを用意</h3>
+          <p data-ja="他のMODが入っていない最新バージョンのAmong Usを用意します。元のゲームフォルダをコピーして別名で保存しておくことを推奨します。" data-en="Make sure you have a clean, updated version of Among Us. We recommend creating a copy of your game folder.">他のMODが入っていない最新バージョンのAmong Usを用意します。</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 data-ja="Tora MODのファイルをダウンロード" data-en="Download Tora MOD Files">Tora MODのファイルをダウンロード</h3>
+          <p data-ja="配布されている最新のTora MOD（ZIPファイル）をダウンロードし、解凍します。" data-en="Download the latest Tora MOD zip archive and extract it.">配布されている最新のTora MOD（ZIPファイル）をダウンロードし、解凍します。</p>
+        </div>
+      </div>
+
+      <div class="guide-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 data-ja="ゲームフォルダに貼り付けて起動" data-en="Paste into Game Folder & Launch">ゲームフォルダに貼り付けて起動</h3>
+          <p data-ja="解凍したファイル群をAmong Usの実行ファイル（Among Us.exe）と同じフォルダにすべてコピーし、通常通りゲームを起動します。左上にTora MODのロゴが出れば成功です！" data-en="Copy all extracted files into your Among Us game folder alongside Among Us.exe, then launch the game. Success if Tora MOD logo appears on top-left!">解凍したファイル群をAmong Usのフォルダにコピーして起動します。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ⑦ ★新設：よくある質問（F&Q）ページ -->
+  <div id="page-faq" class="page-view">
+    <h1 data-ja="よくある質問 (F&Q)" data-en="Frequently Asked Questions (F&Q)">よくある質問 (F&Q)</h1>
+    <div class="subtitle">FAQ & Troubleshooting</div>
+
+    <section class="info-card">
+      <p data-ja="よくある質問やトラブルの対処法です。タップすると回答が開きます。" data-en="Common questions and troubleshooting steps. Tap to expand answers.">よくある質問やトラブルの対処法です。タップすると回答が開きます。</p>
+
+      <div class="faq-list">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span data-ja="Q. MODを入れていないフレンドも参加できますか？" data-en="Q. Can friends without the mod join?">Q. MODを入れていないフレンドも参加できますか？</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer" data-ja="ホストMODモードで部屋が立てられている場合は、部屋主（ホスト）だけがPCでMODを入れていれば、他の参加者はMODなし（スマホやSwitchなど）でも参加可能です！クライアント専用機能を使う場合は全員の導入が必要です。" data-en="If hosted in Host-only Mode, only the room host needs the mod installed! Other players on mobile, console, or vanilla PC can join freely. Client-specific features require everyone to install.">
+            ホストMODモードで部屋が立てられている場合は、部屋主（ホスト）だけがPCでMODを入れていれば、他の参加者はMODなし（スマホやSwitchなど）でも参加可能です！
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span data-ja="Q. 起動時に画面が真っ暗になる・クラッシュします" data-en="Q. Black screen on launch or game crashes?">Q. 起動時に画面が真っ暗になる・クラッシュします</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer" data-ja="Among Us本体のバージョンとMODの対応バージョンが合っていない可能性があります。ゲームの整合性を確認するか、初回起動時はBepInExの初期読み込みで1〜2分黒画面が続くことがあるため少しお待ちください。" data-en="Your Among Us version may not match the supported mod version. Also note that the first launch may take 1-2 minutes on a black screen while BepInEx initializes.">
+            Among Us本体のバージョンとMODの対応バージョンが合っていない可能性があります。初回の起動時は1〜2分黒画面が続くことがあるため少しお待ちください。
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span data-ja="Q. 公式サーバーでBANされる心配はありますか？" data-en="Q. Is there any risk of being banned on official servers?">Q. 公式サーバーでBANされる心配はありますか？</span>
+            <span class="faq-arrow">▼</span>
+          </div>
+          <div class="faq-answer" data-ja="プライベートマッチ（非公開部屋）で遊ぶ分には問題ありません。ただし、野良の公開マッチでチートのように使用すると通報されるリスクがあるため、必ず身内やカスタムマッチで遊んでください。" data-en="Playing custom mods in private lobbies with friends is safe. Avoid using host mods maliciously in public lobbies to prevent reports.">
+            プライベートマッチ（非公開部屋）で遊ぶ分には問題ありません。必ず身内やカスタムマッチで遊んでください。
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ⑧ ★新設：コマンド一覧ページ -->
+  <div id="page-commands" class="page-view">
+    <h1 data-ja="コマンド一覧" data-en="In-Game Commands">コマンド一覧</h1>
+    <div class="subtitle">Chat Commands</div>
+
+    <section class="info-card">
+      <p data-ja="ゲーム内のロビーチャットに入力して使える便利なチャットコマンドです。『コピー』を押すとコマンドをコピーできます。" data-en="Helpful in-game chat commands for lobbies. Click 'Copy' to copy to clipboard.">ゲーム内のロビーチャットに入力して使える便利なコマンドです。「コピー」を押すとクリップボードにコピーできます。</p>
+
+      <div class="command-list">
+        <div class="command-card">
+          <div class="command-info">
+            <span class="command-code">/help</span>
+            <p class="command-desc" data-ja="使用可能なコマンド一覧とヘルプを表示します。" data-en="Displays the list of available commands and help.">使用可能なコマンド一覧とヘルプを表示します。</p>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyCommand('/help', this)" data-ja="コピー" data-en="Copy">コピー</button>
+        </div>
+
+        <div class="command-card">
+          <div class="command-info">
+            <span class="command-code">/myrole</span>
+            <p class="command-desc" data-ja="自分の現在の役職名と能力の詳細をチャットで再確認します。" data-en="Re-displays your current role and abilities in private chat.">自分の現在の役職名と能力の詳細を再確認します。</p>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyCommand('/myrole', this)" data-ja="コピー" data-en="Copy">コピー</button>
+        </div>
+
+        <div class="command-card">
+          <div class="command-info">
+            <span class="command-code">/h</span>
+            <p class="command-desc" data-ja="現在のカスタム設定や役職の内訳設定を一覧表示します。" data-en="Displays the room's custom settings and role chances.">現在のカスタム設定や役職の内訳を一覧表示します。</p>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyCommand('/h', this)" data-ja="コピー" data-en="Copy">コピー</button>
+        </div>
+
+        <div class="command-card">
+          <div class="command-info">
+            <span class="command-code">/color [色名]</span>
+            <p class="command-desc" data-ja="ロビーで自分の宇宙服の色を変更します（例: /color red）。" data-en="Changes your crewmate color in the lobby (e.g. /color red).">ロビーで自分の宇宙服の色を変更します。</p>
+          </div>
+          <button type="button" class="copy-btn" onclick="copyCommand('/color ', this)" data-ja="コピー" data-en="Copy">コピー</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ⑨ ★新設：パッチノートページ -->
+  <div id="page-patchnotes" class="page-view">
+    <h1 data-ja="パッチノート" data-en="Patch Notes">パッチノート</h1>
+    <div class="subtitle">Update History</div>
+
+    <section class="info-card">
+      <div class="plan-list">
+        <div class="plan-item">
+          <div class="plan-item-header">
+            <span class="plan-badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e;">v1.0.0</span>
+            <span class="plan-title" data-ja="Tora MOD 初版ベータリリース" data-en="Tora MOD Initial Beta Release">Tora MOD 初版ベータリリース</span>
+          </div>
+          <p class="plan-desc" data-ja="・公式Wikiシステムの公開\n・役職提案およびバグ報告フォームの実装\n・ホスト/クライアントMODモードの仕様策定" data-en="• Official Wiki system launched\n• Role suggestion and bug report systems implemented\n• Mode architecture (Host/Client) defined">
+            ・公式Wikiシステムの公開<br>
+            ・役職提案およびバグ報告フォームの実装<br>
+            ・ホスト/クライアントMODモードの仕様策定
+          </p>
+        </div>
+
+        <div class="plan-item">
+          <div class="plan-item-header">
+            <span class="plan-badge" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24; border-color: #fbbf24;">v0.9.0</span>
+            <span class="plan-title" data-ja="プロトタイプ開発" data-en="Prototype Development">プロトタイプ開発</span>
+          </div>
+          <p class="plan-desc" data-ja="・コアシステムの基礎テスト\n・Discord Botとの連携機能テスト完了" data-en="• Core system foundation test\n• Discord Bot integration tests completed">
+            ・コアシステムの基礎テスト<br>
+            ・Discord Botとの連携機能テスト完了
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
 </main>
 
 <footer>
@@ -709,18 +916,15 @@ function toggleSidebar() {
 
 function showPage(pageName, filterCategory) {
   document.querySelectorAll(".page-view").forEach(el => el.classList.remove("active"));
-  if (pageName === 'home') document.getElementById("page-home").classList.add("active");
-  else if (pageName === 'roles') {
-    document.getElementById("page-roles").classList.add("active");
-    if (filterCategory) {
-      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-      const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
-      if (targetBtn) targetBtn.classList.add("active");
-    }
-  } else if (pageName === 'suggest') document.getElementById("page-suggest").classList.add("active");
-  else if (pageName === 'bug') document.getElementById("page-bug").classList.add("active");
-  else if (pageName === 'bug-list') {
-    document.getElementById("page-bug-list").classList.add("active");
+  
+  const targetPage = document.getElementById(`page-${pageName}`);
+  if (targetPage) targetPage.classList.add("active");
+
+  if (pageName === 'roles' && filterCategory) {
+    document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
+    const targetBtn = document.querySelector(`.filter-btn.${filterCategory}`);
+    if (targetBtn) targetBtn.classList.add("active");
+  } else if (pageName === 'bug-list') {
     fetchBugList();
   }
 
@@ -732,6 +936,24 @@ function showPage(pageName, filterCategory) {
 function selectFilter(btn) {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   btn.classList.add("active");
+}
+
+/* F&Q アコーディオン開閉 */
+function toggleFaq(item) {
+  item.classList.toggle("open");
+}
+
+/* コマンドコピー機能 */
+function copyCommand(cmd, btn) {
+  navigator.clipboard.writeText(cmd).then(() => {
+    const originalText = btn.textContent;
+    btn.textContent = currentLang === 'en' ? "Copied!" : "コピー完了!";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = originalText;
+      btn.classList.remove("copied");
+    }, 1500);
+  });
 }
 
 function handleCampChange(camp) {
@@ -1022,11 +1244,9 @@ async function handleBugSubmit(event) {
   finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する"; }
 }
 
-/* ★★★ 自動翻訳＆高速キャッシュ管理（ローカル保存で次から0秒） ★★★ */
+/* 自動翻訳＆キャッシュ管理 */
 let bugTranslationCache = {};
-try {
-  bugTranslationCache = JSON.parse(localStorage.getItem("tora-bug-translations") || "{}");
-} catch(e) {}
+try { bugTranslationCache = JSON.parse(localStorage.getItem("tora-bug-translations") || "{}"); } catch(e) {}
 
 async function translateTextToEn(text) {
   if (!text) return "";
@@ -1039,7 +1259,6 @@ async function translateTextToEn(text) {
     if (data && data.responseData && data.responseData.translatedText) {
       const translated = data.responseData.translatedText;
       bugTranslationCache[text] = translated;
-      // キャッシュをローカル保存して次回以降は0秒化
       localStorage.setItem("tora-bug-translations", JSON.stringify(bugTranslationCache));
       return translated;
     }
@@ -1049,7 +1268,7 @@ async function translateTextToEn(text) {
 
 let loadedBugs = [];
 
-/* ③ バグ一覧の自動取得と表示（先読み翻訳機能付き） */
+/* ③ バグ一覧の自動取得と表示 */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
@@ -1066,7 +1285,6 @@ async function fetchBugList() {
       return;
     }
 
-    // ★先読み翻訳：裏で事前に全バグの英訳を走らせてキャッシュしておく
     loadedBugs.forEach(bug => {
       if (bug.desc && !bugTranslationCache[bug.desc]) {
         translateTextToEn(bug.desc);
@@ -1079,7 +1297,6 @@ async function fetchBugList() {
   }
 }
 
-// バグ一覧の描画（キャッシュ優先で待ち時間ゼロ化）
 function renderBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container || !loadedBugs) return;
@@ -1093,10 +1310,8 @@ function renderBugList() {
 
     if (currentLang === 'en') {
       if (bugTranslationCache[bug.desc]) {
-        // キャッシュがあれば待ち時間0秒で表示
         descP.textContent = bugTranslationCache[bug.desc];
       } else {
-        // 翻訳待ちの間は薄いガイド付きで表示
         descP.innerHTML = `${bug.desc} <span class="translating-hint">Translating...</span>`;
         translateTextToEn(bug.desc).then(translated => {
           descP.textContent = translated;
@@ -1169,7 +1384,6 @@ function changeTheme(theme) {
   applyTheme(theme);
 }
 
-// 言語切り替え処理
 function applyLanguage(lang) {
   currentLang = lang;
   document.getElementById("langSelect").value = lang;
