@@ -336,12 +336,12 @@ select {
     <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
   </div>
 
+  <!-- ガイド・サポート -->
   <div class="menu-section">
     <div class="menu-section-title" data-ja="ガイド・サポート" data-en="GUIDE & SUPPORT">ガイド・サポート</div>
     <a class="menu-link" onclick="showPage('install')" data-ja="MOD導入ガイド" data-en="Installation Guide">MOD導入ガイド</a>
     <a class="menu-link" onclick="showPage('faq')" data-ja="よくある質問 (F&Q)" data-en="FAQ">よくある質問 (F&Q)</a>
     <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
-    <a class="menu-link" onclick="showPage('patchnotes')" data-ja="パッチノート" data-en="Patch Notes">パッチノート</a>
   </div>
 
   <div class="menu-section">
@@ -720,7 +720,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑧ ★更新：コマンド一覧ページ（指定の3コマンドのみ・カラー削除） -->
+  <!-- ⑧ コマンド一覧ページ（指定の3コマンドのみ） -->
   <div id="page-commands" class="page-view">
     <h1 data-ja="コマンド一覧" data-en="In-Game Commands">コマンド一覧</h1>
     <div class="subtitle">Chat Commands</div>
@@ -729,7 +729,6 @@ select {
       <p data-ja="ゲーム内のロビーチャットに入力して使える便利なコマンドです。『コピー』を押すとコマンドをコピーできます。" data-en="Helpful in-game chat commands for lobbies. Click 'Copy' to copy to clipboard.">ゲーム内のロビーチャットに入力して使える便利なコマンドです。「コピー」を押すとクリップボードにコピーできます。</p>
 
       <div class="command-list">
-        <!-- /h : コマンド一覧 -->
         <div class="command-card">
           <div class="command-info">
             <span class="command-code">/h</span>
@@ -738,7 +737,6 @@ select {
           <button type="button" class="copy-btn" onclick="copyCommand('/h', this)" data-ja="コピー" data-en="Copy">コピー</button>
         </div>
 
-        <!-- /m : 自分の役職 -->
         <div class="command-card">
           <div class="command-info">
             <span class="command-code">/m</span>
@@ -747,46 +745,12 @@ select {
           <button type="button" class="copy-btn" onclick="copyCommand('/m', this)" data-ja="コピー" data-en="Copy">コピー</button>
         </div>
 
-        <!-- /n r : 役職一覧 -->
         <div class="command-card">
           <div class="command-info">
             <span class="command-code">/n r</span>
             <p class="command-desc" data-ja="ゲーム内の役職一覧を表示します。" data-en="Displays the list of all custom roles in the game.">ゲーム内の役職一覧を表示します。</p>
           </div>
           <button type="button" class="copy-btn" onclick="copyCommand('/n r', this)" data-ja="コピー" data-en="Copy">コピー</button>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <!-- ⑨ パッチノートページ -->
-  <div id="page-patchnotes" class="page-view">
-    <h1 data-ja="パッチノート" data-en="Patch Notes">パッチノート</h1>
-    <div class="subtitle">Update History</div>
-
-    <section class="info-card">
-      <div class="plan-list">
-        <div class="plan-item">
-          <div class="plan-item-header">
-            <span class="plan-badge" style="background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e;">v1.0.0</span>
-            <span class="plan-title" data-ja="Tora MOD 初版ベータリリース" data-en="Tora MOD Initial Beta Release">Tora MOD 初版ベータリリース</span>
-          </div>
-          <p class="plan-desc" data-ja="・公式Wikiシステムの公開\n・役職提案およびバグ報告フォームの実装\n・ホスト/クライアントMODモードの仕様策定" data-en="• Official Wiki system launched\n• Role suggestion and bug report systems implemented\n• Mode architecture (Host/Client) defined">
-            ・公式Wikiシステムの公開<br>
-            ・役職提案およびバグ報告フォームの実装<br>
-            ・ホスト/クライアントMODモードの仕様策定
-          </p>
-        </div>
-
-        <div class="plan-item">
-          <div class="plan-item-header">
-            <span class="plan-badge" style="background: rgba(251, 191, 36, 0.2); color: #fbbf24; border-color: #fbbf24;">v0.9.0</span>
-            <span class="plan-title" data-ja="プロトタイプ開発" data-en="Prototype Development">プロトタイプ開発</span>
-          </div>
-          <p class="plan-desc" data-ja="・コアシステムの基礎テスト\n・Discord Botとの連携機能テスト完了" data-en="• Core system foundation test\n• Discord Bot integration tests completed">
-            ・コアシステムの基礎テスト<br>
-            ・Discord Botとの連携機能テスト完了
-          </p>
         </div>
       </div>
     </section>
