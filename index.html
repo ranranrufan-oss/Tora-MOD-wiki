@@ -233,6 +233,9 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .bug-desc {
   font-size: 15px; color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-all; flex: 1;
 }
+.translating-hint {
+  font-size: 12px; color: var(--sub); font-style: italic; margin-left: 6px;
+}
 .bug-card-del-btn {
   background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px;
 }
@@ -1019,8 +1022,11 @@ async function handleBugSubmit(event) {
   finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する"; }
 }
 
-/* ★★★ バグ内容の自動翻訳＆キャッシュ管理 ★★★ */
-const bugTranslationCache = {};
+/* ★★★ 自動翻訳＆高速キャッシュ管理（ローカル保存で次から0秒） ★★★ */
+let bugTranslationCache = {};
+try {
+  bugTranslationCache = JSON.parse(localStorage.getItem("tora-bug-translations") || "{}");
+} catch(e) {}
 
 async function translateTextToEn(text) {
   if (!text) return "";
@@ -1031,18 +1037,19 @@ async function translateTextToEn(text) {
     if (!res.ok) return text;
     const data = await res.json();
     if (data && data.responseData && data.responseData.translatedText) {
-      bugTranslationCache[text] = data.responseData.translatedText;
-      return data.responseData.translatedText;
+      const translated = data.responseData.translatedText;
+      bugTranslationCache[text] = translated;
+      // キャッシュをローカル保存して次回以降は0秒化
+      localStorage.setItem("tora-bug-translations", JSON.stringify(bugTranslationCache));
+      return translated;
     }
-  } catch (e) {
-    // 翻訳失敗時は元のテキスト
-  }
+  } catch (e) {}
   return text;
 }
 
 let loadedBugs = [];
 
-/* ③ バグ一覧の自動取得と表示（英語モード時の自動翻訳機能付き） */
+/* ③ バグ一覧の自動取得と表示（先読み翻訳機能付き） */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
@@ -1059,30 +1066,38 @@ async function fetchBugList() {
       return;
     }
 
+    // ★先読み翻訳：裏で事前に全バグの英訳を走らせてキャッシュしておく
+    loadedBugs.forEach(bug => {
+      if (bug.desc && !bugTranslationCache[bug.desc]) {
+        translateTextToEn(bug.desc);
+      }
+    });
+
     renderBugList();
   } catch (e) {
     container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">${currentLang === 'en' ? 'Unable to connect to Bot. Please try again in a few moments.' : '現在Botと接続中です。数秒待ってからもう一度開いてみてください。<br><span style="font-size:12px; color:var(--sub);">※Discordで「既読」を押したバグがここに自動表示されます。</span>'}</p>`;
   }
 }
 
-// バグ一覧の描画（日英自動切り替え）
-async function renderBugList() {
+// バグ一覧の描画（キャッシュ優先で待ち時間ゼロ化）
+function renderBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container || !loadedBugs) return;
 
   container.innerHTML = "";
-  for (const bug of loadedBugs) {
+  loadedBugs.forEach(bug => {
     const card = document.createElement("div");
     card.className = "bug-card";
     const descP = document.createElement("p");
     descP.className = "bug-desc";
 
-    // 英語モードなら自動翻訳を適用
     if (currentLang === 'en') {
       if (bugTranslationCache[bug.desc]) {
+        // キャッシュがあれば待ち時間0秒で表示
         descP.textContent = bugTranslationCache[bug.desc];
       } else {
-        descP.textContent = bug.desc; // 取得できるまで元のテキスト
+        // 翻訳待ちの間は薄いガイド付きで表示
+        descP.innerHTML = `${bug.desc} <span class="translating-hint">Translating...</span>`;
         translateTextToEn(bug.desc).then(translated => {
           descP.textContent = translated;
         });
@@ -1104,7 +1119,7 @@ async function renderBugList() {
     }
 
     container.appendChild(card);
-  }
+  });
 }
 
 /* 管理者用：バグ一覧に直接追加 */
@@ -1141,7 +1156,7 @@ async function deleteBugDirectly(bugId) {
   } catch (e) { alert("Connection error."); }
 }
 
-/* ★★★ テーマ＆言語管理（日英完全切替対応） ★★★ */
+/* テーマ＆言語管理 */
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 let currentLang = localStorage.getItem("tora-lang") || "ja";
 
@@ -1180,7 +1195,6 @@ function applyLanguage(lang) {
 
   switchProposalType(currentProposalType);
 
-  // バグ一覧ページが開いている場合、バグ内容の言語を即時切り替え
   if (loadedBugs && loadedBugs.length > 0) {
     renderBugList();
   }
