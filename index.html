@@ -327,7 +327,7 @@ select {
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2 data-ja="Welcome to Tora MOD Wiki" data-en="Welcome to Tora MOD Wiki">Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
+      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
       <p id="homeWelcomeDesc" data-ja="Tora MODに関する情報をまとめたWikiです。役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
         <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
@@ -419,12 +419,12 @@ select {
         </div>
 
         <div class="form-group" id="originModGroup" style="display: none;">
-          <label class="form-label"><span data-ja="移植元のMOD名・ゲーム名" data-en="Original Mod / Game Name">移植元のMOD名・ゲーム名</span> <span class="req">*必須</span></label>
-          <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
+          <label class="form-label"><span data-ja="移植元のMOD名・ゲーム名" data-en="Original Mod / Game Name">移植元のMOD名・ゲーム名</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど" data-placeholder-ja="例：Town of Us、The Other Roles、人狼ゲームなど" data-placeholder-en="e.g. Town of Us, The Other Roles, Werewolf...">
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span data-ja="対応モード" data-en="Target Mode">対応モード</span> <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="対応モード" data-en="Target Mode">対応モード</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
           <select id="modMode" class="form-select" required>
             <option value="両方" data-ja="両方 (ホスト・クライアント対応)" data-en="Both (Host & Client)">両方 (ホスト・クライアント対応)</option>
             <option value="ホストMOD" data-ja="ホストMOD (ホストのみ導入で動作)" data-en="Host-only MOD">ホストMOD (ホストのみ導入で動作)</option>
@@ -433,93 +433,93 @@ select {
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span data-ja="陣営" data-en="Team / Camp">陣営</span> <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="陣営" data-en="Team / Camp">陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
           <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
-            <option value="クルーメイト">クルーメイト</option>
-            <option value="インポスター">インポスター</option>
-            <option value="マッドメイト">マッドメイト</option>
-            <option value="第三陣営">第三陣営</option>
-            <option value="コンビネーション">コンビネーション</option>
-            <option value="属性">属性</option>
-            <option value="幽霊役職">幽霊役職</option>
+            <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
+            <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
+            <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+            <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
+            <option value="コンビネーション" data-ja="コンビネーション" data-en="Combination">コンビネーション</option>
+            <option value="属性" data-ja="属性" data-en="Modifier">属性</option>
+            <option value="幽霊役職" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</option>
           </select>
         </div>
 
         <div class="form-group" id="normalRoleGroup">
           <div class="form-row">
             <div>
-              <label class="form-label"><span data-ja="役職名（日本語）" data-en="Role Name (Japanese)">役職名（日本語）</span> <span class="req">*必須</span></label>
-              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
+              <label class="form-label"><span data-ja="役職名（日本語）" data-en="Role Name (Japanese)">役職名（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" data-placeholder-ja="例：タイムトラベラー" data-placeholder-en="e.g. Time Traveler" required>
             </div>
             <div>
-              <label class="form-label"><span data-ja="役職名（英語・英名）" data-en="Role Name (English)">役職名（英語・英名）</span> <span class="req">*必須</span></label>
-              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" required>
+              <label class="form-label"><span data-ja="役職名（英語・英名）" data-en="Role Name (English)">役職名（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" data-placeholder-ja="例：Time Traveler" data-placeholder-en="e.g. Time Traveler" required>
             </div>
           </div>
         </div>
 
         <div class="form-group" id="winConditionGroup" style="display: none;">
-          <label class="form-label"><span data-ja="勝利条件" data-en="Win Condition">勝利条件</span> <span class="req">*必須</span></label>
-          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
+          <label class="form-label"><span data-ja="勝利条件" data-en="Win Condition">勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど" data-placeholder-ja="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど" data-placeholder-en="e.g. All other players die, complete specific tasks to survive..."></textarea>
         </div>
 
         <div class="form-group" id="combiRole1Group" style="display: none;">
           <div class="form-row-3">
             <div>
-              <label class="form-label"><span data-ja="役職1の陣営" data-en="Role 1 Team">役職1の陣営</span> <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職1の陣営" data-en="Role 1 Team">役職1の陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
               <select id="combiCamp1" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト">クルーメイト</option>
-                <option value="インポスター">インポスター</option>
-                <option value="マッドメイト">マッドメイト</option>
-                <option value="第三陣営">第三陣営</option>
+                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
+                <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
+                <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+                <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
               </select>
             </div>
             <div>
-              <label class="form-label"><span data-ja="役職1（日本語）" data-en="Role 1 (Japanese)">役職1（日本語）</span> <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ">
+              <label class="form-label"><span data-ja="役職1（日本語）" data-en="Role 1 (Japanese)">役職1（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ" data-placeholder-ja="例：ラバーズ" data-placeholder-en="e.g. Lovers">
             </div>
             <div>
-              <label class="form-label"><span data-ja="役職1（英語・英名）" data-en="Role 1 (English)">役職1（英語・英名）</span> <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers">
+              <label class="form-label"><span data-ja="役職1（英語・英名）" data-en="Role 1 (English)">役職1（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers" data-placeholder-ja="例：Lovers" data-placeholder-en="e.g. Lovers">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin1Group" style="display: none;">
-          <label class="form-label"><span data-ja="役職1の勝利条件" data-en="Role 1 Win Condition">役職1の勝利条件</span> <span class="req">*必須</span></label>
-          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など"></textarea>
+          <label class="form-label"><span data-ja="役職1の勝利条件" data-en="Role 1 Win Condition">役職1の勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など" data-placeholder-ja="例：役職1の単独勝利条件など" data-placeholder-en="e.g. Solo win condition for role 1..."></textarea>
         </div>
 
         <div class="form-group" id="combiRole2Group" style="display: none;">
           <div class="form-row-3">
             <div>
-              <label class="form-label"><span data-ja="役職2の陣営" data-en="Role 2 Team">役職2の陣営</span> <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職2の陣営" data-en="Role 2 Team">役職2の陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
               <select id="combiCamp2" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト">クルーメイト</option>
-                <option value="インポスター">インポスター</option>
-                <option value="マッドメイト">マッドメイト</option>
-                <option value="第三陣営">第三陣営</option>
+                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
+                <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
+                <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+                <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
               </select>
             </div>
             <div>
-              <label class="form-label"><span data-ja="役職2（日本語）" data-en="Role 2 (Japanese)">役職2（日本語）</span> <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー">
+              <label class="form-label"><span data-ja="役職2（日本語）" data-en="Role 2 (Japanese)">役職2（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー" data-placeholder-ja="例：パートナー" data-placeholder-en="e.g. Partner">
             </div>
             <div>
-              <label class="form-label"><span data-ja="役職2（英語・英名）" data-en="Role 2 (English)">役職2（英語・英名）</span> <span class="req">*必須</span></label>
-              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner">
+              <label class="form-label"><span data-ja="役職2（英語・英名）" data-en="Role 2 (English)">役職2（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner" data-placeholder-ja="例：Partner" data-placeholder-en="e.g. Partner">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin2Group" style="display: none;">
-          <label class="form-label"><span data-ja="役職2の勝利条件" data-en="Role 2 Win Condition">役職2の勝利条件</span> <span class="req">*必須</span></label>
-          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など"></textarea>
+          <label class="form-label"><span data-ja="役職2の勝利条件" data-en="Role 2 Win Condition">役職2の勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など" data-placeholder-ja="例：役職2の単独勝利条件など" data-placeholder-en="e.g. Solo win condition for role 2..."></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span data-ja="能力・説明" data-en="Ability & Description">能力・説明</span> <span class="req">*必須</span></label>
-          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
+          <label class="form-label"><span data-ja="能力・説明" data-en="Ability & Description">能力・説明</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" data-placeholder-ja="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" data-placeholder-en="Describe abilities, cooldowns, mechanics, interactions in detail..." required></textarea>
         </div>
 
         <div class="form-group">
@@ -545,22 +545,22 @@ select {
       <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label"><span data-ja="何試合目か" data-en="Match Number">何試合目か</span> <span class="req">*必須</span></label>
-            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
+            <label class="form-label"><span data-ja="何試合目か" data-en="Match Number">何試合目か</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" data-placeholder-ja="例：1試合目、3戦目など" data-placeholder-en="e.g. Match 1, Game 3..." required>
           </div>
           <div class="form-group">
-            <label class="form-label"><span data-ja="何ターン目か" data-en="Turn / Round">何ターン目か</span> <span class="req">*必須</span></label>
-            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
+            <label class="form-label"><span data-ja="何ターン目か" data-en="Turn / Round">何ターン目か</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" data-placeholder-ja="例：1ターン目、2回目の会議後など" data-placeholder-en="e.g. Round 1, after meeting 2..." required>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span data-ja="バグ内容・発生状況" data-en="Bug Description & Reproduction">バグ内容・発生状況</span> <span class="req">*必須</span></label>
-          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
+          <label class="form-label"><span data-ja="バグ内容・発生状況" data-en="Bug Description & Reproduction">バグ内容・発生状況</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
+          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" data-placeholder-ja="どのような状況でどんな不具合が起きたかを詳しく教えてください。" data-placeholder-en="Describe what happened and how to reproduce..." required></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label"><span data-ja="ログファイル" data-en="Log File">ログファイル</span> <span class="req">*必須（.log / .txt）</span></label>
+          <label class="form-label"><span data-ja="ログファイル" data-en="Log File">ログファイル</span> <span class="req" data-ja="*必須（.log / .txt）" data-en="*Required (.log / .txt)">*必須（.log / .txt）</span></label>
           <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
             <input type="file" id="bugLogFile" accept=".log,.txt" required onchange="handleFileSelected(this)">
             <div class="file-upload-icon">📁</div>
@@ -582,10 +582,11 @@ select {
     <div class="subtitle">Known Bugs</div>
 
     <section class="info-card">
+      <!-- ★管理者専用バグ追加枠（日英完全対応） -->
       <div id="adminBugAddSection" class="admin-bug-add-box" style="display: none;">
-        <label class="form-label" style="color: #fbbf24;">[ADMIN] バグ一覧に直接追加</label>
-        <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます"></textarea>
-        <button type="button" class="submit-btn admin" style="margin-top: 8px;" onclick="addAdminBugDirectly()">バグ一覧に追加</button>
+        <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] バグ一覧に直接追加" data-en="[ADMIN] Add Bug Directly to List">[ADMIN] バグ一覧に直接追加</label>
+        <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-ja="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-en="Admin: Enter bug description here and click Add"></textarea>
+        <button type="button" class="submit-btn admin" style="margin-top: 8px;" onclick="addAdminBugDirectly()" data-ja="バグ一覧に追加" data-en="Add to Bug List">バグ一覧に追加</button>
       </div>
 
       <p data-ja="現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。" data-en="List of currently tracked bugs. When marked as resolved on Discord, they will be removed automatically.">現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
@@ -601,7 +602,7 @@ select {
   <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki
 </footer>
 
-<!-- ★設定モーダル（言語設定を追加） -->
+<!-- 設定モーダル -->
 <div class="modal" id="settingsModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -609,7 +610,6 @@ select {
       <button class="close" onclick="closeSettings()">×</button>
     </div>
     
-    <!-- テーマ設定 -->
     <div class="setting-row">
       <span id="labelTheme" data-ja="テーマ" data-en="Theme">テーマ</span>
       <select id="themeSelect" onchange="changeTheme(this.value)">
@@ -618,7 +618,6 @@ select {
       </select>
     </div>
 
-    <!-- ★言語設定 -->
     <div class="setting-row">
       <span id="labelLang" data-ja="言語 (Language)" data-en="Language">言語 (Language)</span>
       <select id="langSelect" onchange="changeLanguage(this.value)">
@@ -1059,7 +1058,7 @@ async function addAdminBugDirectly() {
   const input = document.getElementById("adminBugInput");
   const desc = input.value.trim();
   if (!desc) {
-    alert("バグ内容を入力してください。");
+    alert(currentLang === 'en' ? "Please enter bug description." : "バグ内容を入力してください。");
     return;
   }
   try {
@@ -1069,25 +1068,25 @@ async function addAdminBugDirectly() {
     });
     if (response.ok) {
       input.value = "";
-      alert("バグ一覧に直接追加しました！");
+      alert(currentLang === 'en' ? "Added to bug list directly!" : "バグ一覧に直接追加しました！");
       fetchBugList();
-    } else { alert("追加に失敗しました。"); }
-  } catch (e) { alert("通信エラーが発生しました。"); }
+    } else { alert("Failed to add."); }
+  } catch (e) { alert("Connection error."); }
 }
 
 /* 管理者用：バグ一覧から直接削除 */
 async function deleteBugDirectly(bugId) {
   if (!isAdmin) return;
-  if (!confirm("このバグを一覧から削除（解決）しますか？")) return;
+  if (!confirm(currentLang === 'en' ? "Remove this bug from the list?" : "このバグを一覧から削除（解決）しますか？")) return;
   try {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? `${BOT_SERVER_URL}api/bugs/${bugId}` : `${BOT_SERVER_URL}/api/bugs/${bugId}`;
     const response = await fetch(apiUrl, { method: "DELETE" });
     if (response.ok) fetchBugList();
-    else alert("削除に失敗しました。");
-  } catch (e) { alert("通信エラーが発生しました。"); }
+    else alert("Failed to delete.");
+  } catch (e) { alert("Connection error."); }
 }
 
-/* ★★★ テーマ＆言語管理 ★★★ */
+/* ★★★ テーマ＆言語管理（日英完全切替対応） ★★★ */
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 let currentLang = localStorage.getItem("tora-lang") || "ja";
 
@@ -1100,22 +1099,34 @@ function changeTheme(theme) {
   applyTheme(theme);
 }
 
-// ★言語切り替え処理
+// 言語切り替え処理
 function applyLanguage(lang) {
   currentLang = lang;
   document.getElementById("langSelect").value = lang;
 
-  // data-ja / data-en を持つすべてのテキストを一括切り替え
+  // テキストの一括切り替え
   document.querySelectorAll("[data-ja][data-en]").forEach(el => {
     el.textContent = el.getAttribute(`data-${lang}`);
   });
 
-  // placeholderの切り替え
+  // プレースホルダーの一括切り替え
   document.querySelectorAll("[data-placeholder-ja][data-placeholder-en]").forEach(el => {
     el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
   });
 
-  // 提案タイプのタイトル切り替え反映
+  // セレクトボックスの option の文字切り替え
+  document.querySelectorAll("option[data-ja][data-en]").forEach(opt => {
+    opt.textContent = opt.getAttribute(`data-${lang}`);
+  });
+
+  // 必須・任意の文字切り替え
+  document.querySelectorAll(".req").forEach(el => {
+    el.textContent = lang === 'en' ? '*Required' : '*必須';
+  });
+  document.querySelectorAll(".opt").forEach(el => {
+    el.textContent = lang === 'en' ? 'Optional' : '任意';
+  });
+
   switchProposalType(currentProposalType);
 }
 
