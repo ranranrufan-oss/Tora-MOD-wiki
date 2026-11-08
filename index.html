@@ -582,7 +582,6 @@ select {
     <div class="subtitle">Known Bugs</div>
 
     <section class="info-card">
-      <!-- ★管理者専用バグ追加枠（日英完全対応） -->
       <div id="adminBugAddSection" class="admin-bug-add-box" style="display: none;">
         <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] バグ一覧に直接追加" data-en="[ADMIN] Add Bug Directly to List">[ADMIN] バグ一覧に直接追加</label>
         <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-ja="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-en="Admin: Enter bug description here and click Add"></textarea>
@@ -1020,7 +1019,30 @@ async function handleBugSubmit(event) {
   finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する"; }
 }
 
-/* ③ バグ一覧の自動取得と表示 */
+/* ★★★ バグ内容の自動翻訳＆キャッシュ管理 ★★★ */
+const bugTranslationCache = {};
+
+async function translateTextToEn(text) {
+  if (!text) return "";
+  if (bugTranslationCache[text]) return bugTranslationCache[text];
+
+  try {
+    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ja|en`);
+    if (!res.ok) return text;
+    const data = await res.json();
+    if (data && data.responseData && data.responseData.translatedText) {
+      bugTranslationCache[text] = data.responseData.translatedText;
+      return data.responseData.translatedText;
+    }
+  } catch (e) {
+    // 翻訳失敗時は元のテキスト
+  }
+  return text;
+}
+
+let loadedBugs = [];
+
+/* ③ バグ一覧の自動取得と表示（英語モード時の自動翻訳機能付き） */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
@@ -1030,25 +1052,58 @@ async function fetchBugList() {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
     const response = await fetch(apiUrl);
     if (!response.ok) throw new Error();
-    const bugs = await response.json();
+    loadedBugs = await response.json();
 
-    if (!bugs || bugs.length === 0) {
+    if (!loadedBugs || loadedBugs.length === 0) {
       container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'No tracked bugs currently! ✨' : '現在、対応中のバグはありません！✨<br><span style="font-size:12px;">（Discord側で「既読」ボタンを押すとここに表示されます）</span>'}</p>`;
       return;
     }
 
-    container.innerHTML = "";
-    bugs.forEach(bug => {
-      const card = document.createElement("div");
-      card.className = "bug-card";
-      card.innerHTML = `
-        <p class="bug-desc">${bug.desc || "詳細なし"}</p>
-        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteBugDirectly('${bug.id}')" title="削除">×</button>` : ""}
-      `;
-      container.appendChild(card);
-    });
+    renderBugList();
   } catch (e) {
     container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">${currentLang === 'en' ? 'Unable to connect to Bot. Please try again in a few moments.' : '現在Botと接続中です。数秒待ってからもう一度開いてみてください。<br><span style="font-size:12px; color:var(--sub);">※Discordで「既読」を押したバグがここに自動表示されます。</span>'}</p>`;
+  }
+}
+
+// バグ一覧の描画（日英自動切り替え）
+async function renderBugList() {
+  const container = document.getElementById("bugListDisplay");
+  if (!container || !loadedBugs) return;
+
+  container.innerHTML = "";
+  for (const bug of loadedBugs) {
+    const card = document.createElement("div");
+    card.className = "bug-card";
+    const descP = document.createElement("p");
+    descP.className = "bug-desc";
+
+    // 英語モードなら自動翻訳を適用
+    if (currentLang === 'en') {
+      if (bugTranslationCache[bug.desc]) {
+        descP.textContent = bugTranslationCache[bug.desc];
+      } else {
+        descP.textContent = bug.desc; // 取得できるまで元のテキスト
+        translateTextToEn(bug.desc).then(translated => {
+          descP.textContent = translated;
+        });
+      }
+    } else {
+      descP.textContent = bug.desc || "詳細なし";
+    }
+
+    card.appendChild(descP);
+
+    if (isAdmin) {
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.className = "bug-card-del-btn";
+      delBtn.textContent = "×";
+      delBtn.title = currentLang === 'en' ? "Delete" : "削除";
+      delBtn.onclick = () => deleteBugDirectly(bug.id);
+      card.appendChild(delBtn);
+    }
+
+    container.appendChild(card);
   }
 }
 
@@ -1104,22 +1159,18 @@ function applyLanguage(lang) {
   currentLang = lang;
   document.getElementById("langSelect").value = lang;
 
-  // テキストの一括切り替え
   document.querySelectorAll("[data-ja][data-en]").forEach(el => {
     el.textContent = el.getAttribute(`data-${lang}`);
   });
 
-  // プレースホルダーの一括切り替え
   document.querySelectorAll("[data-placeholder-ja][data-placeholder-en]").forEach(el => {
     el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
   });
 
-  // セレクトボックスの option の文字切り替え
   document.querySelectorAll("option[data-ja][data-en]").forEach(opt => {
     opt.textContent = opt.getAttribute(`data-${lang}`);
   });
 
-  // 必須・任意の文字切り替え
   document.querySelectorAll(".req").forEach(el => {
     el.textContent = lang === 'en' ? '*Required' : '*必須';
   });
@@ -1128,6 +1179,11 @@ function applyLanguage(lang) {
   });
 
   switchProposalType(currentProposalType);
+
+  // バグ一覧ページが開いている場合、バグ内容の言語を即時切り替え
+  if (loadedBugs && loadedBugs.length > 0) {
+    renderBugList();
+  }
 }
 
 function changeLanguage(lang) {
