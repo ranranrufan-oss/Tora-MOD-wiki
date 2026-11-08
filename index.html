@@ -224,7 +224,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 }
 .form-status.success { display: block; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
 
-/* ★バグ一覧エリア */
+/* バグ一覧エリア */
 .bug-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
 .bug-card {
   background: var(--card-inner); border: 1px solid var(--border); border-left: 4px solid #fbbf24;
@@ -237,7 +237,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
   background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px;
 }
 
-/* ★管理者用バグ追加枠 */
+/* 管理者用バグ追加枠 */
 .admin-bug-add-box {
   background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px;
   padding: 16px; margin-bottom: 20px;
@@ -247,6 +247,8 @@ footer {
   margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
   border-top: 1px solid var(--border); font-size: 13px;
 }
+
+/* 設定モーダル */
 .modal {
   display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(2px); align-items: center; justify-content: center; padding: 20px; z-index: 300;
@@ -259,7 +261,8 @@ footer {
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .modal-header h2 { margin: 0; font-size: 20px; }
 .close { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
-.setting-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.setting-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 14px; }
+.setting-row:last-child { margin-bottom: 0; }
 select {
   background: var(--bg); color: var(--text); border: 1px solid var(--border);
   padding: 8px 12px; border-radius: 8px; font-size: 14px; outline: none;
@@ -279,40 +282,40 @@ select {
     </button>
     <span class="header-title"><span style="color: #DDBB99 !important;">Tora</span> MOD</span>
   </div>
-  <button class="settings-button" onclick="openSettings()">設定</button>
+  <button class="settings-button" id="headerSettingsBtn" onclick="openSettings()" data-ja="設定" data-en="Settings">設定</button>
 </header>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h3 onclick="handleMenuSecretTap()">メニュー <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
+    <h3 onclick="handleMenuSecretTap()"><span id="sidebarMenuTitle" data-ja="メニュー" data-en="Menu">メニュー</span> <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
     <button class="sidebar-close" onclick="toggleSidebar()">×</button>
   </div>
 
   <div class="menu-section">
-    <div class="menu-section-title">メイン</div>
-    <a class="menu-link" onclick="showPage('home')">トップページ</a>
-    <a class="menu-link suggest" onclick="showPage('suggest')">役職を提案する</a>
-    <a class="menu-link bug" onclick="showPage('bug')">バグ報告</a>
-    <a class="menu-link bug-list" onclick="showPage('bug-list')">バグ一覧（対応中）</a>
+    <div class="menu-section-title" data-ja="メイン" data-en="MAIN">メイン</div>
+    <a class="menu-link" onclick="showPage('home')" data-ja="トップページ" data-en="Home">トップページ</a>
+    <a class="menu-link suggest" onclick="showPage('suggest')" data-ja="役職を提案する" data-en="Suggest Role">役職を提案する</a>
+    <a class="menu-link bug" onclick="showPage('bug')" data-ja="バグ報告" data-en="Report Bug">バグ報告</a>
+    <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
   </div>
 
   <div class="menu-section">
-    <div class="menu-section-title">役職一覧</div>
-    <a class="menu-link all"         onclick="showPage('roles', 'all')">すべての役職</a>
-    <a class="menu-link impostor"    onclick="showPage('roles', 'impostor')">インポスター</a>
-    <a class="menu-link madmate"     onclick="showPage('roles', 'madmate')">マッドメイト</a>
-    <a class="menu-link crewmate"    onclick="showPage('roles', 'crewmate')">クルーメイト</a>
-    <a class="menu-link neutral"     onclick="showPage('roles', 'neutral')">第三陣営</a>
-    <a class="menu-link combination" onclick="showPage('roles', 'combination')">コンビネーション</a>
-    <a class="menu-link modifier"    onclick="showPage('roles', 'modifier')">属性</a>
-    <a class="menu-link ghost"       onclick="showPage('roles', 'ghost')">幽霊役職</a>
+    <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
+    <a class="menu-link all"         onclick="showPage('roles', 'all')" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
+    <a class="menu-link impostor"    onclick="showPage('roles', 'impostor')" data-ja="インポスター" data-en="Impostor">インポスター</a>
+    <a class="menu-link madmate"     onclick="showPage('roles', 'madmate')" data-ja="マッドメイト" data-en="Madmate">マッドメイト</a>
+    <a class="menu-link crewmate"    onclick="showPage('roles', 'crewmate')" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</a>
+    <a class="menu-link neutral"     onclick="showPage('roles', 'neutral')" data-ja="第三陣営" data-en="Neutral">第三陣営</a>
+    <a class="menu-link combination" onclick="showPage('roles', 'combination')" data-ja="コンビネーション" data-en="Combination">コンビネーション</a>
+    <a class="menu-link modifier"    onclick="showPage('roles', 'modifier')" data-ja="属性" data-en="Modifier">属性</a>
+    <a class="menu-link ghost"       onclick="showPage('roles', 'ghost')" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</a>
   </div>
 
   <div class="menu-section">
-    <div class="menu-section-title">その他</div>
-    <a class="menu-link" onclick="toggleSidebar()">システム設定</a>
+    <div class="menu-section-title" data-ja="その他" data-en="OTHER">その他</div>
+    <a class="menu-link" onclick="toggleSidebar()" data-ja="システム設定" data-en="System Settings">システム設定</a>
   </div>
 </nav>
 
@@ -324,45 +327,45 @@ select {
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
-      <p>
+      <h2 data-ja="Welcome to Tora MOD Wiki" data-en="Welcome to Tora MOD Wiki">Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
+      <p id="homeWelcomeDesc" data-ja="Tora MODに関する情報をまとめたWikiです。役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
         <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
       </p>
     </section>
 
     <section class="info-card">
-      <h2><span style="color: #DDBB99 !important;">Tora</span> MODとは？</h2>
-      <p>
+      <h2><span style="color: #DDBB99 !important;">Tora</span> <span id="homeWhatIsTitle" data-ja="MODとは？" data-en="MOD Overview">MODとは？</span></h2>
+      <p id="homeWhatIsDesc" data-ja="Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。" data-en="An expansion mod currently in development to bring deeper and more thrilling gameplay to Among Us. Although still a work in progress, it aims to introduce a wide variety of unique custom roles and special rules for enhanced deduction and strategic depth.">
         Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
         現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
       </p>
     </section>
 
     <section class="info-card">
-      <h2>今後のアップデート予定</h2>
-      <p>現在、以下の要素の実装・アップデートを予定しています。</p>
+      <h2 data-ja="今後のアップデート予定" data-en="Upcoming Updates">今後のアップデート予定</h2>
+      <p data-ja="現在、以下の要素の実装・アップデートを予定しています。" data-en="The following features and updates are currently planned:">現在、以下の要素の実装・アップデートを予定しています。</p>
       <div class="plan-list">
         <div class="plan-item">
           <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">様々な役職の追加</span>
+            <span class="plan-badge" data-ja="予定" data-en="PLAN">予定</span>
+            <span class="plan-title" data-ja="様々な役職の追加" data-en="Adding Diverse Roles">様々な役職の追加</span>
           </div>
-          <p class="plan-desc">クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。</p>
+          <p class="plan-desc" data-ja="クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。" data-en="Planning to introduce attractive custom roles across Crewmate, Impostor, and Neutral teams.">クルー・インポスター・第三陣営など、新たな戦略を生み出す魅力的なオリジナル役職を順次追加予定です。</p>
         </div>
         <div class="plan-item">
           <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">便利機能の追加</span>
+            <span class="plan-badge" data-ja="予定" data-en="PLAN">予定</span>
+            <span class="plan-title" data-ja="便利機能の追加" data-en="Quality of Life Features">便利機能の追加</span>
           </div>
-          <p class="plan-desc">ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。</p>
+          <p class="plan-desc" data-ja="ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。" data-en="Enhanced lobby customization and various helper utilities for smoother gameplay.">ロビー設定のカスタマイズ性向上や、プレイヤーが快適に遊べる各種サポート機能を実装予定です。</p>
         </div>
         <div class="plan-item">
           <div class="plan-item-header">
-            <span class="plan-badge">予定</span>
-            <span class="plan-title">クライアントMODモードとホストMODモードの分離</span>
+            <span class="plan-badge" data-ja="予定" data-en="PLAN">予定</span>
+            <span class="plan-title" data-ja="クライアントMODモードとホストMODモードの分離" data-en="Separation of Client-only & Host-only Modes">クライアントMODモードとホストMODモードの分離</span>
           </div>
-          <p class="plan-desc">ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。</p>
+          <p class="plan-desc" data-ja="ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。" data-en="Optimizing modes into 'Host-only' (only host installs) and 'Client-mod' (all players install full features).">ホストだけがMODを入れていれば全員が参加できる「ホストMODモード」と、全員がMODを入れてフル機能で遊ぶ「クライアントMODモード」を分けて利用できるように最適化を進める予定です。</p>
         </div>
       </div>
     </section>
@@ -370,7 +373,7 @@ select {
 
   <!-- ② 役職一覧ページ -->
   <div id="page-roles" class="page-view">
-    <h1>役職一覧</h1>
+    <h1 data-ja="役職一覧" data-en="Role List">役職一覧</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
     <section class="search-container">
@@ -379,25 +382,25 @@ select {
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" class="search-input" placeholder="役職名で検索">
+        <input type="text" id="roleSearchInput" class="search-input" placeholder="役職名で検索" data-placeholder-ja="役職名で検索" data-placeholder-en="Search by role name...">
       </div>
 
       <div class="filter-tags">
-        <button class="filter-btn all active" type="button" onclick="selectFilter(this)">すべての役職</button>
-        <button class="filter-btn impostor"    type="button" onclick="selectFilter(this)">インポスター</button>
-        <button class="filter-btn madmate"     type="button" onclick="selectFilter(this)">マッドメイト</button>
-        <button class="filter-btn crewmate"    type="button" onclick="selectFilter(this)">クルーメイト</button>
-        <button class="filter-btn neutral"     type="button" onclick="selectFilter(this)">第三陣営</button>
-        <button class="filter-btn combination" type="button" onclick="selectFilter(this)">コンビネーション</button>
-        <button class="filter-btn modifier"    type="button" onclick="selectFilter(this)">属性</button>
-        <button class="filter-btn ghost"       type="button" onclick="selectFilter(this)">幽霊役職</button>
+        <button class="filter-btn all active" type="button" onclick="selectFilter(this)" data-ja="すべての役職" data-en="All Roles">すべての役職</button>
+        <button class="filter-btn impostor"    type="button" onclick="selectFilter(this)" data-ja="インポスター" data-en="Impostor">インポスター</button>
+        <button class="filter-btn madmate"     type="button" onclick="selectFilter(this)" data-ja="マッドメイト" data-en="Madmate">マッドメイト</button>
+        <button class="filter-btn crewmate"    type="button" onclick="selectFilter(this)" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</button>
+        <button class="filter-btn neutral"     type="button" onclick="selectFilter(this)" data-ja="第三陣営" data-en="Neutral">第三陣営</button>
+        <button class="filter-btn combination" type="button" onclick="selectFilter(this)" data-ja="コンビネーション" data-en="Combination">コンビネーション</button>
+        <button class="filter-btn modifier"    type="button" onclick="selectFilter(this)" data-ja="属性" data-en="Modifier">属性</button>
+        <button class="filter-btn ghost"       type="button" onclick="selectFilter(this)" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</button>
       </div>
 
-      <div class="search-count">0件</div>
+      <div class="search-count" id="roleSearchCount" data-ja="0件" data-en="0 items">0件</div>
     </section>
 
     <section class="info-card">
-      <p style="text-align: center; color: var(--sub);">役職データを掲載準備中です。</p>
+      <p style="text-align: center; color: var(--sub);" data-ja="役職データを掲載準備中です。" data-en="Role data is currently being prepared.">役職データを掲載準備中です。</p>
     </section>
   </div>
 
@@ -407,30 +410,30 @@ select {
     <div class="subtitle" id="suggestPageSubtitle">Role Suggestion</div>
 
     <section class="info-card">
-      <p id="suggestPageDesc" style="margin-bottom: 20px;">オリジナルの役職や能力、他MODからの移植案を募集しています！採用されたアイデアはMOD内に実装される可能性があります。</p>
+      <p id="suggestPageDesc" style="margin-bottom: 20px;" data-ja="オリジナルの役職や能力、他MODからの移植案を募集しています！採用されたアイデアはMOD内に実装される可能性があります。" data-en="Submit your ideas for original roles or ports from other mods! Accepted concepts may be implemented in Tora MOD.">オリジナルの役職や能力、他MODからの移植案を募集しています！採用されたアイデアはMOD内に実装される可能性があります。</p>
       
       <form id="roleSuggestForm" onsubmit="handleSuggestSubmit(event)">
         <div class="suggest-type-switch">
-          <button type="button" class="type-switch-btn active" id="btnTypeRole" onclick="switchProposalType('role')">役職提案</button>
-          <button type="button" class="type-switch-btn" id="btnTypePort" onclick="switchProposalType('port')">移植案</button>
+          <button type="button" class="type-switch-btn active" id="btnTypeRole" onclick="switchProposalType('role')" data-ja="役職提案" data-en="New Role">役職提案</button>
+          <button type="button" class="type-switch-btn" id="btnTypePort" onclick="switchProposalType('port')" data-ja="移植案" data-en="Porting">移植案</button>
         </div>
 
         <div class="form-group" id="originModGroup" style="display: none;">
-          <label class="form-label">移植元のMOD名・ゲーム名 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="移植元のMOD名・ゲーム名" data-en="Original Mod / Game Name">移植元のMOD名・ゲーム名</span> <span class="req">*必須</span></label>
           <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
         </div>
 
         <div class="form-group">
-          <label class="form-label">対応モード <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="対応モード" data-en="Target Mode">対応モード</span> <span class="req">*必須</span></label>
           <select id="modMode" class="form-select" required>
-            <option value="両方">両方 (ホスト・クライアント対応)</option>
-            <option value="ホストMOD">ホストMOD (ホストのみ導入で動作)</option>
-            <option value="クライアントMOD">クライアントMOD (全員がMOD導入必須)</option>
+            <option value="両方" data-ja="両方 (ホスト・クライアント対応)" data-en="Both (Host & Client)">両方 (ホスト・クライアント対応)</option>
+            <option value="ホストMOD" data-ja="ホストMOD (ホストのみ導入で動作)" data-en="Host-only MOD">ホストMOD (ホストのみ導入で動作)</option>
+            <option value="クライアントMOD" data-ja="クライアントMOD (全員がMOD導入必須)" data-en="Client-only MOD">クライアントMOD (全員がMOD導入必須)</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label">陣営 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="陣営" data-en="Team / Camp">陣営</span> <span class="req">*必須</span></label>
           <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
             <option value="クルーメイト">クルーメイト</option>
             <option value="インポスター">インポスター</option>
@@ -445,25 +448,25 @@ select {
         <div class="form-group" id="normalRoleGroup">
           <div class="form-row">
             <div>
-              <label class="form-label">役職名（日本語） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職名（日本語）" data-en="Role Name (Japanese)">役職名（日本語）</span> <span class="req">*必須</span></label>
               <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
             </div>
             <div>
-              <label class="form-label">役職名（英語・英名） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職名（英語・英名）" data-en="Role Name (English)">役職名（英語・英名）</span> <span class="req">*必須</span></label>
               <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" required>
             </div>
           </div>
         </div>
 
         <div class="form-group" id="winConditionGroup" style="display: none;">
-          <label class="form-label">勝利条件 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="勝利条件" data-en="Win Condition">勝利条件</span> <span class="req">*必須</span></label>
           <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
         </div>
 
         <div class="form-group" id="combiRole1Group" style="display: none;">
           <div class="form-row-3">
             <div>
-              <label class="form-label">役職1の陣営 <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職1の陣営" data-en="Role 1 Team">役職1の陣営</span> <span class="req">*必須</span></label>
               <select id="combiCamp1" class="form-select" onchange="handleCombiCampChange()">
                 <option value="クルーメイト">クルーメイト</option>
                 <option value="インポスター">インポスター</option>
@@ -472,25 +475,25 @@ select {
               </select>
             </div>
             <div>
-              <label class="form-label">役職1（日本語） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職1（日本語）" data-en="Role 1 (Japanese)">役職1（日本語）</span> <span class="req">*必須</span></label>
               <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ">
             </div>
             <div>
-              <label class="form-label">役職1（英語・英名） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職1（英語・英名）" data-en="Role 1 (English)">役職1（英語・英名）</span> <span class="req">*必須</span></label>
               <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin1Group" style="display: none;">
-          <label class="form-label">役職1の勝利条件 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="役職1の勝利条件" data-en="Role 1 Win Condition">役職1の勝利条件</span> <span class="req">*必須</span></label>
           <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など"></textarea>
         </div>
 
         <div class="form-group" id="combiRole2Group" style="display: none;">
           <div class="form-row-3">
             <div>
-              <label class="form-label">役職2の陣営 <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職2の陣営" data-en="Role 2 Team">役職2の陣営</span> <span class="req">*必須</span></label>
               <select id="combiCamp2" class="form-select" onchange="handleCombiCampChange()">
                 <option value="クルーメイト">クルーメイト</option>
                 <option value="インポスター">インポスター</option>
@@ -499,96 +502,95 @@ select {
               </select>
             </div>
             <div>
-              <label class="form-label">役職2（日本語） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職2（日本語）" data-en="Role 2 (Japanese)">役職2（日本語）</span> <span class="req">*必須</span></label>
               <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー">
             </div>
             <div>
-              <label class="form-label">役職2（英語・英名） <span class="req">*必須</span></label>
+              <label class="form-label"><span data-ja="役職2（英語・英名）" data-en="Role 2 (English)">役職2（英語・英名）</span> <span class="req">*必須</span></label>
               <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin2Group" style="display: none;">
-          <label class="form-label">役職2の勝利条件 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="役職2の勝利条件" data-en="Role 2 Win Condition">役職2の勝利条件</span> <span class="req">*必須</span></label>
           <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など"></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">能力・説明 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="能力・説明" data-en="Ability & Description">能力・説明</span> <span class="req">*必須</span></label>
           <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">役職の設定項目 <span class="opt">任意（ゲーム内設定）</span></label>
+          <label class="form-label"><span data-ja="役職の設定項目" data-en="Role Configuration Options">役職の設定項目</span> <span class="opt" data-ja="任意（ゲーム内設定）" data-en="Optional (In-game settings)">任意（ゲーム内設定）</span></label>
           <div id="settingItemsContainer" class="setting-items-container"></div>
-          <button type="button" class="add-setting-btn" onclick="addSettingItem()">＋ 設定項目を追加</button>
+          <button type="button" class="add-setting-btn" onclick="addSettingItem()" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">提案</button>
-        <div id="formStatus" class="form-status">送信が完了しました！提案ありがとうございます。</div>
+        <button type="submit" class="submit-btn" id="submitBtn" data-ja="提案" data-en="Submit Proposal">提案</button>
+        <div id="formStatus" class="form-status" data-ja="送信が完了しました！提案ありがとうございます。" data-en="Proposal submitted successfully! Thank you.">送信が完了しました！提案ありがとうございます。</div>
       </form>
     </section>
   </div>
 
   <!-- ④ バグ報告ページ -->
   <div id="page-bug" class="page-view">
-    <h1>バグ報告</h1>
+    <h1 data-ja="バグ報告" data-en="Bug Report">バグ報告</h1>
     <div class="subtitle">Bug Report</div>
 
     <section class="info-card">
-      <p style="margin-bottom: 20px;">ゲーム中に発生した不具合やエラーを報告してください。すべて必須項目です。</p>
+      <p style="margin-bottom: 20px;" data-ja="ゲーム中に発生した不具合やエラーを報告してください。すべて必須項目です。" data-en="Please report bugs or errors encountered during the game. All fields are required.">ゲーム中に発生した不具合やエラーを報告してください。すべて必須項目です。</p>
 
       <form id="bugReportForm" onsubmit="handleBugSubmit(event)">
         <div class="form-row">
           <div class="form-group">
-            <label class="form-label">何試合目か <span class="req">*必須</span></label>
+            <label class="form-label"><span data-ja="何試合目か" data-en="Match Number">何試合目か</span> <span class="req">*必須</span></label>
             <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
           </div>
           <div class="form-group">
-            <label class="form-label">何ターン目か <span class="req">*必須</span></label>
+            <label class="form-label"><span data-ja="何ターン目か" data-en="Turn / Round">何ターン目か</span> <span class="req">*必須</span></label>
             <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">バグ内容・発生状況 <span class="req">*必須</span></label>
+          <label class="form-label"><span data-ja="バグ内容・発生状況" data-en="Bug Description & Reproduction">バグ内容・発生状況</span> <span class="req">*必須</span></label>
           <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">ログファイル <span class="req">*必須（.log / .txt）</span></label>
+          <label class="form-label"><span data-ja="ログファイル" data-en="Log File">ログファイル</span> <span class="req">*必須（.log / .txt）</span></label>
           <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
             <input type="file" id="bugLogFile" accept=".log,.txt" required onchange="handleFileSelected(this)">
             <div class="file-upload-icon">📁</div>
-            <div class="file-upload-text">クリックしてログファイルを選択</div>
-            <div class="file-upload-sub">PCならエクスプローラー、スマホならファイルアプリが開きます</div>
+            <div class="file-upload-text" data-ja="クリックしてログファイルを選択" data-en="Click to select log file">クリックしてログファイルを選択</div>
+            <div class="file-upload-sub" data-ja="PCならエクスプローラー、スマホならファイルアプリが開きます" data-en="Opens File Explorer on PC or Files app on mobile">PCならエクスプローラー、スマホならファイルアプリが開きます</div>
             <div id="selectedFileName" class="file-selected-name" style="display: none;"></div>
           </div>
         </div>
 
-        <button type="submit" class="submit-btn danger" id="bugSubmitBtn">バグを報告する</button>
-        <div id="bugFormStatus" class="form-status">バグ報告を送信しました。ご協力ありがとうございます！</div>
+        <button type="submit" class="submit-btn danger" id="bugSubmitBtn" data-ja="バグを報告する" data-en="Submit Bug Report">バグを報告する</button>
+        <div id="bugFormStatus" class="form-status" data-ja="バグ報告を送信しました。ご協力ありがとうございます！" data-en="Bug report submitted. Thank you for your feedback!">バグ報告を送信しました。ご協力ありがとうございます！</div>
       </form>
     </section>
   </div>
 
   <!-- ⑤ バグ一覧ページ -->
   <div id="page-bug-list" class="page-view">
-    <h1>バグ一覧（対応中）</h1>
+    <h1 data-ja="バグ一覧（対応中）" data-en="Known Bugs (In Progress)">バグ一覧（対応中）</h1>
     <div class="subtitle">Known Bugs</div>
 
     <section class="info-card">
-      <!-- ★管理者専用のバグ直接追加フォーム -->
       <div id="adminBugAddSection" class="admin-bug-add-box" style="display: none;">
         <label class="form-label" style="color: #fbbf24;">[ADMIN] バグ一覧に直接追加</label>
         <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます"></textarea>
         <button type="button" class="submit-btn admin" style="margin-top: 8px;" onclick="addAdminBugDirectly()">バグ一覧に追加</button>
       </div>
 
-      <p>現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
+      <p data-ja="現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。" data-en="List of currently tracked bugs. When marked as resolved on Discord, they will be removed automatically.">現在対応中のバグ一覧です。Discord側で「解決」されると、この一覧から自動で消去されます。</p>
       <div id="bugListDisplay" class="bug-list-container">
-        <p style="color: var(--sub); text-align: center;">読み込み中...</p>
+        <p style="color: var(--sub); text-align: center;" data-ja="読み込み中..." data-en="Loading...">読み込み中...</p>
       </div>
     </section>
   </div>
@@ -599,17 +601,29 @@ select {
   <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki
 </footer>
 
+<!-- ★設定モーダル（言語設定を追加） -->
 <div class="modal" id="settingsModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2>設定</h2>
+      <h2 id="modalSettingsTitle" data-ja="設定" data-en="Settings">設定</h2>
       <button class="close" onclick="closeSettings()">×</button>
     </div>
+    
+    <!-- テーマ設定 -->
     <div class="setting-row">
-      <span>テーマ</span>
+      <span id="labelTheme" data-ja="テーマ" data-en="Theme">テーマ</span>
       <select id="themeSelect" onchange="changeTheme(this.value)">
-        <option value="dark">ダークモード</option>
-        <option value="light">ライトモード</option>
+        <option value="dark" data-ja="ダークモード" data-en="Dark Mode">ダークモード</option>
+        <option value="light" data-ja="ライトモード" data-en="Light Mode">ライトモード</option>
+      </select>
+    </div>
+
+    <!-- ★言語設定 -->
+    <div class="setting-row">
+      <span id="labelLang" data-ja="言語 (Language)" data-en="Language">言語 (Language)</span>
+      <select id="langSelect" onchange="changeLanguage(this.value)">
+        <option value="ja">日本語</option>
+        <option value="en">English</option>
       </select>
     </div>
   </div>
@@ -624,14 +638,12 @@ function updateAdminUI() {
   const badge = document.getElementById("adminBadge");
   if (badge) badge.style.display = isAdmin ? "inline-block" : "none";
 
-  // 管理者専用バグ追加フォームの表示・非表示
   const adminSection = document.getElementById("adminBugAddSection");
   if (adminSection) adminSection.style.display = isAdmin ? "block" : "none";
 
   const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
   reqInputs.forEach(el => { el.required = !isAdmin; });
 
-  // バグ一覧を再描画（管理者の削除ボタン表示切り替え用）
   const bugListPage = document.getElementById("page-bug-list");
   if (bugListPage && bugListPage.classList.contains("active")) {
     fetchBugList();
@@ -646,21 +658,21 @@ function handleMenuSecretTap() {
   if (menuSecretTapCount >= 10) {
     menuSecretTapCount = 0;
     if (isAdmin) {
-      if (confirm("現在【管理者モード】です。管理者モードを解除しますか？")) {
+      if (confirm(currentLang === 'en' ? "Currently in [ADMIN MODE]. Turn off admin mode?" : "現在【管理者モード】です。管理者モードを解除しますか？")) {
         isAdmin = false;
         localStorage.removeItem("tora-is-admin");
         updateAdminUI();
-        alert("管理者モードを解除しました。");
+        alert(currentLang === 'en' ? "Admin mode disabled." : "管理者モードを解除しました。");
       }
     } else {
-      const key = prompt("管理者キーを入力してください:");
+      const key = prompt(currentLang === 'en' ? "Enter Admin Key:" : "管理者キーを入力してください:");
       if (key === "torahakawaii") {
         isAdmin = true;
         localStorage.setItem("tora-is-admin", "true");
         updateAdminUI();
-        alert("🎉 管理者モードを有効化しました！\n・未入力でも提案/報告の確定が可能\n・バグ一覧に直接書き込み・削除が可能");
+        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力でも提案/報告の確定が可能\n・バグ一覧に直接書き込み・削除が可能");
       } else if (key !== null) {
-        alert("管理者キーが正しくありません。");
+        alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
       }
     }
   }
@@ -679,11 +691,13 @@ function switchProposalType(type) {
   if (type === 'port') {
     btnPort.classList.add("active"); btnRole.classList.remove("active");
     originGroup.style.display = "block"; originInput.required = !isAdmin;
-    title.textContent = "役職の移植案"; subtitle.textContent = "Role Porting Suggestion";
+    title.textContent = currentLang === 'en' ? "Role Porting Suggestion" : "役職の移植案";
+    subtitle.textContent = "Role Porting Suggestion";
   } else {
     btnRole.classList.add("active"); btnPort.classList.remove("active");
     originGroup.style.display = "none"; originInput.required = false;
-    title.textContent = "役職の提案"; subtitle.textContent = "Role Suggestion";
+    title.textContent = currentLang === 'en' ? "Role Suggestion" : "役職の提案";
+    subtitle.textContent = "Role Suggestion";
   }
 }
 
@@ -779,24 +793,24 @@ function addSettingItem() {
   card.id = `setting-item-${settingItemCount}`;
   card.innerHTML = `
     <div class="setting-item-header">
-      <span class="setting-item-title">設定項目 #${settingItemCount}</span>
+      <span class="setting-item-title">${currentLang === 'en' ? `Option #${settingItemCount}` : `設定項目 #${settingItemCount}`}</span>
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
     <div class="setting-main-row">
-      <input type="text" class="form-input setting-name" placeholder="設定項目名 (例: クールダウン、ベント移動)">
+      <input type="text" class="form-input setting-name" placeholder="${currentLang === 'en' ? 'Option Name (e.g. Cooldown)' : '設定項目名 (例: クールダウン、ベント移動)'}">
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
-        <option value="number">数値 / スライダー</option>
-        <option value="boolean">2択 (ON/OFF、はい/いいえ 等)</option>
+        <option value="number">${currentLang === 'en' ? 'Number / Slider' : '数値 / スライダー'}</option>
+        <option value="boolean">${currentLang === 'en' ? 'Toggle (ON/OFF, Yes/No)' : '2択 (ON/OFF、はい/いいえ 等)'}</option>
       </select>
     </div>
     <div class="setting-detail-grid setting-detail-number">
-      <input type="text" class="form-input setting-step" placeholder="数字の間隔 (例: 2.5, 5, 1)">
-      <input type="text" class="form-input setting-max" placeholder="最大値 (例: 60, 10)">
-      <input type="text" class="form-input setting-unit" placeholder="単位 (例: 秒, 回, %)">
+      <input type="text" class="form-input setting-step" placeholder="${currentLang === 'en' ? 'Step (e.g. 2.5, 5)' : '数字の間隔 (例: 2.5, 5, 1)'}">
+      <input type="text" class="form-input setting-max" placeholder="${currentLang === 'en' ? 'Max (e.g. 60, 10)' : '最大値 (例: 60, 10)'}">
+      <input type="text" class="form-input setting-unit" placeholder="${currentLang === 'en' ? 'Unit (e.g. s, times, %)' : '単位 (例: 秒, 回, %)'}">
     </div>
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
-      <input type="text" class="form-input setting-choice1" placeholder="選択肢 1 (例: ON、はい、有効)">
-      <input type="text" class="form-input setting-choice2" placeholder="選択肢 2 (例: OFF、いいえ、無効)">
+      <input type="text" class="form-input setting-choice1" placeholder="${currentLang === 'en' ? 'Choice 1 (e.g. ON, Yes)' : '選択肢 1 (例: ON、はい、有効)'}">
+      <input type="text" class="form-input setting-choice2" placeholder="${currentLang === 'en' ? 'Choice 2 (e.g. OFF, No)' : '選択肢 2 (例: OFF、いいえ、無効)'}">
     </div>
   `;
   container.appendChild(card);
@@ -821,7 +835,7 @@ function toggleSettingType(selectEl) {
 function handleFileSelected(input) {
   const nameDisplay = document.getElementById("selectedFileName");
   if (input.files && input.files[0]) {
-    nameDisplay.textContent = `選択中: ${input.files[0].name}`;
+    nameDisplay.textContent = `${currentLang === 'en' ? 'Selected: ' : '選択中: '}${input.files[0].name}`;
     nameDisplay.style.display = "block";
   } else {
     nameDisplay.textContent = "";
@@ -829,7 +843,7 @@ function handleFileSelected(input) {
   }
 }
 
-/* ★★★ Webhook & Bot設定 ★★★ */
+/* Webhook & Bot設定 */
 const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
 const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
 const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
@@ -840,7 +854,7 @@ async function handleSuggestSubmit(event) {
   event.preventDefault();
   const submitBtn = document.getElementById("submitBtn");
   const formStatus = document.getElementById("formStatus");
-  submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
+  submitBtn.disabled = true; submitBtn.textContent = currentLang === 'en' ? "Submitting..." : "送信中..."; formStatus.style.display = "none";
 
   const modMode = document.getElementById("modMode").value;
   const roleCamp = document.getElementById("roleCamp").value;
@@ -932,14 +946,14 @@ async function handleSuggestSubmit(event) {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
     });
     if (response.ok) {
-      formStatus.textContent = "提案を送信しました！ありがとうございます。";
+      formStatus.textContent = currentLang === 'en' ? "Proposal submitted! Thank you." : "提案を送信しました！ありがとうございます。";
       formStatus.classList.add("success"); formStatus.style.display = "block";
       document.getElementById("roleSuggestForm").reset();
       document.getElementById("settingItemsContainer").innerHTML = "";
       switchProposalType('role'); handleCampChange("クルーメイト");
     } else { alert(BOT_OFFLINE_MSG); }
   } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = "提案"; }
+  finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Proposal" : "提案"; }
 }
 
 /* ② バグ報告 送信処理 */
@@ -947,7 +961,7 @@ async function handleBugSubmit(event) {
   event.preventDefault();
   const submitBtn = document.getElementById("bugSubmitBtn");
   const formStatus = document.getElementById("bugFormStatus");
-  submitBtn.disabled = true; submitBtn.textContent = "送信中..."; formStatus.style.display = "none";
+  submitBtn.disabled = true; submitBtn.textContent = currentLang === 'en' ? "Submitting..." : "送信中..."; formStatus.style.display = "none";
 
   const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
   const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
@@ -955,8 +969,8 @@ async function handleBugSubmit(event) {
   const fileInput = document.getElementById("bugLogFile");
 
   if (!isAdmin && (!fileInput.files || !fileInput.files[0])) {
-    alert("ログファイルを選択してください。");
-    submitBtn.disabled = false; submitBtn.textContent = "バグを報告する";
+    alert(currentLang === 'en' ? "Please select a log file." : "ログファイルを選択してください。");
+    submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する";
     return;
   }
 
@@ -998,20 +1012,20 @@ async function handleBugSubmit(event) {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
     });
     if (response.ok) {
-      formStatus.textContent = "バグ報告を送信しました。ご協力ありがとうございます！";
+      formStatus.textContent = currentLang === 'en' ? "Bug report submitted! Thank you." : "バグ報告を送信しました。ご協力ありがとうございます！";
       formStatus.classList.add("success"); formStatus.style.display = "block";
       document.getElementById("bugReportForm").reset();
       document.getElementById("selectedFileName").style.display = "none";
     } else { alert(BOT_OFFLINE_MSG); }
   } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = "バグを報告する"; }
+  finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する"; }
 }
 
 /* ③ バグ一覧の自動取得と表示 */
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
-  container.innerHTML = '<p style="color: var(--sub); text-align: center;">Botから最新のバグ一覧を取得中...</p>';
+  container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'Fetching bug list from bot...' : 'Botから最新のバグ一覧を取得中...'}</p>`;
 
   try {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
@@ -1020,7 +1034,7 @@ async function fetchBugList() {
     const bugs = await response.json();
 
     if (!bugs || bugs.length === 0) {
-      container.innerHTML = '<p style="color: var(--sub); text-align: center;">現在、対応中のバグはありません！✨<br><span style="font-size:12px;">（Discord側で「既読」ボタンを押すとここに表示されます）</span></p>';
+      container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'No tracked bugs currently! ✨' : '現在、対応中のバグはありません！✨<br><span style="font-size:12px;">（Discord側で「既読」ボタンを押すとここに表示されます）</span>'}</p>`;
       return;
     }
 
@@ -1028,19 +1042,18 @@ async function fetchBugList() {
     bugs.forEach(bug => {
       const card = document.createElement("div");
       card.className = "bug-card";
-      // 管理者なら削除ボタン(×)を表示
       card.innerHTML = `
         <p class="bug-desc">${bug.desc || "詳細なし"}</p>
-        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteBugDirectly('${bug.id}')" title="一覧から削除">×</button>` : ""}
+        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteBugDirectly('${bug.id}')" title="削除">×</button>` : ""}
       `;
       container.appendChild(card);
     });
   } catch (e) {
-    container.innerHTML = '<p style="color: #ff4d4d; text-align: center;">現在Botと接続中です。数秒待ってからもう一度開いてみてください。<br><span style="font-size:12px; color:var(--sub);">※Discordで「既読」を押したバグがここに自動表示されます。</span></p>';
+    container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">${currentLang === 'en' ? 'Unable to connect to Bot. Please try again in a few moments.' : '現在Botと接続中です。数秒待ってからもう一度開いてみてください。<br><span style="font-size:12px; color:var(--sub);">※Discordで「既読」を押したバグがここに自動表示されます。</span>'}</p>`;
   }
 }
 
-/* ★★★ 管理者用：バグ一覧に直接追加 ★★★ */
+/* 管理者用：バグ一覧に直接追加 */
 async function addAdminBugDirectly() {
   if (!isAdmin) return;
   const input = document.getElementById("adminBugInput");
@@ -1049,46 +1062,35 @@ async function addAdminBugDirectly() {
     alert("バグ内容を入力してください。");
     return;
   }
-
   try {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
     const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ desc: desc })
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ desc: desc })
     });
     if (response.ok) {
       input.value = "";
       alert("バグ一覧に直接追加しました！");
-      fetchBugList(); // リロードして一覧更新
-    } else {
-      alert("追加に失敗しました。Botの状態を確認してください。");
-    }
-  } catch (e) {
-    alert("通信エラーが発生しました。");
-  }
+      fetchBugList();
+    } else { alert("追加に失敗しました。"); }
+  } catch (e) { alert("通信エラーが発生しました。"); }
 }
 
-/* ★★★ 管理者用：バグ一覧から直接削除 ★★★ */
+/* 管理者用：バグ一覧から直接削除 */
 async function deleteBugDirectly(bugId) {
   if (!isAdmin) return;
   if (!confirm("このバグを一覧から削除（解決）しますか？")) return;
-
   try {
     const apiUrl = BOT_SERVER_URL.endsWith('/') ? `${BOT_SERVER_URL}api/bugs/${bugId}` : `${BOT_SERVER_URL}/api/bugs/${bugId}`;
     const response = await fetch(apiUrl, { method: "DELETE" });
-    if (response.ok) {
-      fetchBugList();
-    } else {
-      alert("削除に失敗しました。");
-    }
-  } catch (e) {
-    alert("通信エラーが発生しました。");
-  }
+    if (response.ok) fetchBugList();
+    else alert("削除に失敗しました。");
+  } catch (e) { alert("通信エラーが発生しました。"); }
 }
 
-// テーマ管理
+/* ★★★ テーマ＆言語管理 ★★★ */
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
+let currentLang = localStorage.getItem("tora-lang") || "ja";
+
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
   document.getElementById("themeSelect").value = theme;
@@ -1097,10 +1099,36 @@ function changeTheme(theme) {
   localStorage.setItem("tora-theme", theme);
   applyTheme(theme);
 }
+
+// ★言語切り替え処理
+function applyLanguage(lang) {
+  currentLang = lang;
+  document.getElementById("langSelect").value = lang;
+
+  // data-ja / data-en を持つすべてのテキストを一括切り替え
+  document.querySelectorAll("[data-ja][data-en]").forEach(el => {
+    el.textContent = el.getAttribute(`data-${lang}`);
+  });
+
+  // placeholderの切り替え
+  document.querySelectorAll("[data-placeholder-ja][data-placeholder-en]").forEach(el => {
+    el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
+  });
+
+  // 提案タイプのタイトル切り替え反映
+  switchProposalType(currentProposalType);
+}
+
+function changeLanguage(lang) {
+  localStorage.setItem("tora-lang", lang);
+  applyLanguage(lang);
+}
+
 function openSettings() { document.getElementById("settingsModal").classList.add("show"); }
 function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
 
 applyTheme(savedTheme);
+applyLanguage(currentLang);
 updateAdminUI();
 
 document.getElementById("settingsModal").addEventListener("click", function(e) {
