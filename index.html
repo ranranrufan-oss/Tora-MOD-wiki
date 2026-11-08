@@ -21,7 +21,6 @@ body.light {
   --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
 }
 
-/* ★文字サイズ切り替え（全体に確実に反映） */
 body.font-small { --fs-base: 13px; --fs-h1: 28px; --fs-h2: 17px; --fs-card: 12px; }
 body.font-normal { --fs-base: 15px; --fs-h1: 32px; --fs-h2: 20px; --fs-card: 14px; }
 body.font-large { --fs-base: 18px; --fs-h1: 36px; --fs-h2: 23px; --fs-card: 16px; }
@@ -111,7 +110,6 @@ header {
 .menu-link.suggest { color: #38bdf8 !important; font-weight: bold; }
 .menu-link.bug { color: #f87171 !important; font-weight: bold; }
 .menu-link.bug-list { color: #fbbf24 !important; font-weight: bold; }
-.menu-link.adopted { color: #4ade80 !important; font-weight: bold; }
 
 .page-view { display: none; }
 .page-view.active { display: block; }
@@ -259,11 +257,9 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
   border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;
 }
 .custom-card.border-gold { border-left: 4px solid #fbbf24; }
-.custom-card.border-green { border-left: 4px solid #4ade80; }
 .card-header-row { display: flex; justify-content: space-between; align-items: center; }
 .card-tag { padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
 .card-tag.gold { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
-.card-tag.green { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
 
 /* F&Q */
 .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
@@ -373,7 +369,7 @@ select {
   </div>
 </header>
 
-<!-- 最上部のお知らせバナー（自動翻訳対応） -->
+<!-- 最上部のお知らせバナー -->
 <div id="announcementBanner" class="announcement-banner" style="display: none;">
   <div class="announcement-content">
     <span>📢</span>
@@ -396,7 +392,6 @@ select {
     <a class="menu-link suggest" onclick="showPage('suggest')" data-ja="役職を提案する" data-en="Suggest Role">役職を提案する</a>
     <a class="menu-link bug" onclick="showPage('bug')" data-ja="バグ報告" data-en="Report Bug">バグ報告</a>
     <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
-    <a class="menu-link adopted" onclick="showPage('adopted-roles')" data-ja="採用役職（実装予定）" data-en="Accepted Roles">採用役職（実装予定）</a>
   </div>
 
   <div class="menu-section">
@@ -428,7 +423,6 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
-    <!-- 管理者専用コントロールパネル -->
     <div id="adminAnnouncementBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] サイト内お知らせ（バナー）設定" data-en="[ADMIN] Announcement Banner Setting">[ADMIN] サイト内お知らせ（バナー）設定</label>
       <input type="text" id="adminNoticeInput" class="form-input" placeholder="例：現在、新役職のテストプレイを開催中です！" data-placeholder-ja="例：現在、新役職のテストプレイを開催中です！" data-placeholder-en="e.g. Test play event is currently running!">
@@ -498,7 +492,7 @@ select {
     <h1 data-ja="役職一覧" data-en="Role List">役職一覧</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
-    <!-- ★管理者用：役職直接追加フォーム（陣営選択式＆設定項目対応） -->
+    <!-- ★管理者用：役職直接追加フォーム（提案と同じ設定項目に対応） -->
     <div id="adminRoleAddBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] 役職一覧に直接追加" data-en="[ADMIN] Add Custom Role Directly">[ADMIN] 役職一覧に直接追加</label>
       <div class="form-row">
@@ -514,9 +508,15 @@ select {
         </select>
       </div>
       <textarea id="adminRoleDesc" class="form-textarea" style="min-height: 70px; margin-top: 8px;" placeholder="役職の能力・詳細説明" data-placeholder-ja="役職の能力・詳細説明" data-placeholder-en="Ability & Description"></textarea>
-      <input type="text" id="adminRoleSettingsMemo" class="form-input" style="margin-top: 8px;" placeholder="ゲーム内設定メモ (例: クールダウン: 10〜60秒[間隔: 5秒]、ベント: ON/OFF)" data-placeholder-ja="ゲーム内設定メモ (例: クールダウン: 10〜60秒[間隔: 5秒]、ベント: ON/OFF)" data-placeholder-en="Settings Memo (e.g. Cooldown: 10-60s, Vent: ON/OFF)">
 
-      <button type="button" class="submit-btn admin" style="margin-top: 8px;" onclick="addRoleDirectlyByAdmin()" data-ja="役職を一覧に追加" data-en="Add to Role List">役職を一覧に追加</button>
+      <!-- 設定項目追加エリア（提案フォームと同等の動的追加） -->
+      <div style="margin-top: 10px;">
+        <label class="form-label" style="font-size: 13px;"><span data-ja="役職の設定項目" data-en="Role Options">役職の設定項目</span> <span class="opt" data-ja="任意" data-en="Optional">任意</span></label>
+        <div id="adminSettingItemsContainer" class="setting-items-container"></div>
+        <button type="button" class="add-setting-btn" onclick="createSettingCard('adminSettingItemsContainer')" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
+      </div>
+
+      <button type="button" class="submit-btn admin" style="margin-top: 12px;" onclick="addRoleDirectlyByAdmin()" data-ja="役職を一覧に追加" data-en="Add to Role List">役職を一覧に追加</button>
     </div>
 
     <section class="search-container">
@@ -673,7 +673,7 @@ select {
         <div class="form-group">
           <label class="form-label"><span data-ja="役職の設定項目" data-en="Role Configuration Options">役職の設定項目</span> <span class="opt" data-ja="任意（ゲーム内設定）" data-en="Optional (In-game settings)">任意（ゲーム内設定）</span></label>
           <div id="settingItemsContainer" class="setting-items-container"></div>
-          <button type="button" class="add-setting-btn" onclick="addSettingItem()" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
+          <button type="button" class="add-setting-btn" onclick="createSettingCard('settingItemsContainer')" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
         </div>
 
         <button type="submit" class="submit-btn" id="submitBtn" data-ja="提案" data-en="Submit Proposal">提案</button>
@@ -745,20 +745,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑥ 採用役職ページ -->
-  <div id="page-adopted-roles" class="page-view">
-    <h1 data-ja="採用役職（実装予定）" data-en="Accepted Roles (Upcoming)">採用役職（実装予定）</h1>
-    <div class="subtitle">Planned Roles for Tora MOD</div>
-
-    <section class="info-card">
-      <p data-ja="Discordの役職提案で『採用』が決定した次回実装予定の役職リストです！" data-en="Custom roles officially accepted via Discord and scheduled for upcoming releases!">Discordの役職提案で『採用』が決定した次回実装予定の役職リストです！</p>
-      <div id="adoptedRolesDisplay" class="custom-list-container">
-        <p style="color: var(--sub); text-align: center;" data-ja="読み込み中..." data-en="Loading...">読み込み中...</p>
-      </div>
-    </section>
-  </div>
-
-  <!-- ⑦ MOD導入ガイドページ -->
+  <!-- ⑥ MOD導入ガイドページ -->
   <div id="page-install" class="page-view">
     <h1 data-ja="MOD導入ガイド" data-en="Installation Guide">MOD導入ガイド</h1>
     <div class="subtitle">How to Install Tora MOD</div>
@@ -796,7 +783,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑧ よくある質問（F&Q）ページ -->
+  <!-- ⑦ よくある質問（F&Q）ページ -->
   <div id="page-faq" class="page-view">
     <h1 data-ja="よくある質問 (F&Q)" data-en="Frequently Asked Questions (F&Q)">よくある質問 (F&Q)</h1>
     <div class="subtitle">FAQ & Troubleshooting</div>
@@ -838,7 +825,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑨ コマンド一覧ページ -->
+  <!-- ⑧ コマンド一覧ページ -->
   <div id="page-commands" class="page-view">
     <h1 data-ja="コマンド一覧" data-en="In-Game Commands">コマンド一覧</h1>
     <div class="subtitle">Chat Commands</div>
@@ -1059,7 +1046,7 @@ function removeAnnouncement() {
   document.getElementById("adminNoticeInput").value = "";
 }
 
-/* 管理者用：役職直接追加（陣営選択＆設定メモ対応） */
+/* ★★★ 管理者用：役職直接追加（役職提案と同等の設定項目対応） ★★★ */
 let customRolesList = [];
 try { customRolesList = JSON.parse(localStorage.getItem("tora-custom-roles") || "[]"); } catch(e){}
 
@@ -1068,11 +1055,36 @@ function addRoleDirectlyByAdmin() {
   const name = document.getElementById("adminRoleName").value.trim();
   const camp = document.getElementById("adminRoleCamp").value;
   const desc = document.getElementById("adminRoleDesc").value.trim();
-  const settingsMemo = document.getElementById("adminRoleSettingsMemo").value.trim();
 
   if (!name || !desc) {
     alert(currentLang === 'en' ? "Please enter role name and description." : "役職名と能力説明を入力してください。");
     return;
+  }
+
+  // 設定項目の取得
+  const settingCards = document.querySelectorAll("#adminSettingItemsContainer .setting-item-card");
+  let settingText = "";
+  if (settingCards.length > 0) {
+    settingCards.forEach(card => {
+      const sName = card.querySelector(".setting-name").value.trim();
+      const sType = card.querySelector(".setting-type").value;
+      if (sName) {
+        if (sType === "boolean") {
+          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
+          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
+          settingText += `・${sName}: 2択 [ ${c1} / ${c2} ]\n`;
+        } else {
+          const step = card.querySelector(".setting-step").value.trim();
+          const max = card.querySelector(".setting-max").value.trim();
+          const unit = card.querySelector(".setting-unit").value.trim();
+          let details = [];
+          if (max) details.push(`最大: ${max}${unit}`);
+          if (step) details.push(`間隔: ${step}${unit}`);
+          if (!max && !step && unit) details.push(`単位: ${unit}`);
+          settingText += `・${sName}: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
+        }
+      }
+    });
   }
 
   customRolesList.push({
@@ -1080,13 +1092,13 @@ function addRoleDirectlyByAdmin() {
     name: name,
     camp: camp,
     desc: desc,
-    settings: settingsMemo
+    settings: settingText.trim()
   });
 
   localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
   document.getElementById("adminRoleName").value = "";
   document.getElementById("adminRoleDesc").value = "";
-  document.getElementById("adminRoleSettingsMemo").value = "";
+  document.getElementById("adminSettingItemsContainer").innerHTML = "";
   renderRolesDisplay();
   alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
 }
@@ -1133,7 +1145,7 @@ function renderRolesDisplay() {
       </div>
       <h3 style="margin: 4px 0; font-size: calc(var(--fs-base) + 2px);">${r.name}</h3>
       <p style="font-size: var(--fs-card); color: var(--text); margin: 0; line-height: 1.6; white-space: pre-wrap;">${r.desc}</p>
-      ${r.settings ? `<div style="font-size: 12px; color: var(--sub); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border);">⚙️ ${r.settings}</div>` : ""}
+      ${r.settings ? `<div style="font-size: 12px; color: var(--sub); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); white-space: pre-wrap;">⚙️ ${r.settings}</div>` : ""}
     `;
     container.appendChild(card);
   });
@@ -1183,8 +1195,6 @@ function showPage(pageName, filterCategory) {
     renderRolesDisplay();
   } else if (pageName === 'bug-list') {
     fetchBugList();
-  } else if (pageName === 'adopted-roles') {
-    fetchAdoptedRoles();
   }
 
   document.getElementById("sidebar").classList.remove("show");
@@ -1266,29 +1276,31 @@ function handleCombiCampChange() {
   win2Input.required = (camp2 === "第三陣営" && !isAdmin);
 }
 
+/* ★設定項目カード作成（提案フォームと管理者フォームで共通利用） */
 let settingItemCount = 0;
-function addSettingItem() {
+function createSettingCard(containerId) {
   settingItemCount++;
-  const container = document.getElementById("settingItemsContainer");
+  const container = document.getElementById(containerId);
   const card = document.createElement("div");
   card.className = "setting-item-card";
   card.id = `setting-item-${settingItemCount}`;
+  const isEn = (currentLang === 'en');
   card.innerHTML = `
     <div class="setting-item-header">
-      <span class="setting-item-title">${currentLang === 'en' ? `Option #${settingItemCount}` : `設定項目 #${settingItemCount}`}</span>
+      <span class="setting-item-title">${isEn ? `Option #${settingItemCount}` : `設定項目 #${settingItemCount}`}</span>
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
     <div class="setting-main-row">
-      <input type="text" class="form-input setting-name" placeholder="${currentLang === 'en' ? 'Option Name' : '設定項目名'}">
+      <input type="text" class="form-input setting-name" placeholder="${isEn ? 'Option Name' : '設定項目名'}">
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
-        <option value="number">${currentLang === 'en' ? 'Number' : '数値'}</option>
-        <option value="boolean">${currentLang === 'en' ? 'Toggle' : '2択'}</option>
+        <option value="number">${isEn ? 'Number' : '数値'}</option>
+        <option value="boolean">${isEn ? 'Toggle' : '2択'}</option>
       </select>
     </div>
     <div class="setting-detail-grid setting-detail-number">
-      <input type="text" class="form-input setting-step" placeholder="${currentLang === 'en' ? 'Step' : '間隔'}">
-      <input type="text" class="form-input setting-max" placeholder="${currentLang === 'en' ? 'Max' : '最大値'}">
-      <input type="text" class="form-input setting-unit" placeholder="${currentLang === 'en' ? 'Unit' : '単位'}">
+      <input type="text" class="form-input setting-step" placeholder="${isEn ? 'Step' : '間隔'}">
+      <input type="text" class="form-input setting-max" placeholder="${isEn ? 'Max' : '最大値'}">
+      <input type="text" class="form-input setting-unit" placeholder="${isEn ? 'Unit' : '単位'}">
     </div>
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
       <input type="text" class="form-input setting-choice1" placeholder="Choice 1">
@@ -1391,6 +1403,32 @@ async function handleSuggestSubmit(event) {
   }
 
   fields.push({ name: "能力・詳細説明", value: roleDesc });
+
+  const settingCards = document.querySelectorAll("#settingItemsContainer .setting-item-card");
+  if (settingCards.length > 0) {
+    let settingText = "";
+    settingCards.forEach(card => {
+      const name = card.querySelector(".setting-name").value.trim();
+      const type = card.querySelector(".setting-type").value;
+      if (name) {
+        if (type === "boolean") {
+          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
+          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
+          settingText += `・**${name}**: 2択 [ ${c1} / ${c2} ]\n`;
+        } else {
+          const step = card.querySelector(".setting-step").value.trim();
+          const max = card.querySelector(".setting-max").value.trim();
+          const unit = card.querySelector(".setting-unit").value.trim();
+          let details = [];
+          if (max) details.push(`最大: ${max}${unit}`);
+          if (step) details.push(`間隔: ${step}${unit}`);
+          if (!max && !step && unit) details.push(`単位: ${unit}`);
+          settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
+        }
+      }
+    });
+    if (settingText) fields.push({ name: "⚙️ ゲーム内設定項目", value: settingText });
+  }
 
   const payload = {
     username: "Tora MOD 提案システム" + (isAdmin ? " [ADMIN]" : ""),
@@ -1599,54 +1637,6 @@ async function deleteBugDirectly(bugId) {
   } catch (e) {}
 }
 
-/* ④ 採用役職一覧 */
-let loadedAdoptedRoles = [];
-async function fetchAdoptedRoles() {
-  const container = document.getElementById("adoptedRolesDisplay");
-  if (!container) return;
-  container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'Fetching accepted roles...' : 'Botから採用役職を取得中...'}</p>`;
-
-  try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/adopted' : BOT_SERVER_URL + '/api/adopted';
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error();
-    loadedAdoptedRoles = await response.json();
-
-    if (!loadedAdoptedRoles || loadedAdoptedRoles.length === 0) {
-      container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'No planned roles yet. Submit ideas!' : '現在採用決定の役職はありません。提案をお待ちしています！✨'}</p>`;
-      return;
-    }
-
-    container.innerHTML = "";
-    loadedAdoptedRoles.forEach(r => {
-      const card = document.createElement("div");
-      card.className = "custom-card border-green";
-      card.innerHTML = `
-        <div class="card-header-row">
-          <span class="card-tag green">${r.camp || "役職"}</span>
-          <span style="font-size: 12px; color: var(--sub);">${r.date || ""}</span>
-          ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteAdoptedRole('${r.id}')" title="削除">×</button>` : ""}
-        </div>
-        <h3 style="margin: 4px 0; font-size: calc(var(--fs-base) + 2px); color: #4ade80;">${r.name}</h3>
-        <p style="font-size: var(--fs-card); color: var(--text); margin: 0; line-height: 1.6; white-space: pre-wrap;">${r.desc}</p>
-      `;
-      container.appendChild(card);
-    });
-  } catch (e) {
-    container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">${currentLang === 'en' ? 'Unable to connect to Bot.' : '現在Botと接続中です。数秒待ってから開き直してください。'}</p>`;
-  }
-}
-
-async function deleteAdoptedRole(roleId) {
-  if (!isAdmin) return;
-  if (!confirm(currentLang === 'en' ? "Delete this accepted role?" : "この採用役職を一覧から削除しますか？")) return;
-  try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? `${BOT_SERVER_URL}api/adopted/${roleId}` : `${BOT_SERVER_URL}/api/adopted/${roleId}`;
-    const res = await fetch(apiUrl, { method: "DELETE" });
-    if (res.ok) fetchAdoptedRoles();
-  } catch (e) {}
-}
-
 /* ⑤ サイト内まるごとキーワード検索 */
 const searchDatabase = [
   { type: "ページ", typeEn: "Page", title: "トップページ", titleEn: "Home", page: "home", desc: "Tora MOD 公式Wikiのメイン画面" },
@@ -1654,7 +1644,6 @@ const searchDatabase = [
   { type: "ページ", typeEn: "Page", title: "役職を提案する", titleEn: "Suggest Role", page: "suggest", desc: "新役職・移植案の投稿フォーム" },
   { type: "ページ", typeEn: "Page", title: "バグ報告", titleEn: "Report Bug", page: "bug", desc: "不具合やログの報告フォーム" },
   { type: "ページ", typeEn: "Page", title: "バグ一覧", titleEn: "Known Bugs", page: "bug-list", desc: "現在対応中の不具合一覧" },
-  { type: "ページ", typeEn: "Page", title: "採用役職", titleEn: "Accepted Roles", page: "adopted-roles", desc: "次回実装予定の採用決定役職" },
   { type: "ガイド", typeEn: "Guide", title: "MOD導入ガイド", titleEn: "Install Guide", page: "install", desc: "Steam/Epicでの導入方法・ホストMOD" },
   { type: "FAQ", typeEn: "FAQ", title: "よくある質問 (F&Q)", titleEn: "FAQ", page: "faq", desc: "黒画面トラブル、BAN対策、フレンド参加" },
   { type: "コマンド", typeEn: "Cmd", title: "/h (コマンド一覧)", titleEn: "/h (Command List)", page: "commands", desc: "ゲーム内の利用可能コマンドを表示" },
@@ -1733,7 +1722,6 @@ function changeTheme(theme) {
   applyTheme(theme);
 }
 
-// ★文字サイズ切り替え処理（全体に確実に適用）
 function applyFontSize(size) {
   document.body.classList.remove("font-small", "font-normal", "font-large");
   document.body.classList.add(`font-${size}`);
@@ -1767,7 +1755,7 @@ function applyLanguage(lang) {
   switchProposalType(currentProposalType);
   if (loadedBugs && loadedBugs.length > 0) renderBugList();
   renderRolesDisplay();
-  loadAnnouncement(); // お知らせの翻訳を再適用
+  loadAnnouncement();
 }
 
 function changeLanguage(lang) {
