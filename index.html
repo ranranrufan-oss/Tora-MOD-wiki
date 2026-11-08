@@ -19,9 +19,15 @@ body.light {
   --sidebar-bg: #ffffff; --border: #d9dce5; --text: #222532; --sub: #697080;
   --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
 }
+
+/* ★文字サイズ切り替え */
+body.font-small { font-size: 13px; }
+body.font-normal { font-size: 15px; }
+body.font-large { font-size: 17px; }
+
 body {
   margin: 0; background: var(--bg); color: var(--text);
-  font-family: Arial, "Noto Sans JP", sans-serif; transition: background .2s, color .2s;
+  font-family: Arial, "Noto Sans JP", sans-serif; transition: background .2s, color .2s, font-size .2s;
 }
 .tora-text { color: #DDBB99 !important; }
 
@@ -45,6 +51,15 @@ header {
   border-radius: 10px; padding: 8px 14px; font-size: 14px; cursor: pointer;
 }
 .settings-button:hover { background: var(--hover); }
+
+/* ★お知らせバナー */
+.announcement-banner {
+  background: rgba(251, 191, 36, 0.15); border-bottom: 1px solid rgba(251, 191, 36, 0.4);
+  color: #fbbf24; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; font-weight: bold; font-size: 14px; animation: fadeIn .3s;
+}
+.announcement-content { display: flex; align-items: center; gap: 8px; flex: 1; }
+.announcement-close { background: none; border: none; color: #fbbf24; font-size: 20px; cursor: pointer; }
 
 /* サイドバー */
 .sidebar-overlay {
@@ -280,6 +295,12 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .step-content h3 { margin: 0 0 6px 0; font-size: 16px; }
 .step-content p { margin: 0; color: var(--sub); font-size: 14px; line-height: 1.6; }
 
+/* ★管理者お知らせ編集ボックス */
+.admin-announcement-card {
+  background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px;
+  padding: 16px; margin-bottom: 24px;
+}
+
 footer {
   margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
   border-top: 1px solid var(--border); font-size: 13px;
@@ -305,7 +326,7 @@ select {
 </style>
 </head>
 
-<body>
+<body class="font-normal">
 
 <!-- ヘッダー -->
 <header>
@@ -319,6 +340,15 @@ select {
   </div>
   <button class="settings-button" id="headerSettingsBtn" onclick="openSettings()" data-ja="設定" data-en="Settings">設定</button>
 </header>
+
+<!-- ★最上部のお知らせバナー -->
+<div id="announcementBanner" class="announcement-banner" style="display: none;">
+  <div class="announcement-content">
+    <span>📢</span>
+    <span id="announcementText"></span>
+  </div>
+  <button id="adminRemoveBannerBtn" class="announcement-close" style="display: none;" onclick="removeAnnouncement()" title="お知らせを削除">×</button>
+</div>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
@@ -366,6 +396,16 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
+    <!-- ★管理者専用お知らせ設定カード -->
+    <div id="adminAnnouncementBox" class="admin-announcement-card" style="display: none;">
+      <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] サイト内お知らせ（バナー）設定" data-en="[ADMIN] Site Announcement Banner Setting">[ADMIN] サイト内お知らせ（バナー）設定</label>
+      <input type="text" id="adminNoticeInput" class="form-input" placeholder="例：現在、新役職のテストプレイを開催中です！" data-placeholder-ja="例：現在、新役職のテストプレイを開催中です！" data-placeholder-en="e.g. Test play event is currently running!">
+      <div style="display: flex; gap: 8px; margin-top: 8px;">
+        <button type="button" class="submit-btn admin" style="margin: 0; flex: 1;" onclick="setAnnouncement()" data-ja="お知らせを掲載" data-en="Publish Banner">お知らせを掲載</button>
+        <button type="button" class="submit-btn danger" style="margin: 0; width: auto; padding: 10px 16px;" onclick="removeAnnouncement()" data-ja="削除" data-en="Remove">削除</button>
+      </div>
+    </div>
+
     <h1><span style="color: #DDBB99 !important;">Tora</span> MOD</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
@@ -720,7 +760,7 @@ select {
     </section>
   </div>
 
-  <!-- ⑧ コマンド一覧ページ（指定の3コマンドのみ） -->
+  <!-- ⑧ コマンド一覧ページ -->
   <div id="page-commands" class="page-view">
     <h1 data-ja="コマンド一覧" data-en="In-Game Commands">コマンド一覧</h1>
     <div class="subtitle">Chat Commands</div>
@@ -762,7 +802,7 @@ select {
   <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki
 </footer>
 
-<!-- 設定モーダル -->
+<!-- 設定モーダル（テーマ・言語・文字サイズ） -->
 <div class="modal" id="settingsModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -785,6 +825,16 @@ select {
         <option value="en">English</option>
       </select>
     </div>
+
+    <!-- ★追加：文字サイズ設定 -->
+    <div class="setting-row">
+      <span id="labelFontSize" data-ja="文字サイズ" data-en="Font Size">文字サイズ</span>
+      <select id="fontSizeSelect" onchange="changeFontSize(this.value)">
+        <option value="small" data-ja="小" data-en="Small">小</option>
+        <option value="normal" data-ja="標準" data-en="Medium">標準</option>
+        <option value="large" data-ja="大" data-en="Large">大</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -799,6 +849,14 @@ function updateAdminUI() {
 
   const adminSection = document.getElementById("adminBugAddSection");
   if (adminSection) adminSection.style.display = isAdmin ? "block" : "none";
+
+  // ★管理者用お知らせボックスの表示
+  const adminNoticeBox = document.getElementById("adminAnnouncementBox");
+  if (adminNoticeBox) adminNoticeBox.style.display = isAdmin ? "block" : "none";
+
+  // お知らせバナーの×ボタン（管理者のみ表示）
+  const removeBannerBtn = document.getElementById("adminRemoveBannerBtn");
+  if (removeBannerBtn) removeBannerBtn.style.display = isAdmin ? "block" : "none";
 
   const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
   reqInputs.forEach(el => { el.required = !isAdmin; });
@@ -829,12 +887,46 @@ function handleMenuSecretTap() {
         isAdmin = true;
         localStorage.setItem("tora-is-admin", "true");
         updateAdminUI();
-        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力でも提案/報告の確定が可能\n・バグ一覧に直接書き込み・削除が可能");
+        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力でも確定送信が可能\n・バグ一覧の直接管理・お知らせバナー設定が可能");
       } else if (key !== null) {
         alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
       }
     }
   }
+}
+
+/* ★★★ 管理者用お知らせバナー機能 ★★★ */
+function loadAnnouncement() {
+  const notice = localStorage.getItem("tora-announcement");
+  const banner = document.getElementById("announcementBanner");
+  const textEl = document.getElementById("announcementText");
+  if (notice) {
+    textEl.textContent = notice;
+    banner.style.display = "flex";
+  } else {
+    banner.style.display = "none";
+  }
+}
+
+function setAnnouncement() {
+  if (!isAdmin) return;
+  const input = document.getElementById("adminNoticeInput");
+  const text = input.value.trim();
+  if (!text) {
+    alert(currentLang === 'en' ? "Please enter announcement text." : "お知らせの文章を入力してください。");
+    return;
+  }
+  localStorage.setItem("tora-announcement", text);
+  loadAnnouncement();
+  alert(currentLang === 'en' ? "Announcement banner published!" : "お知らせバナーを掲載しました！");
+}
+
+function removeAnnouncement() {
+  if (!isAdmin) return;
+  if (!confirm(currentLang === 'en' ? "Remove announcement banner?" : "お知らせバナーを削除しますか？")) return;
+  localStorage.removeItem("tora-announcement");
+  loadAnnouncement();
+  document.getElementById("adminNoticeInput").value = "";
 }
 
 let currentProposalType = 'role';
@@ -1322,9 +1414,10 @@ async function deleteBugDirectly(bugId) {
   } catch (e) { alert("Connection error."); }
 }
 
-/* テーマ＆言語管理 */
+/* ★★★ テーマ・言語・文字サイズ管理 ★★★ */
 const savedTheme = localStorage.getItem("tora-theme") || "dark";
 let currentLang = localStorage.getItem("tora-lang") || "ja";
+const savedFontSize = localStorage.getItem("tora-font-size") || "normal";
 
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
@@ -1335,6 +1428,18 @@ function changeTheme(theme) {
   applyTheme(theme);
 }
 
+// ★文字サイズ切り替え処理
+function applyFontSize(size) {
+  document.body.classList.remove("font-small", "font-normal", "font-large");
+  document.body.classList.add(`font-${size}`);
+  document.getElementById("fontSizeSelect").value = size;
+}
+function changeFontSize(size) {
+  localStorage.setItem("tora-font-size", size);
+  applyFontSize(size);
+}
+
+// 言語切り替え処理
 function applyLanguage(lang) {
   currentLang = lang;
   document.getElementById("langSelect").value = lang;
@@ -1373,9 +1478,12 @@ function changeLanguage(lang) {
 function openSettings() { document.getElementById("settingsModal").classList.add("show"); }
 function closeSettings() { document.getElementById("settingsModal").classList.remove("show"); }
 
+// 初期化
 applyTheme(savedTheme);
+applyFontSize(savedFontSize);
 applyLanguage(currentLang);
 updateAdminUI();
+loadAnnouncement();
 
 document.getElementById("settingsModal").addEventListener("click", function(e) {
   if (e.target === this) closeSettings();
