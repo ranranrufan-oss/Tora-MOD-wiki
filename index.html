@@ -13,17 +13,16 @@
   --c-tora: #DDBB99; --c-impostor: #ff4d4d; --c-madmate: var(--c-impostor);
   --c-crewmate: #38bdf8; --c-neutral: #9ca3af; --c-ghost: #ffffff;
   --c-combination: var(--c-ghost); --c-modifier: #22c55e;
-  --fs-base: 15px; --fs-h1: 32px; --fs-h2: 20px; --fs-card: 14px;
+  --fs-base: 15px; --fs-h1: 30px; --fs-h2: 19px; --fs-card: 14px;
 }
 body.light {
   --bg: #f3f4f7; --header: #ffffff; --card: #ffffff; --card-inner: #f8f9fc;
   --sidebar-bg: #ffffff; --border: #d9dce5; --text: #222532; --sub: #697080;
   --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
 }
-
-body.font-small { --fs-base: 13px; --fs-h1: 28px; --fs-h2: 17px; --fs-card: 12px; }
-body.font-normal { --fs-base: 15px; --fs-h1: 32px; --fs-h2: 20px; --fs-card: 14px; }
-body.font-large { --fs-base: 18px; --fs-h1: 36px; --fs-h2: 23px; --fs-card: 16px; }
+body.font-small { --fs-base: 13px; --fs-h1: 26px; --fs-h2: 17px; --fs-card: 12px; }
+body.font-normal { --fs-base: 15px; --fs-h1: 30px; --fs-h2: 19px; --fs-card: 14px; }
+body.font-large { --fs-base: 18px; --fs-h1: 34px; --fs-h2: 22px; --fs-card: 16px; }
 
 body {
   margin: 0; background: var(--bg); color: var(--text);
@@ -32,13 +31,13 @@ body {
 }
 .tora-text { color: #DDBB99 !important; }
 
+/* ヘッダー */
 header {
   min-height: 65px; display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; background: var(--header); border-bottom: 1px solid var(--border);
   position: sticky; top: 0; z-index: 50;
 }
-.header-left { display: flex; align-items: center; gap: 12px; }
-.header-right { display: flex; align-items: center; gap: 8px; }
+.header-left, .header-right { display: flex; align-items: center; gap: 10px; }
 .menu-button, .header-icon-btn {
   background: transparent; border: none; cursor: pointer; display: flex;
   flex-direction: column; justify-content: center; align-items: center;
@@ -54,7 +53,7 @@ header {
 }
 .settings-button:hover { background: var(--hover); }
 
-/* お知らせバナー */
+/* お知らせ＆受付停止バナー */
 .announcement-banner {
   background: rgba(251, 191, 36, 0.15); border-bottom: 1px solid rgba(251, 191, 36, 0.4);
   color: #fbbf24; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
@@ -63,7 +62,6 @@ header {
 .announcement-content { display: flex; align-items: center; gap: 8px; flex: 1; }
 .announcement-close { background: none; border: none; color: #fbbf24; font-size: 20px; cursor: pointer; }
 
-/* 受付停止バナー */
 .maintenance-alert {
   background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
   color: #ef4444; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 20px;
@@ -124,7 +122,6 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .info-card h2 { margin: 0 0 14px 0; font-size: var(--fs-h2); }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: var(--fs-base); }
 
-/* 予定リスト */
 .plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .plan-item {
   display: flex; flex-direction: column; gap: 6px; padding: 14px 16px;
@@ -141,7 +138,7 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 /* 検索UI */
 .search-container {
   background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 18px; margin-bottom: 24px;
+  border-radius: 16px; padding: 18px; margin-bottom: 20px;
 }
 .search-box-wrapper { position: relative; margin-bottom: 14px; }
 .search-icon-svg {
@@ -154,10 +151,10 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
   font-size: var(--fs-base); outline: none;
 }
 .search-input:focus { border-color: #555f80; }
-.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
 .filter-btn {
   background: var(--card-inner); border: 1px solid var(--border); color: var(--text);
-  padding: 7px 14px; border-radius: 20px; font-size: var(--fs-card); cursor: pointer; user-select: none;
+  padding: 6px 13px; border-radius: 20px; font-size: calc(var(--fs-card) - 1px); cursor: pointer; user-select: none;
 }
 .filter-btn.all.active { background: #2d3345; color: #fff; border-color: #4c5673; }
 .filter-btn.impostor { color: var(--c-impostor); border-color: rgba(255, 77, 77, 0.35); }
@@ -168,7 +165,75 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .filter-btn.modifier { color: var(--c-modifier); border-color: rgba(34, 197, 94, 0.35); }
 .filter-btn.ghost { color: var(--c-ghost); border-color: rgba(255, 255, 255, 0.35); }
 .filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
+
+/* モード切り替えタブ */
+.mode-tabs {
+  display: flex; gap: 6px; background: var(--card-inner); padding: 4px;
+  border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;
+}
+.mode-tab-btn {
+  flex: 1; background: transparent; border: none; color: var(--sub);
+  padding: 6px 10px; border-radius: 6px; font-size: var(--fs-card); font-weight: bold;
+  cursor: pointer; transition: all .2s;
+}
+.mode-tab-btn.active { background: var(--card); color: var(--text); }
 .search-count { font-size: var(--fs-card); color: var(--sub); padding-left: 2px; }
+
+/* 役職一覧リスト */
+.role-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.role-item-btn {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; text-decoration: none; color: var(--text); transition: background .2s, transform .15s;
+}
+.role-item-btn:hover { background: var(--hover); transform: translateY(-1px); }
+.role-item-left { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: calc(var(--fs-base) + 1px); }
+.role-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.role-arrow { color: var(--sub); font-size: 18px; }
+
+/* 役職詳細画面 */
+.back-btn {
+  display: inline-flex; align-items: center; gap: 6px; background: var(--card);
+  border: 1px solid var(--border); color: var(--text); padding: 8px 16px;
+  border-radius: 8px; font-size: var(--fs-card); font-weight: bold; cursor: pointer;
+  margin-bottom: 20px;
+}
+.back-btn:hover { background: var(--hover); }
+
+.detail-color-bar {
+  height: 6px; width: 100px; border-radius: 3px; margin: 10px 0 24px 0;
+  background: linear-gradient(90deg, #f97316 0%, #ef4444 50%, #22c55e 100%);
+}
+
+.detail-section-title {
+  display: flex; align-items: center; font-size: calc(var(--fs-h2) + 2px);
+  font-weight: bold; margin: 28px 0 14px 0; border-left: 4px solid #38bdf8;
+  padding-left: 12px; color: var(--text);
+}
+
+.detail-list {
+  list-style: none; padding-left: 8px; margin: 0; display: flex; flex-direction: column; gap: 10px;
+}
+.detail-list li {
+  position: relative; padding-left: 20px; color: var(--text); line-height: 1.7; font-size: var(--fs-base);
+}
+.detail-list li::before {
+  content: "•"; position: absolute; left: 4px; color: var(--sub); font-size: 18px;
+}
+
+/* 設定テーブル */
+.settings-table-wrapper {
+  overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;
+  background: var(--card-inner); margin-top: 14px;
+}
+.settings-table {
+  width: 100%; border-collapse: collapse; text-align: left; font-size: var(--fs-card);
+}
+.settings-table th, .settings-table td {
+  padding: 14px 16px; border-bottom: 1px solid var(--border);
+}
+.settings-table th { background: var(--card); font-weight: bold; width: 45%; }
+.settings-table tr:last-child td { border-bottom: none; }
 
 /* フォーム共通 */
 .form-group { margin-bottom: 18px; }
@@ -225,11 +290,12 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .setting-item-title { font-size: var(--fs-card); font-weight: bold; color: var(--sub); }
 .setting-item-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; }
 .setting-main-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
-.setting-detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.setting-detail-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .setting-detail-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 @media (max-width: 600px) {
   .setting-main-row { grid-template-columns: 1fr; }
-  .setting-detail-grid, .setting-detail-grid-2 { grid-template-columns: 1fr; }
+  .setting-detail-grid-4 { grid-template-columns: 1fr 1fr; }
+  .setting-detail-grid-2 { grid-template-columns: 1fr 1fr; }
 }
 .add-setting-btn {
   background: transparent; border: 1px dashed #38bdf8; color: #38bdf8; padding: 10px;
@@ -250,16 +316,16 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 }
 .form-status.success { display: block; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
 
-/* カード一覧表示 */
-.custom-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.custom-card {
-  background: var(--card-inner); border: 1px solid var(--border);
-  border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px;
+/* バグ一覧 */
+.bug-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.bug-card {
+  background: var(--card-inner); border: 1px solid var(--border); border-left: 4px solid #fbbf24;
+  border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
 }
-.custom-card.border-gold { border-left: 4px solid #fbbf24; }
-.card-header-row { display: flex; justify-content: space-between; align-items: center; }
-.card-tag { padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; }
-.card-tag.gold { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+.bug-desc { font-size: var(--fs-base); color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-all; flex: 1; }
+.translating-hint { font-size: 12px; color: var(--sub); font-style: italic; margin-left: 6px; }
+.bug-card-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px; }
+.admin-custom-box { background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
 
 /* F&Q */
 .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
@@ -303,21 +369,13 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .step-content h3 { margin: 0 0 6px 0; font-size: var(--fs-base); }
 .step-content p { margin: 0; color: var(--sub); font-size: var(--fs-card); line-height: 1.6; }
 
-/* 管理者ボックス */
-.admin-custom-box {
-  background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px;
-  padding: 16px; margin-bottom: 24px;
-}
-
-/* サイト内検索モーダル */
+/* 検索モーダル */
 .search-modal-box {
   width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border);
   border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
 }
 .search-modal-input-wrap { position: relative; }
-.search-results-list {
-  max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
-}
+.search-results-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
 .search-result-item {
   padding: 10px 12px; border-radius: 8px; background: var(--card-inner);
   border: 1px solid var(--border); cursor: pointer; text-decoration: none; color: var(--text);
@@ -389,6 +447,7 @@ select {
   <div class="menu-section">
     <div class="menu-section-title" data-ja="メイン" data-en="MAIN">メイン</div>
     <a class="menu-link" onclick="showPage('home')" data-ja="トップページ" data-en="Home">トップページ</a>
+    <a class="menu-link" onclick="showPage('roles')" data-ja="役職一覧" data-en="Roles">役職一覧</a>
     <a class="menu-link suggest" onclick="showPage('suggest')" data-ja="役職を提案する" data-en="Suggest Role">役職を提案する</a>
     <a class="menu-link bug" onclick="showPage('bug')" data-ja="バグ報告" data-en="Report Bug">バグ報告</a>
     <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
@@ -402,20 +461,19 @@ select {
   </div>
 
   <div class="menu-section">
-    <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
-    <a class="menu-link all"         onclick="showPage('roles', 'all')" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
-    <a class="menu-link impostor"    onclick="showPage('roles', 'impostor')" data-ja="インポスター" data-en="Impostor">インポスター</a>
-    <a class="menu-link madmate"     onclick="showPage('roles', 'madmate')" data-ja="マッドメイト" data-en="Madmate">マッドメイト</a>
-    <a class="menu-link crewmate"    onclick="showPage('roles', 'crewmate')" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</a>
-    <a class="menu-link neutral"     onclick="showPage('roles', 'neutral')" data-ja="第三陣営" data-en="Neutral">第三陣営</a>
-    <a class="menu-link combination" onclick="showPage('roles', 'combination')" data-ja="コンビネーション" data-en="Combination">コンビネーション</a>
-    <a class="menu-link modifier"    onclick="showPage('roles', 'modifier')" data-ja="属性" data-en="Modifier">属性</a>
-    <a class="menu-link ghost"       onclick="showPage('roles', 'ghost')" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</a>
+    <div class="menu-section-title" data-ja="陣営別フィルター" data-en="TEAMS">陣営別フィルター</div>
+    <a class="menu-link impostor"    onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.impostor'), 'インポスター');" data-ja="インポスター" data-en="Impostor">インポスター</a>
+    <a class="menu-link madmate"     onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.madmate'), 'マッドメイト');" data-ja="マッドメイト" data-en="Madmate">マッドメイト</a>
+    <a class="menu-link crewmate"    onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.crewmate'), 'クルーメイト');" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</a>
+    <a class="menu-link neutral"     onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.neutral'), '第三陣営');" data-ja="第三陣営" data-en="Neutral">第三陣営</a>
+    <a class="menu-link combination" onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.combination'), 'コンビネーション');" data-ja="コンビネーション" data-en="Combination">コンビネーション</a>
+    <a class="menu-link modifier"    onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.modifier'), '属性');" data-ja="属性" data-en="Modifier">属性</a>
+    <a class="menu-link ghost"       onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.ghost'), '幽霊役職');" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</a>
   </div>
 
   <div class="menu-section">
     <div class="menu-section-title" data-ja="その他" data-en="OTHER">その他</div>
-    <a class="menu-link" onclick="toggleSidebar()" data-ja="システム設定" data-en="System Settings">システム設定</a>
+    <a class="menu-link" onclick="toggleSidebar(); openSettings();" data-ja="システム設定" data-en="System Settings">システム設定</a>
   </div>
 </nav>
 
@@ -423,6 +481,7 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
+    <!-- 管理者専用コントロールパネル -->
     <div id="adminAnnouncementBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] サイト内お知らせ（バナー）設定" data-en="[ADMIN] Announcement Banner Setting">[ADMIN] サイト内お知らせ（バナー）設定</label>
       <input type="text" id="adminNoticeInput" class="form-input" placeholder="例：現在、新役職のテストプレイを開催中です！" data-placeholder-ja="例：現在、新役職のテストプレイを開催中です！" data-placeholder-en="e.g. Test play event is currently running!">
@@ -492,26 +551,36 @@ select {
     <h1 data-ja="役職一覧" data-en="Role List">役職一覧</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
-    <!-- ★管理者用：役職直接追加フォーム（提案と同じ設定項目に対応） -->
+    <!-- 管理者用：役職直接追加フォーム（最小値対応） -->
     <div id="adminRoleAddBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] 役職一覧に直接追加" data-en="[ADMIN] Add Custom Role Directly">[ADMIN] 役職一覧に直接追加</label>
       <div class="form-row">
-        <input type="text" id="adminRoleName" class="form-input" placeholder="役職名 (例: タイムトラベラー)" data-placeholder-ja="役職名 (例: タイムトラベラー)" data-placeholder-en="Role Name (e.g. Time Traveler)">
+        <input type="text" id="adminRoleName" class="form-input" placeholder="役職名 (例: イビルゲッサー)" data-placeholder-ja="役職名 (例: イビルゲッサー)" data-placeholder-en="Role Name">
         <select id="adminRoleCamp" class="form-select">
-          <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
           <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
           <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+          <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
           <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
           <option value="コンビネーション" data-ja="コンビネーション" data-en="Combination">コンビネーション</option>
           <option value="属性" data-ja="属性" data-en="Modifier">属性</option>
           <option value="幽霊役職" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</option>
         </select>
       </div>
-      <textarea id="adminRoleDesc" class="form-textarea" style="min-height: 70px; margin-top: 8px;" placeholder="役職の能力・詳細説明" data-placeholder-ja="役職の能力・詳細説明" data-placeholder-en="Ability & Description"></textarea>
 
-      <!-- 設定項目追加エリア（提案フォームと同等の動的追加） -->
+      <div class="form-group" style="margin-top: 10px;">
+        <label class="form-label" style="font-size: 13px;"><span data-ja="対応モード" data-en="Mode">対応モード</span></label>
+        <select id="adminRoleMode" class="form-select">
+          <option value="両方" data-ja="両方" data-en="Both">両方</option>
+          <option value="ホストMOD" data-ja="ホストMOD" data-en="Host-only">ホストMOD</option>
+          <option value="クライアントMOD" data-ja="クライアントMOD" data-en="Client-only">クライアントMOD</option>
+        </select>
+      </div>
+
+      <textarea id="adminRoleDesc" class="form-textarea" style="min-height: 70px; margin-top: 8px;" placeholder="役職の説明文（キルするたびに〜 等）" data-placeholder-ja="役職の説明文" data-placeholder-en="Role description"></textarea>
+
+      <!-- 設定項目追加エリア -->
       <div style="margin-top: 10px;">
-        <label class="form-label" style="font-size: 13px;"><span data-ja="役職の設定項目" data-en="Role Options">役職の設定項目</span> <span class="opt" data-ja="任意" data-en="Optional">任意</span></label>
+        <label class="form-label" style="font-size: 13px;"><span data-ja="役職の設定項目（表形式で追加）" data-en="Role Settings (Table)">役職の設定項目（表形式で追加）</span></label>
         <div id="adminSettingItemsContainer" class="setting-items-container"></div>
         <button type="button" class="add-setting-btn" onclick="createSettingCard('adminSettingItemsContainer')" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
       </div>
@@ -519,6 +588,7 @@ select {
       <button type="button" class="submit-btn admin" style="margin-top: 12px;" onclick="addRoleDirectlyByAdmin()" data-ja="役職を一覧に追加" data-en="Add to Role List">役職を一覧に追加</button>
     </div>
 
+    <!-- 検索＆フィルター -->
     <section class="search-container">
       <div class="search-box-wrapper">
         <svg class="search-icon-svg" viewBox="0 0 24 24">
@@ -528,6 +598,15 @@ select {
         <input type="text" id="roleSearchInput" class="search-input" placeholder="役職名で検索" data-placeholder-ja="役職名で検索" data-placeholder-en="Search by role name..." oninput="filterRolesDisplay()">
       </div>
 
+      <!-- モード切り替えタブ -->
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab-btn active" onclick="selectModeFilter(this, 'all')" data-ja="すべて" data-en="All">すべて</button>
+        <button type="button" class="mode-tab-btn" onclick="selectModeFilter(this, 'ホストMOD')" data-ja="ホストMOD" data-en="Host-only">ホストMOD</button>
+        <button type="button" class="mode-tab-btn" onclick="selectModeFilter(this, 'クライアントMOD')" data-ja="クライアントMOD" data-en="Client-only">クライアントMOD</button>
+        <button type="button" class="mode-tab-btn" onclick="selectModeFilter(this, '両方')" data-ja="両方" data-en="Both">両方</button>
+      </div>
+
+      <!-- 陣営フィルタータグ -->
       <div class="filter-tags">
         <button class="filter-btn all active" type="button" onclick="selectFilter(this, 'all')" data-ja="すべての役職" data-en="All Roles">すべての役職</button>
         <button class="filter-btn impostor"    type="button" onclick="selectFilter(this, 'インポスター')" data-ja="インポスター" data-en="Impostor">インポスター</button>
@@ -539,14 +618,44 @@ select {
         <button class="filter-btn ghost"       type="button" onclick="selectFilter(this, '幽霊役職')" data-ja="幽霊役職" data-en="Ghost Role">幽霊役職</button>
       </div>
 
-      <div class="search-count" id="roleSearchCount" data-ja="0件" data-en="0 items">0件</div>
+      <div class="search-count" id="roleSearchCount">0件</div>
     </section>
 
-    <!-- 役職カード一覧表示エリア -->
-    <div id="rolesCardsDisplay" class="custom-list-container">
-      <section class="info-card" id="noRolesCard">
-        <p style="text-align: center; color: var(--sub);" data-ja="役職データを掲載準備中です。" data-en="Role data is currently being prepared.">役職データを掲載準備中です。</p>
-      </section>
+    <!-- 役職ボタン一覧 -->
+    <div id="rolesListDisplay" class="role-list-container"></div>
+  </div>
+
+  <!-- ②-2 役職詳細画面 -->
+  <div id="page-role-detail" class="page-view">
+    <button type="button" class="back-btn" onclick="showPage('roles')" data-ja="‹ 役職一覧に戻る" data-en="‹ Back to Roles">‹ 役職一覧に戻る</button>
+
+    <h1 id="detailRoleName">役職名</h1>
+    <div class="detail-color-bar"></div>
+
+    <div class="detail-section-title" data-ja="陣営" data-en="Team">陣営</div>
+    <ul class="detail-list">
+      <li id="detailRoleCamp">インポスター陣営</li>
+    </ul>
+
+    <div class="detail-section-title" data-ja="対応モード" data-en="Supported Mode">対応モード</div>
+    <ul class="detail-list">
+      <li id="detailRoleMode">両方 (ホスト・クライアント対応)</li>
+    </ul>
+
+    <div class="detail-section-title" data-ja="役職説明" data-en="Role Description">役職説明</div>
+    <ul class="detail-list" id="detailRoleDescList"></ul>
+
+    <div class="detail-section-title" data-ja="ゲーム設定" data-en="Game Settings">ゲーム設定</div>
+    <div class="settings-table-wrapper">
+      <table class="settings-table">
+        <thead>
+          <tr>
+            <th data-ja="名前" data-en="Setting Name">名前</th>
+            <th data-ja="詳細" data-en="Details">詳細</th>
+          </tr>
+        </thead>
+        <tbody id="detailSettingsTableBody"></tbody>
+      </table>
     </div>
   </div>
 
@@ -583,9 +692,9 @@ select {
         <div class="form-group">
           <label class="form-label"><span data-ja="陣営" data-en="Team / Camp">陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
           <select id="roleCamp" class="form-select" onchange="handleCampChange(this.value)" required>
-            <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
             <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
             <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+            <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
             <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
             <option value="コンビネーション" data-ja="コンビネーション" data-en="Combination">コンビネーション</option>
             <option value="属性" data-ja="属性" data-en="Modifier">属性</option>
@@ -608,7 +717,7 @@ select {
 
         <div class="form-group" id="winConditionGroup" style="display: none;">
           <label class="form-label"><span data-ja="勝利条件" data-en="Win Condition">勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど" data-placeholder-ja="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど" data-placeholder-en="e.g. All other players die, complete specific tasks to survive..."></textarea>
+          <textarea id="winCondition" class="form-textarea" style="min-height: 85px;" placeholder="例：自分以外の全員が死亡する、特定のタスクを完了して生還するなど"></textarea>
         </div>
 
         <div class="form-group" id="combiRole1Group" style="display: none;">
@@ -616,26 +725,26 @@ select {
             <div>
               <label class="form-label"><span data-ja="役職1の陣営" data-en="Role 1 Team">役職1の陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
               <select id="combiCamp1" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
                 <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
                 <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
                 <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
               </select>
             </div>
             <div>
               <label class="form-label"><span data-ja="役職1（日本語）" data-en="Role 1 (Japanese)">役職1（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ" data-placeholder-ja="例：ラバーズ" data-placeholder-en="e.g. Lovers">
+              <input type="text" id="combiRoleName1" class="form-input" placeholder="例：ラバーズ">
             </div>
             <div>
               <label class="form-label"><span data-ja="役職1（英語・英名）" data-en="Role 1 (English)">役職1（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers" data-placeholder-ja="例：Lovers" data-placeholder-en="e.g. Lovers">
+              <input type="text" id="combiRoleNameEn1" class="form-input" placeholder="例：Lovers">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin1Group" style="display: none;">
           <label class="form-label"><span data-ja="役職1の勝利条件" data-en="Role 1 Win Condition">役職1の勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;" placeholder="例：役職1の単独勝利条件など" data-placeholder-ja="例：役職1の単独勝利条件など" data-placeholder-en="e.g. Solo win condition for role 1..."></textarea>
+          <textarea id="combiWin1" class="form-textarea" style="min-height: 70px;"></textarea>
         </div>
 
         <div class="form-group" id="combiRole2Group" style="display: none;">
@@ -643,31 +752,31 @@ select {
             <div>
               <label class="form-label"><span data-ja="役職2の陣営" data-en="Role 2 Team">役職2の陣営</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
               <select id="combiCamp2" class="form-select" onchange="handleCombiCampChange()">
-                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
                 <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
                 <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
+                <option value="クルーメイト" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</option>
                 <option value="第三陣営" data-ja="第三陣営" data-en="Neutral">第三陣営</option>
               </select>
             </div>
             <div>
               <label class="form-label"><span data-ja="役職2（日本語）" data-en="Role 2 (Japanese)">役職2（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー" data-placeholder-ja="例：パートナー" data-placeholder-en="e.g. Partner">
+              <input type="text" id="combiRoleName2" class="form-input" placeholder="例：パートナー">
             </div>
             <div>
               <label class="form-label"><span data-ja="役職2（英語・英名）" data-en="Role 2 (English)">役職2（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner" data-placeholder-ja="例：Partner" data-placeholder-en="e.g. Partner">
+              <input type="text" id="combiRoleNameEn2" class="form-input" placeholder="例：Partner">
             </div>
           </div>
         </div>
 
         <div class="form-group" id="combiWin2Group" style="display: none;">
           <label class="form-label"><span data-ja="役職2の勝利条件" data-en="Role 2 Win Condition">役職2の勝利条件</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;" placeholder="例：役職2の単独勝利条件など" data-placeholder-ja="例：役職2の単独勝利条件など" data-placeholder-en="e.g. Solo win condition for role 2..."></textarea>
+          <textarea id="combiWin2" class="form-textarea" style="min-height: 70px;"></textarea>
         </div>
 
         <div class="form-group">
           <label class="form-label"><span data-ja="能力・説明" data-en="Ability & Description">能力・説明</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" data-placeholder-ja="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" data-placeholder-en="Describe abilities, cooldowns, mechanics, interactions in detail..." required></textarea>
+          <textarea id="roleDesc" class="form-textarea" placeholder="役職の具体的な能力、クールダウン、仕様などを詳しく書いてください" required></textarea>
         </div>
 
         <div class="form-group">
@@ -696,17 +805,17 @@ select {
         <div class="form-row">
           <div class="form-group">
             <label class="form-label"><span data-ja="何試合目か" data-en="Match Number">何試合目か</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" data-placeholder-ja="例：1試合目、3戦目など" data-placeholder-en="e.g. Match 1, Game 3..." required>
+            <input type="text" id="bugMatch" class="form-input" placeholder="例：1試合目、3戦目など" required>
           </div>
           <div class="form-group">
             <label class="form-label"><span data-ja="何ターン目か" data-en="Turn / Round">何ターン目か</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" data-placeholder-ja="例：1ターン目、2回目の会議後など" data-placeholder-en="e.g. Round 1, after meeting 2..." required>
+            <input type="text" id="bugTurn" class="form-input" placeholder="例：1ターン目、2回目の会議後など" required>
           </div>
         </div>
 
         <div class="form-group">
           <label class="form-label"><span data-ja="バグ内容・発生状況" data-en="Bug Description & Reproduction">バグ内容・発生状況</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" data-placeholder-ja="どのような状況でどんな不具合が起きたかを詳しく教えてください。" data-placeholder-en="Describe what happened and how to reproduce..." required></textarea>
+          <textarea id="bugDesc" class="form-textarea" placeholder="どのような状況でどんな不具合が起きたかを詳しく教えてください。" required></textarea>
         </div>
 
         <div class="form-group">
@@ -734,7 +843,7 @@ select {
     <section class="info-card">
       <div id="adminBugAddSection" class="admin-custom-box" style="display: none;">
         <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] バグ一覧に直接追加" data-en="[ADMIN] Add Bug Directly to List">[ADMIN] バグ一覧に直接追加</label>
-        <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-ja="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます" data-placeholder-en="Admin: Enter bug description here and click Add"></textarea>
+        <textarea id="adminBugInput" class="form-textarea" style="min-height: 80px;" placeholder="管理者用：ここにバグ内容を直接書き込んで「一覧に追加」を押せます"></textarea>
         <button type="button" class="submit-btn admin" style="margin-top: 8px;" onclick="addAdminBugDirectly()" data-ja="バグ一覧に追加" data-en="Add to Bug List">バグ一覧に追加</button>
       </div>
 
@@ -1007,7 +1116,7 @@ function toggleSubmissionPause() {
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能（自動翻訳対応） */
+/* お知らせバナー機能 */
 function loadAnnouncement() {
   const notice = localStorage.getItem("tora-announcement");
   const banner = document.getElementById("announcementBanner");
@@ -1046,53 +1155,80 @@ function removeAnnouncement() {
   document.getElementById("adminNoticeInput").value = "";
 }
 
-/* ★★★ 管理者用：役職直接追加（役職提案と同等の設定項目対応） ★★★ */
-let customRolesList = [];
-try { customRolesList = JSON.parse(localStorage.getItem("tora-custom-roles") || "[]"); } catch(e){}
+/* ★★★ 初期役職データ（画像サンプルのイビルギャンブラー収録） ★★★ */
+const defaultRoles = [
+  {
+    id: "default-1",
+    name: "イビルギャンブラー",
+    camp: "インポスター",
+    mode: "両方",
+    descLines: [
+      "キルするたびに成功判定を行い、成功・失敗に応じたキルクールへ変更します。",
+      "ターン開始直後はインポスター共通のキルクールです。"
+    ],
+    settingsList: [
+      { name: "成功時のキルクール", detail: "成功時に適用されるキルクールタイムを設定します (例: 10秒)" },
+      { name: "失敗時のキルクール", detail: "失敗時に適用されるキルクールタイムを設定します (例: 45秒)" },
+      { name: "成功確率", detail: "キル成功の判定確率を設定します (例: 50%)" }
+    ]
+  }
+];
 
+let customRolesList = [];
+try {
+  const saved = localStorage.getItem("tora-custom-roles");
+  customRolesList = saved ? JSON.parse(saved) : defaultRoles;
+} catch(e){
+  customRolesList = defaultRoles;
+}
+
+/* 役職直接追加（管理者用・設定項目対応） */
 function addRoleDirectlyByAdmin() {
   if (!isAdmin) return;
   const name = document.getElementById("adminRoleName").value.trim();
   const camp = document.getElementById("adminRoleCamp").value;
+  const mode = document.getElementById("adminRoleMode").value;
   const desc = document.getElementById("adminRoleDesc").value.trim();
 
   if (!name || !desc) {
-    alert(currentLang === 'en' ? "Please enter role name and description." : "役職名と能力説明を入力してください。");
+    alert(currentLang === 'en' ? "Please enter role name and description." : "役職名と説明を入力してください。");
     return;
   }
 
-  // 設定項目の取得
   const settingCards = document.querySelectorAll("#adminSettingItemsContainer .setting-item-card");
-  let settingText = "";
-  if (settingCards.length > 0) {
-    settingCards.forEach(card => {
-      const sName = card.querySelector(".setting-name").value.trim();
-      const sType = card.querySelector(".setting-type").value;
-      if (sName) {
-        if (sType === "boolean") {
-          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
-          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
-          settingText += `・${sName}: 2択 [ ${c1} / ${c2} ]\n`;
-        } else {
-          const step = card.querySelector(".setting-step").value.trim();
-          const max = card.querySelector(".setting-max").value.trim();
-          const unit = card.querySelector(".setting-unit").value.trim();
-          let details = [];
-          if (max) details.push(`最大: ${max}${unit}`);
-          if (step) details.push(`間隔: ${step}${unit}`);
-          if (!max && !step && unit) details.push(`単位: ${unit}`);
-          settingText += `・${sName}: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
-        }
+  let settingsList = [];
+  settingCards.forEach(card => {
+    const sName = card.querySelector(".setting-name").value.trim();
+    const sType = card.querySelector(".setting-type").value;
+    if (sName) {
+      if (sType === "boolean") {
+        const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
+        const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
+        settingsList.push({ name: sName, detail: `2択 [ ${c1} / ${c2} ]` });
+      } else {
+        const min = card.querySelector(".setting-min").value.trim();
+        const max = card.querySelector(".setting-max").value.trim();
+        const step = card.querySelector(".setting-step").value.trim();
+        const unit = card.querySelector(".setting-unit").value.trim();
+        let details = [];
+        if (min && max) details.push(`${min}〜${max}${unit}`);
+        else if (max) details.push(`最大: ${max}${unit}`);
+        else if (min) details.push(`最小: ${min}${unit}`);
+        if (step) details.push(`間隔: ${step}${unit}`);
+        settingsList.push({ name: sName, detail: details.join(" / ") || `${unit}` });
       }
-    });
-  }
+    }
+  });
+
+  const descLines = desc.split("\n").filter(l => l.trim() !== "");
 
   customRolesList.push({
     id: Date.now().toString(),
     name: name,
     camp: camp,
-    desc: desc,
-    settings: settingText.trim()
+    mode: mode,
+    descLines: descLines,
+    settingsList: settingsList
   });
 
   localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
@@ -1103,7 +1239,8 @@ function addRoleDirectlyByAdmin() {
   alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
 }
 
-function deleteRoleDirectly(roleId) {
+function deleteRoleDirectly(roleId, event) {
+  if (event) event.stopPropagation();
   if (!isAdmin) return;
   if (!confirm(currentLang === 'en' ? "Delete this role?" : "この役職を削除しますか？")) return;
   customRolesList = customRolesList.filter(r => r.id !== roleId);
@@ -1112,43 +1249,103 @@ function deleteRoleDirectly(roleId) {
 }
 
 let activeRoleFilter = "all";
+let activeModeFilter = "all";
+
+function selectModeFilter(btn, modeName) {
+  document.querySelectorAll(".mode-tab-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeModeFilter = modeName;
+  renderRolesDisplay();
+}
+
 function filterRolesDisplay() {
   renderRolesDisplay();
 }
 
+function getCampDotColor(camp) {
+  if (camp.includes("インポスター") || camp.includes("マッドメイト")) return "var(--c-impostor)";
+  if (camp.includes("クルーメイト")) return "var(--c-crewmate)";
+  if (camp.includes("第三陣営")) return "var(--c-neutral)";
+  if (camp.includes("属性")) return "var(--c-modifier)";
+  return "#ffffff";
+}
+
+/* 役職リスト描画 */
 function renderRolesDisplay() {
-  const container = document.getElementById("rolesCardsDisplay");
+  const container = document.getElementById("rolesListDisplay");
   const searchVal = document.getElementById("roleSearchInput").value.toLowerCase().trim();
   const countEl = document.getElementById("roleSearchCount");
 
   const filtered = customRolesList.filter(r => {
-    const matchFilter = (activeRoleFilter === "all" || r.camp.includes(activeRoleFilter));
-    const matchSearch = (!searchVal || r.name.toLowerCase().includes(searchVal) || r.desc.toLowerCase().includes(searchVal));
-    return matchFilter && matchSearch;
+    const matchCamp = (activeRoleFilter === "all" || r.camp.includes(activeRoleFilter));
+    const matchMode = (activeModeFilter === "all" || r.mode === activeModeFilter || r.mode === "両方");
+    const matchSearch = (!searchVal || r.name.toLowerCase().includes(searchVal) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(searchVal)));
+    return matchCamp && matchMode && matchSearch;
   });
 
   if (countEl) countEl.textContent = `${filtered.length}件`;
 
   if (filtered.length === 0) {
-    container.innerHTML = `<section class="info-card"><p style="text-align: center; color: var(--sub);">${currentLang === 'en' ? 'No roles found.' : '該当する役職がありません。'}</p></section>`;
+    container.innerHTML = `<p style="text-align: center; color: var(--sub); padding: 30px;">${currentLang === 'en' ? 'No roles found.' : '該当する役職がありません。'}</p>`;
     return;
   }
 
   container.innerHTML = "";
   filtered.forEach(r => {
-    const card = document.createElement("div");
-    card.className = "custom-card border-gold";
-    card.innerHTML = `
-      <div class="card-header-row">
-        <span class="card-tag gold">${r.camp}</span>
-        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteRoleDirectly('${r.id}')" title="削除">×</button>` : ""}
+    const dotColor = getCampDotColor(r.camp);
+    const btn = document.createElement("div");
+    btn.className = "role-item-btn";
+    btn.onclick = () => showRoleDetail(r);
+
+    btn.innerHTML = `
+      <div class="role-item-left">
+        <span class="role-dot" style="background: ${dotColor};"></span>
+        <span>${r.name}</span>
       </div>
-      <h3 style="margin: 4px 0; font-size: calc(var(--fs-base) + 2px);">${r.name}</h3>
-      <p style="font-size: var(--fs-card); color: var(--text); margin: 0; line-height: 1.6; white-space: pre-wrap;">${r.desc}</p>
-      ${r.settings ? `<div style="font-size: 12px; color: var(--sub); margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--border); white-space: pre-wrap;">⚙️ ${r.settings}</div>` : ""}
+      <div style="display: flex; align-items: center; gap: 8px;">
+        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteRoleDirectly('${r.id}', event)" title="削除">×</button>` : ""}
+        <span class="role-arrow">›</span>
+      </div>
     `;
-    container.appendChild(card);
+    container.appendChild(btn);
   });
+}
+
+/* 役職詳細表示 */
+function showRoleDetail(role) {
+  document.getElementById("detailRoleName").textContent = role.name;
+  document.getElementById("detailRoleCamp").textContent = role.camp + (role.camp.includes("陣営") ? "" : (currentLang === 'en' ? " Team" : "陣営"));
+  document.getElementById("detailRoleMode").textContent = role.mode || "両方 (ホスト・クライアント対応)";
+
+  const descList = document.getElementById("detailRoleDescList");
+  descList.innerHTML = "";
+  if (role.descLines && role.descLines.length > 0) {
+    role.descLines.forEach(line => {
+      const li = document.createElement("li");
+      li.textContent = line;
+      descList.appendChild(li);
+    });
+  } else {
+    const li = document.createElement("li");
+    li.textContent = currentLang === 'en' ? "No description." : "説明文がありません。";
+    descList.appendChild(li);
+  }
+
+  const tableBody = document.getElementById("detailSettingsTableBody");
+  tableBody.innerHTML = "";
+  if (role.settingsList && role.settingsList.length > 0) {
+    role.settingsList.forEach(s => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${s.name}</td><td>${s.detail}</td>`;
+      tableBody.appendChild(tr);
+    });
+  } else {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="2" style="text-align: center; color: var(--sub);">${currentLang === 'en' ? 'No custom settings.' : '設定項目はありません。'}</td>`;
+    tableBody.appendChild(tr);
+  }
+
+  showPage("role-detail");
 }
 
 let currentProposalType = 'role';
@@ -1276,7 +1473,7 @@ function handleCombiCampChange() {
   win2Input.required = (camp2 === "第三陣営" && !isAdmin);
 }
 
-/* ★設定項目カード作成（提案フォームと管理者フォームで共通利用） */
+/* 設定項目カード作成（最小値・最大値・間隔・単位に対応） */
 let settingItemCount = 0;
 function createSettingCard(containerId) {
   settingItemCount++;
@@ -1293,13 +1490,14 @@ function createSettingCard(containerId) {
     <div class="setting-main-row">
       <input type="text" class="form-input setting-name" placeholder="${isEn ? 'Option Name' : '設定項目名'}">
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
-        <option value="number">${isEn ? 'Number' : '数値'}</option>
+        <option value="number">${isEn ? 'Number / Slider' : '数値 / スライダー'}</option>
         <option value="boolean">${isEn ? 'Toggle' : '2択'}</option>
       </select>
     </div>
-    <div class="setting-detail-grid setting-detail-number">
-      <input type="text" class="form-input setting-step" placeholder="${isEn ? 'Step' : '間隔'}">
+    <div class="setting-detail-grid-4 setting-detail-number">
+      <input type="text" class="form-input setting-min" placeholder="${isEn ? 'Min' : '最小値'}">
       <input type="text" class="form-input setting-max" placeholder="${isEn ? 'Max' : '最大値'}">
+      <input type="text" class="form-input setting-step" placeholder="${isEn ? 'Step' : '間隔'}">
       <input type="text" class="form-input setting-unit" placeholder="${isEn ? 'Unit' : '単位'}">
     </div>
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
@@ -1416,13 +1614,16 @@ async function handleSuggestSubmit(event) {
           const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
           settingText += `・**${name}**: 2択 [ ${c1} / ${c2} ]\n`;
         } else {
-          const step = card.querySelector(".setting-step").value.trim();
+          const min = card.querySelector(".setting-min").value.trim();
           const max = card.querySelector(".setting-max").value.trim();
+          const step = card.querySelector(".setting-step").value.trim();
           const unit = card.querySelector(".setting-unit").value.trim();
           let details = [];
-          if (max) details.push(`最大: ${max}${unit}`);
+          if (min && max) details.push(`${min}〜${max}${unit}`);
+          else if (max) details.push(`最大: ${max}${unit}`);
+          else if (min) details.push(`最小: ${min}${unit}`);
           if (step) details.push(`間隔: ${step}${unit}`);
-          if (!max && !step && unit) details.push(`単位: ${unit}`);
+          if (!min && !max && !step && unit) details.push(`単位: ${unit}`);
           settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
         }
       }
@@ -1637,7 +1838,7 @@ async function deleteBugDirectly(bugId) {
   } catch (e) {}
 }
 
-/* ⑤ サイト内まるごとキーワード検索 */
+/* サイト内検索 */
 const searchDatabase = [
   { type: "ページ", typeEn: "Page", title: "トップページ", titleEn: "Home", page: "home", desc: "Tora MOD 公式Wikiのメイン画面" },
   { type: "ページ", typeEn: "Page", title: "役職一覧", titleEn: "Role List", page: "roles", desc: "インポスター・クルーなどの全役職" },
@@ -1675,11 +1876,11 @@ function handleGlobalSearch(keyword) {
   );
 
   customRolesList.forEach(r => {
-    if (r.name.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || r.camp.toLowerCase().includes(q)) {
+    if (r.name.toLowerCase().includes(q) || r.camp.toLowerCase().includes(q) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(q))) {
       results.push({
         type: "役職", typeEn: "Role",
         title: r.name, titleEn: r.name,
-        page: "roles", desc: `${r.camp} - ${r.desc.slice(0, 30)}...`
+        page: "roles", desc: `${r.camp} - ${r.descLines ? r.descLines[0] : ""}`
       });
     }
   });
