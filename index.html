@@ -4,15 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tora MOD Wiki</title>
-
 <style>
 * { box-sizing: border-box; }
 :root {
   --bg: #0d0e13; --header: #151720; --card: #1b202d; --card-inner: #151824;
   --sidebar-bg: #151822; --border: #303547; --text: #f2f3f7; --sub: #9ba2b2; --hover: #252c3c;
-  --c-tora: #DDBB99; --c-impostor: #ff4d4d; --c-madmate: var(--c-impostor);
-  --c-crewmate: #38bdf8; --c-neutral: #9ca3af; --c-ghost: #ffffff;
-  --c-combination: var(--c-ghost); --c-modifier: #22c55e;
+  --c-tora: #DDBB99; --c-impostor: #ff4d4d; --c-madmate: #ff4d4d; --c-crewmate: #38bdf8;
+  --c-neutral: #9ca3af; --c-ghost: #ffffff; --c-combination: #ffffff; --c-modifier: #22c55e;
   --fs-base: 15px; --fs-h1: 30px; --fs-h2: 19px; --fs-card: 14px;
 }
 body.light {
@@ -20,19 +18,14 @@ body.light {
   --sidebar-bg: #ffffff; --border: #d9dce5; --text: #222532; --sub: #697080;
   --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
 }
-
 body.font-small { --fs-base: 13px; --fs-h1: 26px; --fs-h2: 17px; --fs-card: 12px; }
 body.font-normal { --fs-base: 15px; --fs-h1: 30px; --fs-h2: 19px; --fs-card: 14px; }
 body.font-large { --fs-base: 18px; --fs-h1: 34px; --fs-h2: 22px; --fs-card: 16px; }
 
-body {
-  margin: 0; background: var(--bg); color: var(--text);
-  font-family: Arial, "Noto Sans JP", sans-serif; font-size: var(--fs-base);
-  transition: background .2s, color .2s;
-}
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Arial, "Noto Sans JP", sans-serif; font-size: var(--fs-base); transition: background .2s, color .2s; }
 .tora-text { color: #DDBB99 !important; }
 
-/* ヘッダー */
+/* ヘッダー・バナー */
 header {
   min-height: 65px; display: flex; align-items: center; justify-content: space-between;
   padding: 0 16px; background: var(--header); border-bottom: 1px solid var(--border);
@@ -48,32 +41,24 @@ header {
 .menu-button:active, .header-icon-btn:hover { background: var(--hover); }
 .menu-bar { display: block; width: 22px; height: 2.5px; background-color: var(--text); border-radius: 2px; }
 .header-title { font-size: calc(var(--fs-base) + 5px); font-weight: bold; }
-.settings-button {
-  background: var(--card); border: 1px solid var(--border); color: var(--text);
-  border-radius: 10px; padding: 8px 14px; font-size: var(--fs-card); cursor: pointer;
-}
+.settings-button { background: var(--card); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 8px 14px; font-size: var(--fs-card); cursor: pointer; }
 .settings-button:hover { background: var(--hover); }
 
-/* お知らせ＆受付停止バナー */
 .announcement-banner {
-  background: rgba(251, 191, 36, 0.15); border-bottom: 1px solid rgba(251, 191, 36, 0.4);
+  background: rgba(251,191,36,0.15); border-bottom: 1px solid rgba(251,191,36,0.4);
   color: #fbbf24; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
   gap: 12px; font-weight: bold; font-size: var(--fs-card);
 }
-.announcement-content { display: flex; align-items: center; gap: 8px; flex: 1; }
 .announcement-close { background: none; border: none; color: #fbbf24; font-size: 20px; cursor: pointer; }
 
 .maintenance-alert {
-  background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4);
   color: #ef4444; padding: 14px; border-radius: 12px; font-weight: bold; margin-bottom: 20px;
   text-align: center; font-size: var(--fs-card);
 }
 
 /* サイドバー */
-.sidebar-overlay {
-  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(2px); z-index: 200;
-}
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(2px); z-index: 200; }
 .sidebar-overlay.show { display: block; }
 .sidebar {
   position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
@@ -82,22 +67,13 @@ header {
   display: flex; flex-direction: column; overflow-y: auto;
 }
 .sidebar.show { left: 0; }
-.sidebar-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border);
-}
+.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
 .sidebar-header h3 { margin: 0; font-size: calc(var(--fs-base) + 3px); cursor: pointer; user-select: none; }
-.admin-badge {
-  font-size: 11px; background: #ff4d4d; color: #fff; padding: 2px 6px;
-  border-radius: 4px; margin-left: 6px; vertical-align: middle;
-}
+.admin-badge { font-size: 11px; background: #ff4d4d; color: #fff; padding: 2px 6px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
 .sidebar-close { background: none; border: none; color: var(--sub); font-size: 26px; cursor: pointer; }
 .menu-section { margin-bottom: 22px; }
 .menu-section-title { font-size: 12px; color: var(--sub); font-weight: bold; margin-bottom: 8px; padding-left: 8px; }
-.menu-link {
-  display: block; padding: 10px 12px; color: var(--text); text-decoration: none;
-  border-radius: 8px; font-size: var(--fs-base); transition: background .2s; cursor: pointer;
-}
+.menu-link { display: block; padding: 10px 12px; color: var(--text); text-decoration: none; border-radius: 8px; font-size: var(--fs-base); transition: background .2s; cursor: pointer; }
 .menu-link:hover { background: var(--hover); }
 .menu-link.all { color: var(--text) !important; font-weight: bold; }
 .menu-link.impostor, .menu-link.madmate { color: var(--c-impostor) !important; }
@@ -110,200 +86,81 @@ header {
 .menu-link.bug { color: #f87171 !important; font-weight: bold; }
 .menu-link.bug-list { color: #fbbf24 !important; font-weight: bold; }
 
+/* ページ構成 */
 .page-view { display: none; }
 .page-view.active { display: block; }
 main { max-width: 900px; margin: auto; padding: 24px 20px 40px; }
 h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .subtitle { color: var(--sub); font-size: var(--fs-card); margin-bottom: 24px; }
 
-.info-card {
-  margin-bottom: 24px; padding: 24px; background: var(--card);
-  border: 1px solid var(--border); border-radius: 16px;
-}
+.info-card { margin-bottom: 24px; padding: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; }
 .info-card h2 { margin: 0 0 14px 0; font-size: var(--fs-h2); }
 .info-card p { margin: 0; color: var(--sub); line-height: 1.8; font-size: var(--fs-base); }
 
-.plan-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
-.plan-item {
-  display: flex; flex-direction: column; gap: 6px; padding: 14px 16px;
-  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
-}
-.plan-item-header { display: flex; align-items: center; gap: 10px; }
-.plan-badge {
-  padding: 2px 8px; font-size: 11px; font-weight: bold; border-radius: 6px;
-  background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
-}
-.plan-title { font-size: var(--fs-base); font-weight: bold; color: var(--text); }
-.plan-desc { font-size: var(--fs-card); color: var(--sub); line-height: 1.5; margin: 0; }
+.plan-list, .faq-list, .command-list, .role-list-container, .bug-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.plan-item { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px; }
+.plan-badge { padding: 2px 8px; font-size: 11px; font-weight: bold; border-radius: 6px; background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
 
-/* 検索UI */
-.search-container {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 18px; margin-bottom: 20px;
-}
+/* 検索 & フィルター */
+.search-container { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 20px; }
 .search-box-wrapper { position: relative; margin-bottom: 14px; }
-.search-icon-svg {
-  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-  width: 18px; height: 18px; stroke: var(--sub); stroke-width: 2.5; fill: none; pointer-events: none;
-}
-.search-input {
-  width: 100%; background: var(--card-inner); border: 1px solid var(--border);
-  color: var(--text); padding: 12px 14px 12px 42px; border-radius: 10px;
-  font-size: var(--fs-base); outline: none;
-}
+.search-icon-svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--sub); stroke-width: 2.5; fill: none; pointer-events: none; }
+.search-input { width: 100%; background: var(--card-inner); border: 1px solid var(--border); color: var(--text); padding: 12px 14px 12px 42px; border-radius: 10px; font-size: var(--fs-base); outline: none; }
 .search-input:focus { border-color: #555f80; }
 .filter-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-.filter-btn {
-  background: var(--card-inner); border: 1px solid var(--border); color: var(--text);
-  padding: 6px 13px; border-radius: 20px; font-size: calc(var(--fs-card) - 1px); cursor: pointer; user-select: none;
-}
+.filter-btn { background: var(--card-inner); border: 1px solid var(--border); color: var(--text); padding: 6px 13px; border-radius: 20px; font-size: calc(var(--fs-card) - 1px); cursor: pointer; }
 .filter-btn.all.active { background: #2d3345; color: #fff; border-color: #4c5673; }
-.filter-btn.impostor { color: var(--c-impostor); border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.madmate { color: var(--c-madmate); border-color: rgba(255, 77, 77, 0.35); }
-.filter-btn.crewmate { color: var(--c-crewmate); border-color: rgba(56, 189, 248, 0.35); }
-.filter-btn.neutral { color: var(--c-neutral); border-color: rgba(156, 163, 175, 0.35); }
-.filter-btn.combination { color: var(--c-combination); border-color: rgba(255, 255, 255, 0.35); }
-.filter-btn.modifier { color: var(--c-modifier); border-color: rgba(34, 197, 94, 0.35); }
-.filter-btn.ghost { color: var(--c-ghost); border-color: rgba(255, 255, 255, 0.35); }
-.filter-btn.active:not(.all) { background: rgba(255, 255, 255, 0.1); font-weight: bold; }
+.filter-btn.impostor { color: var(--c-impostor); border-color: rgba(255,77,77,0.35); }
+.filter-btn.madmate { color: var(--c-madmate); border-color: rgba(255,77,77,0.35); }
+.filter-btn.crewmate { color: var(--c-crewmate); border-color: rgba(56,189,248,0.35); }
+.filter-btn.neutral { color: var(--c-neutral); border-color: rgba(156,163,175,0.35); }
+.filter-btn.combination { color: var(--c-combination); border-color: rgba(255,255,255,0.35); }
+.filter-btn.modifier { color: var(--c-modifier); border-color: rgba(34,197,94,0.35); }
+.filter-btn.ghost { color: var(--c-ghost); border-color: rgba(255,255,255,0.35); }
+.filter-btn.active:not(.all) { background: rgba(255,255,255,0.1); font-weight: bold; }
 
-/* モード切り替えタブ */
-.mode-tabs {
-  display: flex; gap: 6px; background: var(--card-inner); padding: 4px;
-  border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px;
-}
-.mode-tab-btn {
-  flex: 1; background: transparent; border: none; color: var(--sub);
-  padding: 6px 10px; border-radius: 6px; font-size: var(--fs-card); font-weight: bold;
-  cursor: pointer; transition: all .2s;
-}
+.mode-tabs { display: flex; gap: 6px; background: var(--card-inner); padding: 4px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 12px; }
+.mode-tab-btn { flex: 1; background: transparent; border: none; color: var(--sub); padding: 6px 10px; border-radius: 6px; font-size: var(--fs-card); font-weight: bold; cursor: pointer; }
 .mode-tab-btn.active { background: var(--card); color: var(--text); }
-.search-count { font-size: var(--fs-card); color: var(--sub); padding-left: 2px; }
 
-/* 役職一覧リスト（画像1枚目通り） */
-.role-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+/* 役職リスト & 詳細 */
 .role-item-btn {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
   padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
-  cursor: pointer; text-decoration: none; color: var(--text); transition: background .2s, transform .15s;
+  cursor: pointer; color: var(--text); transition: background .2s, transform .15s;
 }
 .role-item-btn:hover { background: var(--hover); transform: translateY(-1px); }
 .role-item-left { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: calc(var(--fs-base) + 1px); }
 .role-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-.role-arrow { color: var(--sub); font-size: 18px; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; font-size: var(--fs-card); font-weight: bold; cursor: pointer; margin-bottom: 20px; }
+.detail-section-title { font-size: calc(var(--fs-h2) + 2px); font-weight: bold; margin: 24px 0 12px 0; border-left: 4px solid #38bdf8; padding-left: 12px; }
+.detail-plain-text { padding-left: 14px; color: var(--text); font-size: var(--fs-base); line-height: 1.7; }
+.detail-list { list-style: none; padding-left: 8px; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.detail-list li { position: relative; padding-left: 20px; color: var(--text); line-height: 1.7; font-size: var(--fs-base); }
+.detail-list li::before { content: "•"; position: absolute; left: 4px; color: var(--sub); font-size: 18px; }
 
-/* ★役職詳細画面 */
-.back-btn {
-  display: inline-flex; align-items: center; gap: 6px; background: var(--card);
-  border: 1px solid var(--border); color: var(--text); padding: 8px 16px;
-  border-radius: 8px; font-size: var(--fs-card); font-weight: bold; cursor: pointer;
-  margin-bottom: 20px;
-}
-.back-btn:hover { background: var(--hover); }
-
-/* ★見出しの縦棒（陣営色に動的連動） */
-.detail-section-title {
-  display: flex; align-items: center; font-size: calc(var(--fs-h2) + 2px);
-  font-weight: bold; margin: 24px 0 12px 0; border-left: 4px solid #38bdf8;
-  padding-left: 12px; color: var(--text); transition: border-color .2s;
-}
-
-/* ★「・」なしのスッキリしたテキスト表示 */
-.detail-plain-text {
-  padding-left: 14px; color: var(--text); font-size: var(--fs-base); line-height: 1.7;
-}
-
-.detail-list {
-  list-style: none; padding-left: 8px; margin: 0; display: flex; flex-direction: column; gap: 10px;
-}
-.detail-list li {
-  position: relative; padding-left: 20px; color: var(--text); line-height: 1.7; font-size: var(--fs-base);
-}
-.detail-list li::before {
-  content: "•"; position: absolute; left: 4px; color: var(--sub); font-size: 18px;
-}
-
-/* 設定テーブル */
-.settings-table-wrapper {
-  overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;
-  background: var(--card-inner); margin-top: 14px;
-}
-.settings-table {
-  width: 100%; border-collapse: collapse; text-align: left; font-size: var(--fs-card);
-}
-.settings-table th, .settings-table td {
-  padding: 14px 16px; border-bottom: 1px solid var(--border);
-}
+.settings-table-wrapper { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--card-inner); margin-top: 14px; }
+.settings-table { width: 100%; border-collapse: collapse; text-align: left; font-size: var(--fs-card); }
+.settings-table th, .settings-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); }
 .settings-table th { background: var(--card); font-weight: bold; width: 45%; }
 .settings-table tr:last-child td { border-bottom: none; }
 
-/* フォーム共通 */
+/* フォーム・UI部品 */
 .form-group { margin-bottom: 18px; }
 .form-label { display: block; font-size: var(--fs-card); font-weight: bold; margin-bottom: 8px; }
 .form-label span.req { color: #ff4d4d; font-size: 12px; margin-left: 4px; }
-.form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; font-weight: normal; }
+.form-label span.opt { color: var(--sub); font-size: 12px; margin-left: 4px; }
 
-.suggest-type-switch {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: var(--card-inner);
-  padding: 6px; border-radius: 12px; margin-bottom: 22px; border: 1px solid var(--border);
-}
-.type-switch-btn {
-  background: transparent; border: none; color: var(--sub); padding: 10px 14px;
-  border-radius: 8px; font-size: var(--fs-base); font-weight: bold; cursor: pointer; transition: all .2s;
-}
-.type-switch-btn.active {
-  background: var(--card); color: var(--text); box-shadow: 0 2px 6px rgba(0,0,0,0.3); border: 1px solid var(--border);
-}
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 12px; }
-@media (max-width: 600px) {
-  .form-row, .form-row-3 { grid-template-columns: 1fr; }
-  h1 { font-size: calc(var(--fs-h1) - 4px); }
-}
+@media (max-width: 600px) { .form-row, .form-row-3 { grid-template-columns: 1fr; } h1 { font-size: calc(var(--fs-h1) - 4px); } }
+
 .form-input, .form-textarea, .form-select {
   width: 100%; background: var(--card-inner); border: 1px solid var(--border);
-  color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: var(--fs-base);
-  outline: none; font-family: inherit;
+  color: var(--text); padding: 12px 14px; border-radius: 10px; font-size: var(--fs-base); outline: none; font-family: inherit;
 }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: #38bdf8; }
 .form-textarea { resize: vertical; min-height: 120px; }
-
-/* ファイル選択枠 */
-.file-upload-box {
-  background: var(--card-inner); border: 2px dashed var(--border); border-radius: 12px;
-  padding: 20px; text-align: center; cursor: pointer; transition: border-color .2s, background .2s; position: relative;
-}
-.file-upload-box:hover { border-color: #38bdf8; background: var(--hover); }
-.file-upload-box input[type="file"] {
-  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
-}
-.file-upload-icon { font-size: 28px; margin-bottom: 6px; color: var(--sub); }
-.file-upload-text { font-size: var(--fs-card); font-weight: bold; color: var(--text); }
-.file-upload-sub { font-size: 12px; color: var(--sub); margin-top: 4px; }
-.file-selected-name { margin-top: 10px; font-size: var(--fs-card); color: #38bdf8; font-weight: bold; word-break: break-all; }
-
-/* 設定項目エリア */
-.setting-items-container { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
-.setting-item-card {
-  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px; display: flex; flex-direction: column; gap: 10px;
-}
-.setting-item-header { display: flex; justify-content: space-between; align-items: center; }
-.setting-item-title { font-size: var(--fs-card); font-weight: bold; color: var(--sub); }
-.setting-item-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; }
-.setting-main-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 10px; }
-.setting-detail-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.setting-detail-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-@media (max-width: 600px) {
-  .setting-main-row { grid-template-columns: 1fr; }
-  .setting-detail-grid-4 { grid-template-columns: 1fr 1fr; }
-  .setting-detail-grid-2 { grid-template-columns: 1fr 1fr; }
-}
-.add-setting-btn {
-  background: transparent; border: 1px dashed #38bdf8; color: #38bdf8; padding: 10px;
-  border-radius: 10px; font-size: var(--fs-card); font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px;
-}
-.add-setting-btn:hover { background: rgba(56, 189, 248, 0.1); }
 
 .submit-btn {
   width: 100%; background: #38bdf8; color: #0b1120; border: none; padding: 14px;
@@ -311,103 +168,48 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 }
 .submit-btn.danger { background: #ef4444; color: #fff; }
 .submit-btn.admin { background: #fbbf24; color: #1f2937; }
+.submit-btn.secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
 .submit-btn:hover { opacity: 0.9; }
 
-.form-status {
-  margin-top: 14px; padding: 12px; border-radius: 8px; font-size: var(--fs-card); text-align: center; display: none;
+.file-upload-box {
+  background: var(--card-inner); border: 2px dashed var(--border); border-radius: 12px;
+  padding: 20px; text-align: center; cursor: pointer; position: relative;
 }
-.form-status.success { display: block; background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #22c55e; }
+.file-upload-box:hover { border-color: #38bdf8; background: var(--hover); }
+.file-upload-box input[type="file"] { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 
-/* バグ一覧 */
-.bug-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
-.bug-card {
-  background: var(--card-inner); border: 1px solid var(--border); border-left: 4px solid #fbbf24;
-  border-radius: 12px; padding: 16px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
-}
-.bug-desc { font-size: var(--fs-base); color: var(--text); line-height: 1.6; margin: 0; white-space: pre-wrap; word-break: break-all; flex: 1; }
-.translating-hint { font-size: 12px; color: var(--sub); font-style: italic; margin-left: 6px; }
-.bug-card-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; line-height: 1; padding: 2px 6px; }
-.admin-custom-box { background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+/* 設定項目 & アコーディオン */
+.setting-item-card { background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+.setting-item-header { display: flex; justify-content: space-between; align-items: center; }
+.setting-item-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; }
+.setting-detail-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.setting-detail-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 600px) { .setting-detail-grid-4 { grid-template-columns: 1fr 1fr; } }
+.add-setting-btn { background: transparent; border: 1px dashed #38bdf8; color: #38bdf8; padding: 10px; border-radius: 10px; font-size: var(--fs-card); font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
 
-/* F&Q */
-.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .faq-item { background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-.faq-question {
-  padding: 16px; font-weight: bold; cursor: pointer; display: flex;
-  justify-content: space-between; align-items: center; user-select: none; font-size: var(--fs-base);
-}
-.faq-question:hover { background: var(--hover); }
-.faq-arrow { color: var(--sub); transition: transform .2s; }
+.faq-question { padding: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 .faq-item.open .faq-arrow { transform: rotate(180deg); }
-.faq-answer { display: none; padding: 0 16px 16px 16px; color: var(--sub); line-height: 1.7; font-size: var(--fs-card); }
+.faq-answer { display: none; padding: 0 16px 16px; color: var(--sub); line-height: 1.7; font-size: var(--fs-card); }
 .faq-item.open .faq-answer { display: block; }
 
-/* コマンド一覧 */
-.command-list { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
-.command-card {
-  background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px;
-  padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-}
-.command-info { display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
-.command-code { font-family: Consolas, monospace; font-size: var(--fs-base); font-weight: bold; color: #38bdf8; }
-.command-desc { font-size: var(--fs-card); color: var(--sub); margin: 0; }
-.copy-btn {
-  background: var(--card); border: 1px solid var(--border); color: var(--text);
-  padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; flex-shrink: 0; transition: all .2s;
-}
-.copy-btn:hover { background: var(--hover); }
-.copy-btn.copied { background: rgba(34, 197, 94, 0.2); color: #4ade80; border-color: #22c55e; }
+.command-card { background: var(--card-inner); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+.copy-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 12px; cursor: pointer; }
 
-/* 導入ガイド */
-.guide-step {
-  display: flex; gap: 14px; padding: 16px; background: var(--card-inner);
-  border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px;
-}
-.step-number {
-  width: 32px; height: 32px; border-radius: 50%; background: #38bdf8;
-  color: #0b1120; font-weight: bold; display: flex; align-items: center;
-  justify-content: center; flex-shrink: 0; font-size: var(--fs-card);
-}
-.step-content h3 { margin: 0 0 6px 0; font-size: var(--fs-base); }
-.step-content p { margin: 0; color: var(--sub); font-size: var(--fs-card); line-height: 1.6; }
+.admin-custom-box { background: var(--card-inner); border: 1px dashed #fbbf24; border-radius: 12px; padding: 16px; margin-bottom: 24px; }
+.bug-card-del-btn { background: none; border: none; color: #ff4d4d; font-size: 18px; cursor: pointer; padding: 2px 6px; }
 
 /* 検索モーダル */
-.search-modal-box {
-  width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px;
-}
-.search-modal-input-wrap { position: relative; }
-.search-results-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.search-result-item {
-  padding: 10px 12px; border-radius: 8px; background: var(--card-inner);
-  border: 1px solid var(--border); cursor: pointer; text-decoration: none; color: var(--text);
-  display: flex; justify-content: space-between; align-items: center;
-}
-.search-result-item:hover { background: var(--hover); }
-.search-result-type { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--card); color: var(--sub); }
+.search-modal-box { width: 100%; max-width: 500px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.search-result-item { padding: 10px 12px; border-radius: 8px; background: var(--card-inner); border: 1px solid var(--border); cursor: pointer; color: var(--text); display: flex; justify-content: space-between; align-items: center; }
 
-footer {
-  margin-top: 60px; padding: 30px; text-align: center; color: var(--sub);
-  border-top: 1px solid var(--border); font-size: var(--fs-card);
-}
-.modal {
-  display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(2px); align-items: center; justify-content: center; padding: 20px; z-index: 300;
-}
+footer { margin-top: 60px; padding: 30px; text-align: center; color: var(--sub); border-top: 1px solid var(--border); font-size: var(--fs-card); }
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(2px); align-items: center; justify-content: center; padding: 20px; z-index: 300; }
 .modal.show { display: flex; }
-.modal-content {
-  width: 100%; max-width: 400px; background: var(--card); color: var(--text);
-  border: 1px solid var(--border); border-radius: 16px; padding: 24px;
-}
+.modal-content { width: 100%; max-width: 400px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.modal-header h2 { margin: 0; font-size: var(--fs-h2); }
 .close { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; }
 .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 14px; }
-.setting-row:last-child { margin-bottom: 0; }
-select {
-  background: var(--bg); color: var(--text); border: 1px solid var(--border);
-  padding: 8px 12px; border-radius: 8px; font-size: var(--fs-card); outline: none;
-}
 </style>
 </head>
 
@@ -416,33 +218,27 @@ select {
 <!-- ヘッダー -->
 <header>
   <div class="header-left">
-    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く">
-      <span class="menu-bar"></span>
-      <span class="menu-bar"></span>
-      <span class="menu-bar"></span>
-    </button>
+    <button class="menu-button" onclick="toggleSidebar()" aria-label="メニューを開く"><span class="menu-bar"></span><span class="menu-bar"></span><span class="menu-bar"></span></button>
     <span class="header-title"><span style="color: #DDBB99 !important;">Tora</span> MOD</span>
   </div>
   <div class="header-right">
     <button class="header-icon-btn" onclick="openGlobalSearch()" title="検索">🔍</button>
-    <button class="settings-button" id="headerSettingsBtn" onclick="openSettings()" data-ja="設定" data-en="Settings">設定</button>
+    <button class="settings-button" onclick="openSettings()" data-ja="設定" data-en="Settings">設定</button>
   </div>
 </header>
 
 <!-- 最上部のお知らせバナー -->
 <div id="announcementBanner" class="announcement-banner" style="display: none;">
-  <div class="announcement-content">
-    <span>📢</span>
-    <span id="announcementText"></span>
-  </div>
-  <button id="adminRemoveBannerBtn" class="announcement-close" style="display: none;" onclick="removeAnnouncement()" title="お知らせを削除">×</button>
+  <div class="announcement-content"><span>📢</span><span id="announcementText"></span></div>
+  <button id="adminRemoveBannerBtn" class="announcement-close" style="display: none;" onclick="removeAnnouncement()">×</button>
 </div>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
+<!-- サイドバー -->
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
-    <h3 onclick="handleMenuSecretTap()"><span id="sidebarMenuTitle" data-ja="メニュー" data-en="Menu">メニュー</span> <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
+    <h3 onclick="handleMenuSecretTap()"><span data-ja="メニュー" data-en="Menu">メニュー</span> <span id="adminBadge" class="admin-badge" style="display: none;">ADMIN</span></h3>
     <button class="sidebar-close" onclick="toggleSidebar()">×</button>
   </div>
 
@@ -461,7 +257,7 @@ select {
     <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
   </div>
 
-  <!-- ★役職一覧（すべての役職を復活＆メインの重複は削除済み） -->
+  <!-- 役職一覧セクション（すべての役職を復活＆重複リンクなし） -->
   <div class="menu-section">
     <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
     <a class="menu-link all"         onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.all'), 'all');" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
@@ -484,7 +280,7 @@ select {
 
   <!-- ① トップページ -->
   <div id="page-home" class="page-view active">
-    <!-- 管理者専用コントロールパネル -->
+    <!-- 管理者パネル -->
     <div id="adminAnnouncementBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] サイト内お知らせ（バナー）設定" data-en="[ADMIN] Announcement Banner Setting">[ADMIN] サイト内お知らせ（バナー）設定</label>
       <input type="text" id="adminNoticeInput" class="form-input" placeholder="例：現在、新役職のテストプレイを開催中です！" data-placeholder-ja="例：現在、新役職のテストプレイを開催中です！" data-placeholder-en="e.g. Test play event is currently running!">
@@ -505,15 +301,14 @@ select {
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2 data-ja="Welcome to Tora MOD Wiki" data-en="Welcome to Tora MOD Wiki">Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
+      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
       <p id="homeWelcomeDesc" data-ja="Tora MODに関する情報をまとめたWikiです。役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
-        <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
-        役職・システム・設定などの最新情報を随時掲載していきます。
+        <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>役職・システム・設定などの最新情報を随時掲載していきます。
       </p>
     </section>
 
     <section class="info-card">
-      <h2><span style="color: #DDBB99 !important;">Tora</span> <span id="homeWhatIsTitle" data-ja="MODとは？" data-en="MOD Overview">MODとは？</span></h2>
+      <h2><span style="color: #DDBB99 !important;">Tora</span> <span data-ja="MODとは？" data-en="MOD Overview">MODとは？</span></h2>
       <p id="homeWhatIsDesc" data-ja="Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。" data-en="An expansion mod currently in development to bring deeper and more thrilling gameplay to Among Us. Although still a work in progress, it aims to introduce a wide variety of unique custom roles and special rules for enhanced deduction and strategic depth.">
         Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
         現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
@@ -554,11 +349,13 @@ select {
     <h1 data-ja="役職一覧" data-en="Role List">役職一覧</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
-    <!-- 管理者用：役職直接追加フォーム -->
+    <!-- ★管理者用：役職直接追加＆編集フォーム -->
     <div id="adminRoleAddBox" class="admin-custom-box" style="display: none;">
-      <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] 役職一覧に直接追加" data-en="[ADMIN] Add Custom Role Directly">[ADMIN] 役職一覧に直接追加</label>
+      <label class="form-label" id="adminRoleBoxTitle" style="color: #fbbf24;" data-ja="[ADMIN] 役職の直接追加 / 編集" data-en="[ADMIN] Add / Edit Custom Role">[ADMIN] 役職の直接追加 / 編集</label>
+      <input type="hidden" id="editingRoleId" value="">
+      
       <div class="form-row">
-        <input type="text" id="adminRoleName" class="form-input" placeholder="役職名 (例: イビルゲッサー)" data-placeholder-ja="役職名 (例: イビルゲッサー)" data-placeholder-en="Role Name">
+        <input type="text" id="adminRoleName" class="form-input" placeholder="役職名 (例: イビルギャンブラー)" data-placeholder-ja="役職名 (例: イビルギャンブラー)" data-placeholder-en="Role Name">
         <select id="adminRoleCamp" class="form-select">
           <option value="インポスター" data-ja="インポスター" data-en="Impostor">インポスター</option>
           <option value="マッドメイト" data-ja="マッドメイト" data-en="Madmate">マッドメイト</option>
@@ -579,7 +376,7 @@ select {
         </select>
       </div>
 
-      <textarea id="adminRoleDesc" class="form-textarea" style="min-height: 70px; margin-top: 8px;" placeholder="役職の説明文（キルするたびに〜 等）" data-placeholder-ja="役職の説明文" data-placeholder-en="Role description"></textarea>
+      <textarea id="adminRoleDesc" class="form-textarea" style="min-height: 70px; margin-top: 8px;" placeholder="役職の説明文（改行ごとに箇条書きになります）" data-placeholder-ja="役職の説明文（改行ごとに箇条書きになります）" data-placeholder-en="Role description lines"></textarea>
 
       <!-- 設定項目追加エリア -->
       <div style="margin-top: 10px;">
@@ -588,17 +385,17 @@ select {
         <button type="button" class="add-setting-btn" onclick="createSettingCard('adminSettingItemsContainer')" data-ja="＋ 設定項目を追加" data-en="+ Add Setting Option">＋ 設定項目を追加</button>
       </div>
 
-      <button type="button" class="submit-btn admin" style="margin-top: 12px;" onclick="addRoleDirectlyByAdmin()" data-ja="役職を一覧に追加" data-en="Add to Role List">役職を一覧に追加</button>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="submit-btn admin" id="adminRoleSaveBtn" style="margin: 0; flex: 1;" onclick="saveRoleDirectlyByAdmin()" data-ja="役職を一覧に追加" data-en="Add Role to List">役職を一覧に追加</button>
+        <button type="button" class="submit-btn secondary" id="adminRoleCancelBtn" style="margin: 0; width: auto; display: none;" onclick="cancelRoleEdit()" data-ja="キャンセル" data-en="Cancel">キャンセル</button>
+      </div>
     </div>
 
     <!-- 検索＆フィルター -->
     <section class="search-container">
       <div class="search-box-wrapper">
-        <svg class="search-icon-svg" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" id="roleSearchInput" class="search-input" placeholder="役職名で検索" data-placeholder-ja="役職名で検索" data-placeholder-en="Search by role name..." oninput="filterRolesDisplay()">
+        <svg class="search-icon-svg" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="roleSearchInput" class="search-input" placeholder="役職名で検索" data-placeholder-ja="役職名で検索" data-placeholder-en="Search by role name..." oninput="renderRolesDisplay()">
       </div>
 
       <div class="mode-tabs">
@@ -630,30 +427,22 @@ select {
   <div id="page-role-detail" class="page-view">
     <button type="button" class="back-btn" onclick="showPage('roles')" data-ja="‹ 役職一覧に戻る" data-en="‹ Back to Roles">‹ 役職一覧に戻る</button>
 
-    <!-- 役職名（下の棒を完全に削除） -->
     <h1 id="detailRoleName" style="margin-bottom: 24px;">役職名</h1>
 
-    <!-- 陣営（縦棒の色を陣営に連動 ＆ 「・」なしのスッキリ表示） -->
     <div class="detail-section-title" data-ja="陣営" data-en="Team">陣営</div>
     <div class="detail-plain-text" id="detailRoleCamp">インポスター陣営</div>
 
-    <!-- 対応モード -->
     <div class="detail-section-title" data-ja="対応モード" data-en="Supported Mode">対応モード</div>
     <div class="detail-plain-text" id="detailRoleMode">両方 (ホスト・クライアント対応)</div>
 
-    <!-- 役職説明 -->
     <div class="detail-section-title" data-ja="役職説明" data-en="Role Description">役職説明</div>
     <ul class="detail-list" id="detailRoleDescList"></ul>
 
-    <!-- ゲーム設定 -->
     <div class="detail-section-title" data-ja="ゲーム設定" data-en="Game Settings">ゲーム設定</div>
     <div class="settings-table-wrapper">
       <table class="settings-table">
         <thead>
-          <tr>
-            <th data-ja="名前" data-en="Setting Name">名前</th>
-            <th data-ja="詳細" data-en="Details">詳細</th>
-          </tr>
+          <tr><th data-ja="名前" data-en="Setting Name">名前</th><th data-ja="詳細" data-en="Details">詳細</th></tr>
         </thead>
         <tbody id="detailSettingsTableBody"></tbody>
       </table>
@@ -678,7 +467,7 @@ select {
 
         <div class="form-group" id="originModGroup" style="display: none;">
           <label class="form-label"><span data-ja="移植元のMOD名・ゲーム名" data-en="Original Mod / Game Name">移植元のMOD名・ゲーム名</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-          <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど" data-placeholder-ja="例：Town of Us、The Other Roles、人狼ゲームなど" data-placeholder-en="e.g. Town of Us, The Other Roles, Werewolf...">
+          <input type="text" id="originModName" class="form-input" placeholder="例：Town of Us、The Other Roles、人狼ゲームなど">
         </div>
 
         <div class="form-group">
@@ -707,11 +496,11 @@ select {
           <div class="form-row">
             <div>
               <label class="form-label"><span data-ja="役職名（日本語）" data-en="Role Name (Japanese)">役職名（日本語）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" data-placeholder-ja="例：タイムトラベラー" data-placeholder-en="e.g. Time Traveler" required>
+              <input type="text" id="roleName" class="form-input" placeholder="例：タイムトラベラー" required>
             </div>
             <div>
               <label class="form-label"><span data-ja="役職名（英語・英名）" data-en="Role Name (English)">役職名（英語・英名）</span> <span class="req" data-ja="*必須" data-en="*Required">*必須</span></label>
-              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" data-placeholder-ja="例：Time Traveler" data-placeholder-en="e.g. Time Traveler" required>
+              <input type="text" id="roleNameEn" class="form-input" placeholder="例：Time Traveler" required>
             </div>
           </div>
         </div>
@@ -1101,7 +890,7 @@ function handleMenuSecretTap() {
         isAdmin = true;
         localStorage.setItem("tora-is-admin", "true");
         updateAdminUI();
-        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加\n・お知らせ掲載＆受付停止スイッチが利用可能");
+        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
       } else if (key !== null) {
         alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
       }
@@ -1117,7 +906,7 @@ function toggleSubmissionPause() {
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能（自動翻訳対応） */
+/* お知らせバナー機能 */
 function loadAnnouncement() {
   const notice = localStorage.getItem("tora-announcement");
   const banner = document.getElementById("announcementBanner");
@@ -1183,9 +972,10 @@ try {
   customRolesList = defaultRoles;
 }
 
-/* 役職直接追加（管理者用・設定項目対応） */
-function addRoleDirectlyByAdmin() {
+/* ★★★ 管理者用：役職直接追加＆✏️ 編集機能 ★★★ */
+function saveRoleDirectlyByAdmin() {
   if (!isAdmin) return;
+  const editId = document.getElementById("editingRoleId").value;
   const name = document.getElementById("adminRoleName").value.trim();
   const camp = document.getElementById("adminRoleCamp").value;
   const mode = document.getElementById("adminRoleMode").value;
@@ -1223,21 +1013,77 @@ function addRoleDirectlyByAdmin() {
 
   const descLines = desc.split("\n").filter(l => l.trim() !== "");
 
-  customRolesList.push({
-    id: Date.now().toString(),
-    name: name,
-    camp: camp,
-    mode: mode,
-    descLines: descLines,
-    settingsList: settingsList
-  });
+  if (editId) {
+    // 既存役職の編集・更新（上書き）
+    const target = customRolesList.find(r => r.id === editId);
+    if (target) {
+      target.name = name;
+      target.camp = camp;
+      target.mode = mode;
+      target.descLines = descLines;
+      target.settingsList = settingsList;
+    }
+    cancelRoleEdit();
+    alert(currentLang === 'en' ? "Role updated successfully!" : "役職の内容を更新しました！");
+  } else {
+    // 新規役職の直接追加
+    customRolesList.push({
+      id: Date.now().toString(),
+      name: name,
+      camp: camp,
+      mode: mode,
+      descLines: descLines,
+      settingsList: settingsList
+    });
+    alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
+  }
 
   localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
   document.getElementById("adminRoleName").value = "";
   document.getElementById("adminRoleDesc").value = "";
   document.getElementById("adminSettingItemsContainer").innerHTML = "";
   renderRolesDisplay();
-  alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
+}
+
+// 既存役職の編集フォーム呼び出し
+function editRoleByAdmin(roleId, event) {
+  if (event) event.stopPropagation();
+  if (!isAdmin) return;
+
+  const target = customRolesList.find(r => r.id === roleId);
+  if (!target) return;
+
+  document.getElementById("editingRoleId").value = target.id;
+  document.getElementById("adminRoleName").value = target.name;
+  document.getElementById("adminRoleCamp").value = target.camp;
+  document.getElementById("adminRoleMode").value = target.mode || "両方";
+  document.getElementById("adminRoleDesc").value = (target.descLines || []).join("\n");
+
+  const saveBtn = document.getElementById("adminRoleSaveBtn");
+  const cancelBtn = document.getElementById("adminRoleCancelBtn");
+  const titleEl = document.getElementById("adminRoleBoxTitle");
+
+  titleEl.textContent = currentLang === 'en' ? `[ADMIN] Editing Role: ${target.name}` : `[ADMIN] 役職の編集: ${target.name}`;
+  saveBtn.textContent = currentLang === 'en' ? "Save Changes" : "役職を更新（保存）";
+  cancelBtn.style.display = "inline-block";
+
+  // 管理者フォームへスクロール
+  document.getElementById("adminRoleAddBox").scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function cancelRoleEdit() {
+  document.getElementById("editingRoleId").value = "";
+  document.getElementById("adminRoleName").value = "";
+  document.getElementById("adminRoleDesc").value = "";
+  document.getElementById("adminSettingItemsContainer").innerHTML = "";
+
+  const saveBtn = document.getElementById("adminRoleSaveBtn");
+  const cancelBtn = document.getElementById("adminRoleCancelBtn");
+  const titleEl = document.getElementById("adminRoleBoxTitle");
+
+  titleEl.textContent = currentLang === 'en' ? "[ADMIN] Add Custom Role Directly" : "[ADMIN] 役職の直接追加 / 編集";
+  saveBtn.textContent = currentLang === 'en' ? "Add Role to List" : "役職を一覧に追加";
+  cancelBtn.style.display = "none";
 }
 
 function deleteRoleDirectly(roleId, event) {
@@ -1259,11 +1105,13 @@ function selectModeFilter(btn, modeName) {
   renderRolesDisplay();
 }
 
-function filterRolesDisplay() {
+function selectFilter(btn, campName) {
+  document.querySelectorAll(".filter-tags .filter-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+  activeRoleFilter = campName;
   renderRolesDisplay();
 }
 
-/* 陣営カラーの判定 */
 function getCampColor(camp) {
   if (camp.includes("インポスター") || camp.includes("マッドメイト")) return "var(--c-impostor)";
   if (camp.includes("クルーメイト")) return "var(--c-crewmate)";
@@ -1272,9 +1120,10 @@ function getCampColor(camp) {
   return "#ffffff";
 }
 
-/* 役職リスト描画（画像1枚目通り） */
+/* 役職リスト描画（画像1枚目通り＋管理者✏️編集ボタン対応） */
 function renderRolesDisplay() {
   const container = document.getElementById("rolesListDisplay");
+  if (!container) return;
   const searchVal = document.getElementById("roleSearchInput").value.toLowerCase().trim();
   const countEl = document.getElementById("roleSearchCount");
 
@@ -1305,6 +1154,7 @@ function renderRolesDisplay() {
         <span>${r.name}</span>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
+        ${isAdmin ? `<button type="button" class="bug-card-del-btn" style="color: #38bdf8;" onclick="editRoleByAdmin('${r.id}', event)" title="編集">✏️</button>` : ""}
         ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteRoleDirectly('${r.id}', event)" title="削除">×</button>` : ""}
         <span class="role-arrow">›</span>
       </div>
@@ -1313,18 +1163,15 @@ function renderRolesDisplay() {
   });
 }
 
-/* 役職詳細表示（アクセントバーを陣営色に連動＆「・」なしテキスト表示） */
+/* 役職詳細表示 */
 function showRoleDetail(role) {
   const campColor = getCampColor(role.camp);
 
-  // ★各見出しの縦棒を陣営の色に連動！
   document.querySelectorAll("#page-role-detail .detail-section-title").forEach(el => {
     el.style.borderLeftColor = campColor;
   });
 
   document.getElementById("detailRoleName").textContent = role.name;
-
-  // ★「・」なしのスッキリしたテキストで陣営・対応モードを表示
   document.getElementById("detailRoleCamp").textContent = role.camp + (role.camp.includes("陣営") ? "" : (currentLang === 'en' ? " Team" : "陣営"));
   document.getElementById("detailRoleMode").textContent = role.mode || "両方 (ホスト・クライアント対応)";
 
@@ -1396,8 +1243,8 @@ function showPage(pageName, filterCategory) {
   if (pageName === 'roles') {
     if (filterCategory) {
       activeRoleFilter = filterCategory;
-      document.querySelectorAll(".filter-btn").forEach(btn => btn.classList.remove("active"));
-      const targetBtn = document.querySelector(`.filter-btn.${filterCategory === 'all' ? 'all' : ''}`);
+      document.querySelectorAll(".filter-tags .filter-btn").forEach(btn => btn.classList.remove("active"));
+      const targetBtn = document.querySelector(`.filter-tags .filter-btn.${filterCategory === 'all' ? 'all' : ''}`);
       if (targetBtn) targetBtn.classList.add("active");
     }
     renderRolesDisplay();
@@ -1410,26 +1257,14 @@ function showPage(pageName, filterCategory) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function selectFilter(btn, campName) {
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  activeRoleFilter = campName;
-  renderRolesDisplay();
-}
-
-function toggleFaq(item) {
-  item.classList.toggle("open");
-}
+function toggleFaq(item) { item.classList.toggle("open"); }
 
 function copyCommand(cmd, btn) {
   navigator.clipboard.writeText(cmd).then(() => {
     const originalText = btn.textContent;
     btn.textContent = currentLang === 'en' ? "Copied!" : "コピー完了!";
     btn.classList.add("copied");
-    setTimeout(() => {
-      btn.textContent = originalText;
-      btn.classList.remove("copied");
-    }, 1500);
+    setTimeout(() => { btn.textContent = originalText; btn.classList.remove("copied"); }, 1500);
   });
 }
 
@@ -1484,7 +1319,7 @@ function handleCombiCampChange() {
   win2Input.required = (camp2 === "第三陣営" && !isAdmin);
 }
 
-/* 設定項目カード作成（最小値・最大値・間隔・単位に対応） */
+/* 設定項目カード生成（最小値・最大値・間隔・単位対応） */
 let settingItemCount = 0;
 function createSettingCard(containerId) {
   settingItemCount++;
@@ -1660,7 +1495,7 @@ async function handleSuggestSubmit(event) {
       formStatus.classList.add("success"); formStatus.style.display = "block";
       document.getElementById("roleSuggestForm").reset();
       document.getElementById("settingItemsContainer").innerHTML = "";
-      switchProposalType('role'); handleCampChange("クルーメイト");
+      switchProposalType('role'); handleCampChange("インポスター");
     } else { alert(BOT_OFFLINE_MSG); }
   } catch (error) { alert(BOT_OFFLINE_MSG); }
   finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Proposal" : "提案"; }
