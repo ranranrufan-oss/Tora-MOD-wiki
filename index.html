@@ -180,7 +180,7 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .mode-tab-btn.active { background: var(--card); color: var(--text); }
 .search-count { font-size: 13px; color: var(--sub); padding-left: 2px; }
 
-/* 役職一覧リスト（画像1枚目通り） */
+/* 役職一覧リスト */
 .role-item-btn {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
   padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
@@ -190,6 +190,14 @@ h1 { font-size: 34px; margin: 0 0 6px 0; }
 .role-item-left { display: flex; align-items: center; gap: 12px; font-weight: bold; font-size: 16px; }
 .role-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .role-arrow { color: var(--sub); font-size: 18px; }
+
+/* 管理者用の小ボタン（編集・削除） */
+.bug-card-del-btn {
+  background: none; border: none; color: #ff4d4d; font-size: 20px;
+  cursor: pointer; line-height: 1; padding: 4px 6px;
+}
+.bug-desc { margin: 0; color: var(--text); font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+.translating-hint { color: var(--sub); font-size: 12px; margin-left: 6px; }
 
 /* 役職詳細画面 */
 .back-btn {
@@ -465,7 +473,7 @@ select {
     <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
   </div>
 
-  <!-- 役職一覧セクション（すべての役職を復活＆重複リンクなし） -->
+  <!-- 役職一覧セクション -->
   <div class="menu-section">
     <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
     <a class="menu-link all"         onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.all'), 'all');" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
@@ -1027,7 +1035,24 @@ select {
 </div>
 
 <script>
+/* ===== Bot サーバー設定 ===== */
+const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
+const API_BASE = BOT_SERVER_URL.replace(/\/$/, "");
+const ROLES_API = API_BASE + "/api/roles";
+const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
+
+/* ===== Discord Webhook（流出済みのため必ず作り直して、新しいURLを貼ってください） ===== */
+const SUGGEST_WEBHOOK_URL = "ここに新しい役職提案用Webhook URLを貼る";
+const BUG_WEBHOOK_URL = "ここに新しいバグ報告用Webhook URLを貼る";
+
+/* ===== 管理者状態（キーの正否はBotサーバー側で判定） ===== */
 let isAdmin = localStorage.getItem("tora-is-admin") === "true";
+let adminKey = localStorage.getItem("tora-admin-key") || "";
+// 旧バージョンで管理者になっていてキーが無い場合は一度解除（再ログインが必要）
+if (isAdmin && !adminKey) {
+  isAdmin = false;
+  localStorage.removeItem("tora-is-admin");
+}
 let isPaused = localStorage.getItem("tora-submissions-paused") === "true";
 let menuSecretTapCount = 0;
 let menuSecretTimeout;
@@ -1079,7 +1104,8 @@ function updateAdminUI() {
   renderRolesDisplay();
 }
 
-function handleMenuSecretTap() {
+/* 管理者ログイン：メニュー見出しを10回タップ → キーをBotサーバーで照合 */
+async function handleMenuSecretTap() {
   menuSecretTapCount++;
   clearTimeout(menuSecretTimeout);
   menuSecretTimeout = setTimeout(() => { menuSecretTapCount = 0; }, 3500);
@@ -1089,19 +1115,32 @@ function handleMenuSecretTap() {
     if (isAdmin) {
       if (confirm(currentLang === 'en' ? "Currently in [ADMIN MODE]. Turn off admin mode?" : "現在【管理者モード】です。管理者モードを解除しますか？")) {
         isAdmin = false;
+        adminKey = "";
         localStorage.removeItem("tora-is-admin");
+        localStorage.removeItem("tora-admin-key");
         updateAdminUI();
         alert(currentLang === 'en' ? "Admin mode disabled." : "管理者モードを解除しました。");
       }
     } else {
       const key = prompt(currentLang === 'en' ? "Enter Admin Key:" : "管理者キーを入力してください:");
-      if (key === "torahakawaii") {
-        isAdmin = true;
-        localStorage.setItem("tora-is-admin", "true");
-        updateAdminUI();
-        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
-      } else if (key !== null) {
-        alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
+      if (!key) return;
+      try {
+        const res = await fetch(API_BASE + "/api/auth", {
+          method: "POST",
+          headers: { "x-admin-key": key }
+        });
+        if (res.ok) {
+          isAdmin = true;
+          adminKey = key;
+          localStorage.setItem("tora-is-admin", "true");
+          localStorage.setItem("tora-admin-key", key);
+          updateAdminUI();
+          alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
+        } else {
+          alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
+        }
+      } catch (e) {
+        alert(currentLang === 'en' ? "Cannot connect to the bot server." : "Botに接続できません。しばらく待ってからもう一度お試しください。");
       }
     }
   }
@@ -1115,7 +1154,7 @@ function toggleSubmissionPause() {
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能 */
+/* お知らせバナー機能（※現状はこの端末のみ。全員共有したい場合は別途サーバー化が必要） */
 function loadAnnouncement() {
   const notice = localStorage.getItem("tora-announcement");
   const banner = document.getElementById("announcementBanner");
@@ -1154,7 +1193,7 @@ function removeAnnouncement() {
   document.getElementById("adminNoticeInput").value = "";
 }
 
-/* 初期役職データ（画像サンプルのイビルギャンブラー収録） */
+/* 初期役職データ（サーバーにデータが無い時の最終フォールバック） */
 const defaultRoles = [
   {
     id: "default-1",
@@ -1173,16 +1212,64 @@ const defaultRoles = [
   }
 ];
 
-let customRolesList = [];
-try {
-  const saved = localStorage.getItem("tora-custom-roles");
-  customRolesList = saved ? JSON.parse(saved) : defaultRoles;
-} catch(e){
-  customRolesList = defaultRoles;
+/* ===== 役職データ：Botサーバーから取得（全員共通） ===== */
+let customRolesList = defaultRoles;
+
+function readRolesCache() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("tora-custom-roles"));
+    return Array.isArray(saved) ? saved : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function loadRoles() {
+  try {
+    const res = await fetch(ROLES_API);
+    if (!res.ok) throw new Error("bad status");
+    const data = await res.json();
+
+    if (Array.isArray(data)) {
+      // サーバーにデータがある → これが正
+      customRolesList = data;
+      localStorage.setItem("tora-custom-roles", JSON.stringify(data));
+    } else {
+      // サーバーがまだ空 → この端末のキャッシュがあればそれを使う
+      const cache = readRolesCache();
+      customRolesList = cache || defaultRoles;
+      // 管理者の端末なら、初回だけ自動でサーバーに保存（データ移行）
+      if (cache && isAdmin) saveRoles();
+    }
+  } catch (e) {
+    // Botが落ちている時は、前回のキャッシュを表示
+    customRolesList = readRolesCache() || defaultRoles;
+  }
+  renderRolesDisplay();
+}
+
+async function saveRoles() {
+  localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
+  try {
+    const res = await fetch(ROLES_API, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify(customRolesList)
+    });
+    if (res.status === 401) {
+      alert(currentLang === 'en' ? "Admin key rejected. Please log in as admin again." : "管理者キーが拒否されました。管理者モードを一度解除して、もう一度ログインしてください。");
+      return false;
+    }
+    if (!res.ok) throw new Error("save failed");
+    return true;
+  } catch (e) {
+    alert(currentLang === 'en' ? "Failed to save to the server. Check the bot status." : "サーバーへの保存に失敗しました。Botが起動しているか確認してください。（この端末には保存済みです）");
+    return false;
+  }
 }
 
 /* 管理者用：役職直接追加＆✏️ 編集機能 */
-function saveRoleDirectlyByAdmin() {
+async function saveRoleDirectlyByAdmin() {
   if (!isAdmin) return;
   const editId = document.getElementById("editingRoleId").value;
   const name = document.getElementById("adminRoleName").value.trim();
@@ -1229,10 +1316,10 @@ function saveRoleDirectlyByAdmin() {
       target.camp = camp;
       target.mode = mode;
       target.descLines = descLines;
-      target.settingsList = settingsList;
+      // 設定項目を新しく入力していない場合は、既存の設定項目を残す（消えないように）
+      if (settingsList.length > 0) target.settingsList = settingsList;
     }
     cancelRoleEdit();
-    alert(currentLang === 'en' ? "Role updated successfully!" : "役職の内容を更新しました！");
   } else {
     customRolesList.push({
       id: Date.now().toString(),
@@ -1242,14 +1329,19 @@ function saveRoleDirectlyByAdmin() {
       descLines: descLines,
       settingsList: settingsList
     });
-    alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
   }
 
-  localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
   document.getElementById("adminRoleName").value = "";
   document.getElementById("adminRoleDesc").value = "";
   document.getElementById("adminSettingItemsContainer").innerHTML = "";
   renderRolesDisplay();
+
+  const ok = await saveRoles();
+  if (ok) {
+    alert(editId
+      ? (currentLang === 'en' ? "Role updated successfully!" : "役職の内容を更新しました！（全員に反映されます）")
+      : (currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！（全員に反映されます）"));
+  }
 }
 
 function editRoleByAdmin(roleId, event) {
@@ -1291,13 +1383,13 @@ function cancelRoleEdit() {
   cancelBtn.style.display = "none";
 }
 
-function deleteRoleDirectly(roleId, event) {
+async function deleteRoleDirectly(roleId, event) {
   if (event) event.stopPropagation();
   if (!isAdmin) return;
-  if (!confirm(currentLang === 'en' ? "Delete this role?" : "この役職を削除しますか？")) return;
+  if (!confirm(currentLang === 'en' ? "Delete this role?" : "この役職を削除しますか？（全員の一覧から消えます）")) return;
   customRolesList = customRolesList.filter(r => r.id !== roleId);
-  localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
   renderRolesDisplay();
+  await saveRoles();
 }
 
 let activeRoleFilter = "all";
@@ -1453,6 +1545,7 @@ function showPage(pageName, filterCategory) {
       if (targetBtn) targetBtn.classList.add("active");
     }
     renderRolesDisplay();
+    loadRoles(); // 役職一覧を開くたびに最新をサーバーから取得
   } else if (pageName === 'bug-list') {
     fetchBugList();
   }
@@ -1585,12 +1678,6 @@ function handleFileSelected(input) {
     nameDisplay.style.display = "none";
   }
 }
-
-/* Webhook & Bot設定 */
-const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
-const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
-const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
-const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
 /* ① 役職提案 送信処理 */
 async function handleSuggestSubmit(event) {
@@ -1804,8 +1891,7 @@ async function fetchBugList() {
   container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'Fetching bug list...' : 'Botから最新のバグ一覧を取得中...'}</p>`;
 
   try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
-    const response = await fetch(apiUrl);
+    const response = await fetch(API_BASE + "/api/bugs");
     if (!response.ok) throw new Error();
     loadedBugs = await response.json();
 
@@ -1840,7 +1926,11 @@ function renderBugList() {
       if (bugTranslationCache[bug.desc]) {
         descP.textContent = bugTranslationCache[bug.desc];
       } else {
-        descP.innerHTML = `${bug.desc} <span class="translating-hint">Translating...</span>`;
+        descP.textContent = bug.desc + " ";
+        const hint = document.createElement("span");
+        hint.className = "translating-hint";
+        hint.textContent = "Translating...";
+        descP.appendChild(hint);
         translateTextToEn(bug.desc).then(t => { descP.textContent = t; });
       }
     } else {
@@ -1867,9 +1957,10 @@ async function addAdminBugDirectly() {
   const desc = input.value.trim();
   if (!desc) return alert(currentLang === 'en' ? "Please enter bug description." : "バグ内容を入力してください。");
   try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
-    const res = await fetch(apiUrl, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ desc: desc })
+    const res = await fetch(API_BASE + "/api/bugs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify({ desc: desc })
     });
     if (res.ok) {
       input.value = "";
@@ -1883,8 +1974,10 @@ async function deleteBugDirectly(bugId) {
   if (!isAdmin) return;
   if (!confirm(currentLang === 'en' ? "Remove this bug?" : "このバグを一覧から削除（解決）しますか？")) return;
   try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? `${BOT_SERVER_URL}api/bugs/${bugId}` : `${BOT_SERVER_URL}/api/bugs/${bugId}`;
-    const res = await fetch(apiUrl, { method: "DELETE" });
+    const res = await fetch(`${API_BASE}/api/bugs/${bugId}`, {
+      method: "DELETE",
+      headers: { "x-admin-key": adminKey }
+    });
     if (res.ok) fetchBugList();
   } catch (e) {}
 }
@@ -2024,7 +2117,7 @@ applyFontSize(savedFontSize);
 applyLanguage(currentLang);
 updateAdminUI();
 loadAnnouncement();
-renderRolesDisplay();
+loadRoles();   // ← Botサーバーから最新の役職一覧を取得
 
 document.getElementById("settingsModal").addEventListener("click", function(e) {
   if (e.target === this) closeSettings();
