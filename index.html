@@ -20,6 +20,7 @@ body.light {
   --sidebar-bg: #ffffff; --border: #d9dce5; --text: #222532; --sub: #697080;
   --hover: #edf0f6; --c-ghost: #4b5563; --c-tora: #b88652;
 }
+
 body.font-small { --fs-base: 13px; --fs-h1: 26px; --fs-h2: 17px; --fs-card: 12px; }
 body.font-normal { --fs-base: 15px; --fs-h1: 30px; --fs-h2: 19px; --fs-card: 14px; }
 body.font-large { --fs-base: 18px; --fs-h1: 34px; --fs-h2: 22px; --fs-card: 16px; }
@@ -179,7 +180,7 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .mode-tab-btn.active { background: var(--card); color: var(--text); }
 .search-count { font-size: var(--fs-card); color: var(--sub); padding-left: 2px; }
 
-/* 役職一覧リスト */
+/* 役職一覧リスト（画像1枚目通り） */
 .role-list-container { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
 .role-item-btn {
   background: var(--card); border: 1px solid var(--border); border-radius: 14px;
@@ -191,7 +192,7 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 .role-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .role-arrow { color: var(--sub); font-size: 18px; }
 
-/* 役職詳細画面 */
+/* ★役職詳細画面 */
 .back-btn {
   display: inline-flex; align-items: center; gap: 6px; background: var(--card);
   border: 1px solid var(--border); color: var(--text); padding: 8px 16px;
@@ -200,15 +201,16 @@ h1 { font-size: var(--fs-h1); margin: 0 0 6px 0; }
 }
 .back-btn:hover { background: var(--hover); }
 
-.detail-color-bar {
-  height: 6px; width: 100px; border-radius: 3px; margin: 10px 0 24px 0;
-  background: linear-gradient(90deg, #f97316 0%, #ef4444 50%, #22c55e 100%);
-}
-
+/* ★見出しの縦棒（陣営色に動的連動） */
 .detail-section-title {
   display: flex; align-items: center; font-size: calc(var(--fs-h2) + 2px);
-  font-weight: bold; margin: 28px 0 14px 0; border-left: 4px solid #38bdf8;
-  padding-left: 12px; color: var(--text);
+  font-weight: bold; margin: 24px 0 12px 0; border-left: 4px solid #38bdf8;
+  padding-left: 12px; color: var(--text); transition: border-color .2s;
+}
+
+/* ★「・」なしのスッキリしたテキスト表示 */
+.detail-plain-text {
+  padding-left: 14px; color: var(--text); font-size: var(--fs-base); line-height: 1.7;
 }
 
 .detail-list {
@@ -447,7 +449,6 @@ select {
   <div class="menu-section">
     <div class="menu-section-title" data-ja="メイン" data-en="MAIN">メイン</div>
     <a class="menu-link" onclick="showPage('home')" data-ja="トップページ" data-en="Home">トップページ</a>
-    <a class="menu-link" onclick="showPage('roles')" data-ja="役職一覧" data-en="Roles">役職一覧</a>
     <a class="menu-link suggest" onclick="showPage('suggest')" data-ja="役職を提案する" data-en="Suggest Role">役職を提案する</a>
     <a class="menu-link bug" onclick="showPage('bug')" data-ja="バグ報告" data-en="Report Bug">バグ報告</a>
     <a class="menu-link bug-list" onclick="showPage('bug-list')" data-ja="バグ一覧（対応中）" data-en="Known Bugs">バグ一覧（対応中）</a>
@@ -460,8 +461,10 @@ select {
     <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
   </div>
 
+  <!-- ★役職一覧（すべての役職を復活＆メインの重複は削除済み） -->
   <div class="menu-section">
-    <div class="menu-section-title" data-ja="陣営別フィルター" data-en="TEAMS">陣営別フィルター</div>
+    <div class="menu-section-title" data-ja="役職一覧" data-en="ROLES">役職一覧</div>
+    <a class="menu-link all"         onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.all'), 'all');" data-ja="すべての役職" data-en="All Roles">すべての役職</a>
     <a class="menu-link impostor"    onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.impostor'), 'インポスター');" data-ja="インポスター" data-en="Impostor">インポスター</a>
     <a class="menu-link madmate"     onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.madmate'), 'マッドメイト');" data-ja="マッドメイト" data-en="Madmate">マッドメイト</a>
     <a class="menu-link crewmate"    onclick="showPage('roles'); selectFilter(document.querySelector('.filter-btn.crewmate'), 'クルーメイト');" data-ja="クルーメイト" data-en="Crewmate">クルーメイト</a>
@@ -551,7 +554,7 @@ select {
     <h1 data-ja="役職一覧" data-en="Role List">役職一覧</h1>
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Roles</div>
 
-    <!-- 管理者用：役職直接追加フォーム（最小値対応） -->
+    <!-- 管理者用：役職直接追加フォーム -->
     <div id="adminRoleAddBox" class="admin-custom-box" style="display: none;">
       <label class="form-label" style="color: #fbbf24;" data-ja="[ADMIN] 役職一覧に直接追加" data-en="[ADMIN] Add Custom Role Directly">[ADMIN] 役職一覧に直接追加</label>
       <div class="form-row">
@@ -598,7 +601,6 @@ select {
         <input type="text" id="roleSearchInput" class="search-input" placeholder="役職名で検索" data-placeholder-ja="役職名で検索" data-placeholder-en="Search by role name..." oninput="filterRolesDisplay()">
       </div>
 
-      <!-- モード切り替えタブ -->
       <div class="mode-tabs">
         <button type="button" class="mode-tab-btn active" onclick="selectModeFilter(this, 'all')" data-ja="すべて" data-en="All">すべて</button>
         <button type="button" class="mode-tab-btn" onclick="selectModeFilter(this, 'ホストMOD')" data-ja="ホストMOD" data-en="Host-only">ホストMOD</button>
@@ -606,7 +608,6 @@ select {
         <button type="button" class="mode-tab-btn" onclick="selectModeFilter(this, '両方')" data-ja="両方" data-en="Both">両方</button>
       </div>
 
-      <!-- 陣営フィルタータグ -->
       <div class="filter-tags">
         <button class="filter-btn all active" type="button" onclick="selectFilter(this, 'all')" data-ja="すべての役職" data-en="All Roles">すべての役職</button>
         <button class="filter-btn impostor"    type="button" onclick="selectFilter(this, 'インポスター')" data-ja="インポスター" data-en="Impostor">インポスター</button>
@@ -629,22 +630,22 @@ select {
   <div id="page-role-detail" class="page-view">
     <button type="button" class="back-btn" onclick="showPage('roles')" data-ja="‹ 役職一覧に戻る" data-en="‹ Back to Roles">‹ 役職一覧に戻る</button>
 
-    <h1 id="detailRoleName">役職名</h1>
-    <div class="detail-color-bar"></div>
+    <!-- 役職名（下の棒を完全に削除） -->
+    <h1 id="detailRoleName" style="margin-bottom: 24px;">役職名</h1>
 
+    <!-- 陣営（縦棒の色を陣営に連動 ＆ 「・」なしのスッキリ表示） -->
     <div class="detail-section-title" data-ja="陣営" data-en="Team">陣営</div>
-    <ul class="detail-list">
-      <li id="detailRoleCamp">インポスター陣営</li>
-    </ul>
+    <div class="detail-plain-text" id="detailRoleCamp">インポスター陣営</div>
 
+    <!-- 対応モード -->
     <div class="detail-section-title" data-ja="対応モード" data-en="Supported Mode">対応モード</div>
-    <ul class="detail-list">
-      <li id="detailRoleMode">両方 (ホスト・クライアント対応)</li>
-    </ul>
+    <div class="detail-plain-text" id="detailRoleMode">両方 (ホスト・クライアント対応)</div>
 
+    <!-- 役職説明 -->
     <div class="detail-section-title" data-ja="役職説明" data-en="Role Description">役職説明</div>
     <ul class="detail-list" id="detailRoleDescList"></ul>
 
+    <!-- ゲーム設定 -->
     <div class="detail-section-title" data-ja="ゲーム設定" data-en="Game Settings">ゲーム設定</div>
     <div class="settings-table-wrapper">
       <table class="settings-table">
@@ -1116,7 +1117,7 @@ function toggleSubmissionPause() {
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能 */
+/* お知らせバナー機能（自動翻訳対応） */
 function loadAnnouncement() {
   const notice = localStorage.getItem("tora-announcement");
   const banner = document.getElementById("announcementBanner");
@@ -1155,7 +1156,7 @@ function removeAnnouncement() {
   document.getElementById("adminNoticeInput").value = "";
 }
 
-/* ★★★ 初期役職データ（画像サンプルのイビルギャンブラー収録） ★★★ */
+/* 初期役職データ（画像サンプルのイビルギャンブラー収録） */
 const defaultRoles = [
   {
     id: "default-1",
@@ -1262,7 +1263,8 @@ function filterRolesDisplay() {
   renderRolesDisplay();
 }
 
-function getCampDotColor(camp) {
+/* 陣営カラーの判定 */
+function getCampColor(camp) {
   if (camp.includes("インポスター") || camp.includes("マッドメイト")) return "var(--c-impostor)";
   if (camp.includes("クルーメイト")) return "var(--c-crewmate)";
   if (camp.includes("第三陣営")) return "var(--c-neutral)";
@@ -1270,7 +1272,7 @@ function getCampDotColor(camp) {
   return "#ffffff";
 }
 
-/* 役職リスト描画 */
+/* 役職リスト描画（画像1枚目通り） */
 function renderRolesDisplay() {
   const container = document.getElementById("rolesListDisplay");
   const searchVal = document.getElementById("roleSearchInput").value.toLowerCase().trim();
@@ -1292,7 +1294,7 @@ function renderRolesDisplay() {
 
   container.innerHTML = "";
   filtered.forEach(r => {
-    const dotColor = getCampDotColor(r.camp);
+    const dotColor = getCampColor(r.camp);
     const btn = document.createElement("div");
     btn.className = "role-item-btn";
     btn.onclick = () => showRoleDetail(r);
@@ -1311,9 +1313,18 @@ function renderRolesDisplay() {
   });
 }
 
-/* 役職詳細表示 */
+/* 役職詳細表示（アクセントバーを陣営色に連動＆「・」なしテキスト表示） */
 function showRoleDetail(role) {
+  const campColor = getCampColor(role.camp);
+
+  // ★各見出しの縦棒を陣営の色に連動！
+  document.querySelectorAll("#page-role-detail .detail-section-title").forEach(el => {
+    el.style.borderLeftColor = campColor;
+  });
+
   document.getElementById("detailRoleName").textContent = role.name;
+
+  // ★「・」なしのスッキリしたテキストで陣営・対応モードを表示
   document.getElementById("detailRoleCamp").textContent = role.camp + (role.camp.includes("陣営") ? "" : (currentLang === 'en' ? " Team" : "陣営"));
   document.getElementById("detailRoleMode").textContent = role.mode || "両方 (ホスト・クライアント対応)";
 
