@@ -1041,18 +1041,13 @@ const API_BASE = BOT_SERVER_URL.replace(/\/$/, "");
 const ROLES_API = API_BASE + "/api/roles";
 const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
 
-/* ===== Discord Webhook（流出済みのため必ず作り直して、新しいURLを貼ってください） ===== */
-const SUGGEST_WEBHOOK_URL = "ここに新しい役職提案用Webhook URLを貼る";
-const BUG_WEBHOOK_URL = "ここに新しいバグ報告用Webhook URLを貼る";
+/* ===== Discord Webhook ===== */
+const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
+const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
 
-/* ===== 管理者状態（キーの正否はBotサーバー側で判定） ===== */
+/* ===== 管理者状態 ===== */
 let isAdmin = localStorage.getItem("tora-is-admin") === "true";
 let adminKey = localStorage.getItem("tora-admin-key") || "";
-// 旧バージョンで管理者になっていてキーが無い場合は一度解除（再ログインが必要）
-if (isAdmin && !adminKey) {
-  isAdmin = false;
-  localStorage.removeItem("tora-is-admin");
-}
 let isPaused = localStorage.getItem("tora-submissions-paused") === "true";
 let menuSecretTapCount = 0;
 let menuSecretTimeout;
@@ -1104,8 +1099,8 @@ function updateAdminUI() {
   renderRolesDisplay();
 }
 
-/* 管理者ログイン：メニュー見出しを10回タップ → キーをBotサーバーで照合 */
-async function handleMenuSecretTap() {
+/* 管理者ログイン：メニュー見出しを10回タップ → キー入力（この端末内で判定） */
+function handleMenuSecretTap() {
   menuSecretTapCount++;
   clearTimeout(menuSecretTimeout);
   menuSecretTimeout = setTimeout(() => { menuSecretTapCount = 0; }, 3500);
@@ -1123,24 +1118,15 @@ async function handleMenuSecretTap() {
       }
     } else {
       const key = prompt(currentLang === 'en' ? "Enter Admin Key:" : "管理者キーを入力してください:");
-      if (!key) return;
-      try {
-        const res = await fetch(API_BASE + "/api/auth", {
-          method: "POST",
-          headers: { "x-admin-key": key }
-        });
-        if (res.ok) {
-          isAdmin = true;
-          adminKey = key;
-          localStorage.setItem("tora-is-admin", "true");
-          localStorage.setItem("tora-admin-key", key);
-          updateAdminUI();
-          alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
-        } else {
-          alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
-        }
-      } catch (e) {
-        alert(currentLang === 'en' ? "Cannot connect to the bot server." : "Botに接続できません。しばらく待ってからもう一度お試しください。");
+      if (key === "torahakawaii") {
+        isAdmin = true;
+        adminKey = key;
+        localStorage.setItem("tora-is-admin", "true");
+        localStorage.setItem("tora-admin-key", key);
+        updateAdminUI();
+        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
+      } else if (key !== null) {
+        alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
       }
     }
   }
@@ -1154,7 +1140,7 @@ function toggleSubmissionPause() {
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能（※現状はこの端末のみ。全員共有したい場合は別途サーバー化が必要） */
+/* お知らせバナー機能（※この端末のみ） */
 function loadAnnouncement() {
   const notice = localStorage.getItem("tora-announcement");
   const banner = document.getElementById("announcementBanner");
@@ -1256,10 +1242,6 @@ async function saveRoles() {
       headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
       body: JSON.stringify(customRolesList)
     });
-    if (res.status === 401) {
-      alert(currentLang === 'en' ? "Admin key rejected. Please log in as admin again." : "管理者キーが拒否されました。管理者モードを一度解除して、もう一度ログインしてください。");
-      return false;
-    }
     if (!res.ok) throw new Error("save failed");
     return true;
   } catch (e) {
