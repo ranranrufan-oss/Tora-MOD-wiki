@@ -461,7 +461,7 @@ select {
   <div class="menu-section">
     <div class="menu-section-title" data-ja="ガイド・サポート" data-en="GUIDE & SUPPORT">ガイド・サポート</div>
     <a class="menu-link" onclick="showPage('install')" data-ja="MOD導入ガイド" data-en="Installation Guide">MOD導入ガイド</a>
-    <a class="menu-link" onclick="showPage('faq')" data-ja="よくある質問 (F&Q)" data-en="FAQ">よくある質問 (F&Q)</a>
+    <a class="menu-link" onclick="showPage('faq')" data-ja="よくある質問 (FAQ)" data-en="FAQ">よくある質問 (FAQ)</a>
     <a class="menu-link" onclick="showPage('commands')" data-ja="コマンド一覧" data-en="Commands">コマンド一覧</a>
   </div>
 
@@ -509,8 +509,8 @@ select {
     <div class="subtitle"><span style="color: #DDBB99 !important;">Tora</span> MOD Official Wiki</div>
 
     <section class="info-card">
-      <h2 data-ja="Welcome to Tora MOD Wiki" data-en="Welcome to Tora MOD Wiki">Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
-      <p id="homeWelcomeDesc" data-ja="Tora MODに関する情報をまとめたWikiです。役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
+      <h2>Welcome to <span style="color: #DDBB99 !important;">Tora</span> MOD Wiki</h2>
+      <p id="homeWelcomeDesc" data-html data-ja="&lt;span style=&quot;color: #DDBB99 !important;&quot;&gt;Tora&lt;/span&gt; MODに関する情報をまとめたWikiです。&lt;br&gt;役職・システム・設定などの最新情報を随時掲載していきます。" data-en="An official wiki compiling information about Tora MOD. Role details, game systems, and configuration options will be posted here regularly.">
         <span style="color: #DDBB99 !important;">Tora</span> MODに関する情報をまとめたWikiです。<br>
         役職・システム・設定などの最新情報を随時掲載していきます。
       </p>
@@ -518,7 +518,7 @@ select {
 
     <section class="info-card">
       <h2><span style="color: #DDBB99 !important;">Tora</span> <span id="homeWhatIsTitle" data-ja="MODとは？" data-en="MOD Overview">MODとは？</span></h2>
-      <p id="homeWhatIsDesc" data-ja="Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。" data-en="An expansion mod currently in development to bring deeper and more thrilling gameplay to Among Us. Although still a work in progress, it aims to introduce a wide variety of unique custom roles and special rules for enhanced deduction and strategic depth.">
+      <p id="homeWhatIsDesc" data-html data-ja="Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。&lt;br&gt;現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。" data-en="An expansion mod currently in development to bring deeper and more thrilling gameplay to Among Us. Although still a work in progress, it aims to introduce a wide variety of unique custom roles and special rules for enhanced deduction and strategic depth.">
         Among Usをさらに深く、スリリングに遊ぶために現在開発を進めている拡張MODです。<br>
         現在はまだ未完成（開発途中）ですが、通常プレイにはない独自の役職や特殊ルールを多数追加し、従来の推理戦に加えてより奥深い駆け引きや戦略性を楽しめるMODを目指して鋭意制作を進めています。
       </p>
@@ -819,7 +819,7 @@ select {
 
         <div class="form-group">
           <label class="form-label"><span data-ja="ログファイル" data-en="Log File">ログファイル</span> <span class="req" data-ja="*必須（.log / .txt）" data-en="*Required (.log / .txt)">*必須（.log / .txt）</span></label>
-          <div class="file-upload-box" onclick="document.getElementById('bugLogFile').click()">
+          <div class="file-upload-box">
             <input type="file" id="bugLogFile" accept=".log,.txt" required onchange="handleFileSelected(this)">
             <div class="file-upload-icon">📁</div>
             <div class="file-upload-text" data-ja="クリックしてログファイルを選択" data-en="Click to select log file">クリックしてログファイルを選択</div>
@@ -1027,10 +1027,59 @@ select {
 </div>
 
 <script>
-let isAdmin = localStorage.getItem("tora-is-admin") === "true";
-let isPaused = localStorage.getItem("tora-submissions-paused") === "true";
+/* localStorage が使えない環境 (プライベートモード等) でも止まらないように */
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+  remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+};
+
+/* Bot の API */
+const BOT_SERVER_URL = (store.get("tora-bot-url-override") || "https://413n7r1lrp.apps.bot-hosting.cloud/").replace(/\/+$/, "") + "/";
+const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
+const BOT_OFFLINE_MSG_EN = "The bot is currently offline. Please wait a while (it may take up to about 8 hours).";
+
+function apiUrl(p) { return BOT_SERVER_URL + p.replace(/^\/+/, ""); }
+
+let adminKey = store.get("tora-admin-key") || "";
+let isAdmin = !!adminKey;
+let isPaused = false;
+let announcementText = "";
 let menuSecretTapCount = 0;
 let menuSecretTimeout;
+store.remove("tora-is-admin");
+
+async function api(method, p, body) {
+  const headers = {};
+  if (body !== undefined) headers["Content-Type"] = "application/json";
+  if (adminKey) headers["x-admin-key"] = adminKey;
+  const res = await fetch(apiUrl(p), { method, headers, body: body === undefined ? undefined : JSON.stringify(body) });
+  let data = null;
+  try { data = await res.json(); } catch (e) {}
+  if (res.status === 401 && adminKey) {
+    // キーが変わった・無効になった
+    adminKey = ""; isAdmin = false; store.remove("tora-admin-key");
+    updateAdminUI();
+  }
+  return { ok: res.ok, status: res.status, data };
+}
+
+/* 送信失敗の理由を利用者向けの文にする */
+function submitErrorMessage(r) {
+  const en = currentLang === 'en';
+  if (!r) return en ? BOT_OFFLINE_MSG_EN : BOT_OFFLINE_MSG;
+  const e = r.data && r.data.error;
+  if (r.status === 403 && e === "paused") return en ? "Submissions are currently paused." : "現在、受付を一時停止しています。";
+  if (r.status === 429) return en ? "Too many submissions. Please wait about 10 minutes and try again." : "短時間に送信しすぎです。10分ほど待ってからもう一度送ってください。";
+  if (r.status === 413) return en ? "The file is too large. Please send a smaller log (up to about 8 MB)." : "ファイルが大きすぎます。8MB くらいまでのログを送ってください。";
+  if (r.status === 400 && e === "missing") return (en ? "Please fill in: " : "未入力の項目があります: ") + (r.data.fields || []).join("、");
+  if (r.status === 400) return en ? "The submission was rejected. Please check the contents." : "送信内容に問題がありました。入力を確かめてください。";
+  if (r.status === 401) return en ? "Admin key is no longer valid. Admin mode was turned off." : "管理者キーが無効になったため、管理者モードを解除しました。";
+  return en ? BOT_OFFLINE_MSG_EN : BOT_OFFLINE_MSG;
+}
+
+/* 起動時に必須だった欄を控えておく (管理者モードの切り替えで戻すため) */
+const baseRequiredInputs = Array.from(document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]"));
 
 function updateAdminUI() {
   const badge = document.getElementById("adminBadge");
@@ -1073,59 +1122,100 @@ function updateAdminUI() {
   if (suggestSubmit) suggestSubmit.disabled = (isPaused && !isAdmin);
   if (bugSubmit) bugSubmit.disabled = (isPaused && !isAdmin);
 
-  const reqInputs = document.querySelectorAll("#roleSuggestForm [required], #bugReportForm [required]");
-  reqInputs.forEach(el => { el.required = !isAdmin; });
+  baseRequiredInputs.forEach(el => { el.required = !isAdmin; });
+  // 陣営や種別で隠れている欄の必須を付け直す (隠れた欄が必須のままだと送信が止まる)
+  const campSel = document.getElementById("roleCamp");
+  if (campSel) handleCampChange(campSel.value);
+  switchProposalType(currentProposalType);
 
   renderRolesDisplay();
+  if (loadedBugs && loadedBugs.length > 0) renderBugList();
 }
 
-function handleMenuSecretTap() {
+async function handleMenuSecretTap() {
   menuSecretTapCount++;
   clearTimeout(menuSecretTimeout);
   menuSecretTimeout = setTimeout(() => { menuSecretTapCount = 0; }, 3500);
 
-  if (menuSecretTapCount >= 10) {
-    menuSecretTapCount = 0;
-    if (isAdmin) {
-      if (confirm(currentLang === 'en' ? "Currently in [ADMIN MODE]. Turn off admin mode?" : "現在【管理者モード】です。管理者モードを解除しますか？")) {
-        isAdmin = false;
-        localStorage.removeItem("tora-is-admin");
-        updateAdminUI();
-        alert(currentLang === 'en' ? "Admin mode disabled." : "管理者モードを解除しました。");
-      }
-    } else {
-      const key = prompt(currentLang === 'en' ? "Enter Admin Key:" : "管理者キーを入力してください:");
-      if (key === "torahakawaii") {
-        isAdmin = true;
-        localStorage.setItem("tora-is-admin", "true");
-        updateAdminUI();
-        alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
-      } else if (key !== null) {
-        alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
-      }
+  if (menuSecretTapCount < 10) return;
+  menuSecretTapCount = 0;
+  if (isAdmin) {
+    if (confirm(currentLang === 'en' ? "Currently in [ADMIN MODE]. Turn off admin mode?" : "現在【管理者モード】です。管理者モードを解除しますか？")) {
+      isAdmin = false; adminKey = "";
+      store.remove("tora-admin-key");
+      updateAdminUI();
+      alert(currentLang === 'en' ? "Admin mode disabled." : "管理者モードを解除しました。");
     }
+    return;
   }
+  const key = prompt(currentLang === 'en' ? "Enter Admin Key:" : "管理者キーを入力してください:");
+  if (key === null || key === "") return;
+  let r = null;
+  try {
+    const res = await fetch(apiUrl("api/admin/verify"), { method: "POST", headers: { "x-admin-key": key } });
+    r = { ok: res.ok, status: res.status };
+  } catch (e) {}
+  if (!r || r.status >= 500) {
+    alert(r && r.status === 503
+      ? (currentLang === 'en' ? "Admin mode is not configured on the bot." : "bot 側で管理者キーが設定されていません。")
+      : (currentLang === 'en' ? BOT_OFFLINE_MSG_EN : BOT_OFFLINE_MSG));
+    return;
+  }
+  if (!r.ok) {
+    alert(currentLang === 'en' ? "Incorrect admin key." : "管理者キーが正しくありません。");
+    return;
+  }
+  adminKey = key; isAdmin = true;
+  store.set("tora-admin-key", key);
+  updateAdminUI();
+  alert(currentLang === 'en' ? "🎉 Admin mode enabled!" : "🎉 管理者モードを有効化しました！\n・未入力送信\n・バグ＆役職の直接追加・編集・削除\n・お知らせ掲載＆受付停止スイッチが利用可能");
+  offerLocalRoleUpload();
 }
 
-function toggleSubmissionPause() {
+async function toggleSubmissionPause() {
   if (!isAdmin) return;
-  isPaused = !isPaused;
-  localStorage.setItem("tora-submissions-paused", isPaused);
-  updateAdminUI();
+  const next = !isPaused;
+  let r = null;
+  try { r = await api("PUT", "api/settings", { paused: next }); } catch (e) {}
+  if (!r || !r.ok) { alert(submitErrorMessage(r)); return; }
+  applyServerSettings(r.data);
   alert(isPaused ? (currentLang === 'en' ? "Submissions paused." : "提案・バグ報告の受付を一時停止しました。") : (currentLang === 'en' ? "Submissions resumed!" : "提案・バグ報告の受付を再開しました！"));
 }
 
-/* お知らせバナー機能 */
+/* お知らせ・受付停止 (bot に保存して全員に出す) */
+function applyServerSettings(data) {
+  if (!data || typeof data !== "object") return;
+  announcementText = String(data.announcement || "");
+  isPaused = data.paused === true;
+  store.set("tora-settings-cache", JSON.stringify({ announcement: announcementText, paused: isPaused }));
+  loadAnnouncement();
+  updateAdminUI();
+}
+
+(function loadCachedSettings() {
+  try {
+    const c = JSON.parse(store.get("tora-settings-cache") || "null");
+    if (c) { announcementText = String(c.announcement || ""); isPaused = c.paused === true; }
+  } catch (e) {}
+  store.remove("tora-announcement");
+  store.remove("tora-submissions-paused");
+})();
+
+async function fetchServerSettings() {
+  try {
+    const r = await api("GET", "api/settings");
+    if (r.ok) applyServerSettings(r.data);
+  } catch (e) {}
+}
+
 function loadAnnouncement() {
-  const notice = localStorage.getItem("tora-announcement");
+  const notice = announcementText;
   const banner = document.getElementById("announcementBanner");
   const textEl = document.getElementById("announcementText");
   if (notice) {
+    textEl.textContent = notice;
     if (currentLang === 'en') {
-      textEl.textContent = notice;
-      translateTextToEn(notice).then(t => { textEl.textContent = t; });
-    } else {
-      textEl.textContent = notice;
+      translateTextToEn(notice).then(t => { if (announcementText === notice && currentLang === 'en') textEl.textContent = t; });
     }
     banner.style.display = "flex";
   } else {
@@ -1133,7 +1223,7 @@ function loadAnnouncement() {
   }
 }
 
-function setAnnouncement() {
+async function setAnnouncement() {
   if (!isAdmin) return;
   const input = document.getElementById("adminNoticeInput");
   const text = input.value.trim();
@@ -1141,16 +1231,20 @@ function setAnnouncement() {
     alert(currentLang === 'en' ? "Please enter announcement text." : "お知らせの文章を入力してください。");
     return;
   }
-  localStorage.setItem("tora-announcement", text);
-  loadAnnouncement();
+  let r = null;
+  try { r = await api("PUT", "api/settings", { announcement: text }); } catch (e) {}
+  if (!r || !r.ok) { alert(submitErrorMessage(r)); return; }
+  applyServerSettings(r.data);
   alert(currentLang === 'en' ? "Announcement banner published!" : "お知らせバナーを掲載しました！");
 }
 
-function removeAnnouncement() {
+async function removeAnnouncement() {
   if (!isAdmin) return;
   if (!confirm(currentLang === 'en' ? "Remove announcement banner?" : "お知らせバナーを削除しますか？")) return;
-  localStorage.removeItem("tora-announcement");
-  loadAnnouncement();
+  let r = null;
+  try { r = await api("PUT", "api/settings", { announcement: "" }); } catch (e) {}
+  if (!r || !r.ok) { alert(submitErrorMessage(r)); return; }
+  applyServerSettings(r.data);
   document.getElementById("adminNoticeInput").value = "";
 }
 
@@ -1166,23 +1260,104 @@ const defaultRoles = [
       "ターン開始直後はインポスター共通のキルクールです。"
     ],
     settingsList: [
-      { name: "成功時のキルクール", detail: "成功時に適用されるキルクールタイムを設定します (例: 10秒)" },
-      { name: "失敗時のキルクール", detail: "失敗時に適用されるキルクールタイムを設定します (例: 45秒)" },
-      { name: "成功確率", detail: "キル成功の判定確率を設定します (例: 50%)" }
+      { name: "成功時のキルクール", type: "text", text: "成功時に適用されるキルクールタイムを設定します (例: 10秒)" },
+      { name: "失敗時のキルクール", type: "text", text: "失敗時に適用されるキルクールタイムを設定します (例: 45秒)" },
+      { name: "成功確率", type: "text", text: "キル成功の判定確率を設定します (例: 50%)" }
     ]
   }
 ];
 
-let customRolesList = [];
+/* 役職一覧は bot に保存し、最後に取れた物をこのブラウザにも控える (bot が落ちていても見られるように) */
+let customRolesList = defaultRoles;
+let rolesFromServer = false;
 try {
-  const saved = localStorage.getItem("tora-custom-roles");
-  customRolesList = saved ? JSON.parse(saved) : defaultRoles;
-} catch(e){
-  customRolesList = defaultRoles;
+  const cached = JSON.parse(store.get("tora-roles-cache") || "null");
+  if (Array.isArray(cached)) customRolesList = cached;
+} catch (e) {}
+
+async function fetchServerRoles() {
+  try {
+    const r = await api("GET", "api/roles");
+    if (!r.ok) return;
+    rolesFromServer = true;
+    customRolesList = Array.isArray(r.data) ? r.data : defaultRoles;
+    store.set("tora-roles-cache", JSON.stringify(customRolesList));
+    renderRolesDisplay();
+  } catch (e) {}
+}
+
+async function saveRolesToServer(nextList) {
+  let r = null;
+  try { r = await api("PUT", "api/roles", nextList); } catch (e) {}
+  if (!r || !r.ok) { alert(submitErrorMessage(r)); return false; }
+  customRolesList = Array.isArray(r.data && r.data.roles) ? r.data.roles : nextList;
+  rolesFromServer = true;
+  store.set("tora-roles-cache", JSON.stringify(customRolesList));
+  renderRolesDisplay();
+  return true;
+}
+
+/* 以前はこのブラウザにだけ保存していた役職を、bot に移す */
+async function offerLocalRoleUpload() {
+  let local = null;
+  try { local = JSON.parse(store.get("tora-custom-roles") || "null"); } catch (e) {}
+  if (!Array.isArray(local) || local.length === 0) return;
+  await fetchServerRoles();
+  if (!rolesFromServer) return; // bot に届かない時は次に管理者モードへ入った時に聞く
+  const serverEmpty = customRolesList === defaultRoles;
+  const msg = currentLang === 'en'
+    ? `This browser has ${local.length} role(s) saved only locally. Upload them to the bot so everyone can see them?` + (serverEmpty ? "" : "\n(They will be added to the roles already on the bot.)")
+    : `このブラウザにだけ保存されている役職が ${local.length} 件あります。bot に保存して全員に見えるようにしますか？` + (serverEmpty ? "" : "\n(bot にある役職に追加します)");
+  if (!confirm(msg)) return;
+  const base = serverEmpty ? [] : customRolesList.slice();
+  const ids = new Set(base.map(r => r.id));
+  local.forEach(r => {
+    if (!r || ids.has(r.id)) return;
+    base.push({
+      ...r,
+      settingsList: (r.settingsList || []).map(s => s.type ? s : { name: s.name, type: "text", text: s.detail || "" })
+    });
+  });
+  if (await saveRolesToServer(base)) {
+    store.remove("tora-custom-roles");
+    alert(currentLang === 'en' ? "Uploaded!" : "bot に保存しました！");
+  }
+}
+
+/* 設定項目カードの中身を読む */
+function collectSettings(containerId) {
+  const list = [];
+  document.querySelectorAll(`#${containerId} .setting-item-card`).forEach(card => {
+    const v = cls => { const el = card.querySelector(cls); return el ? el.value.trim() : ""; };
+    const name = v(".setting-name");
+    if (!name) return;
+    const type = v(".setting-type") || "number";
+    list.push({
+      name, type,
+      min: v(".setting-min"), max: v(".setting-max"), step: v(".setting-step"), unit: v(".setting-unit"),
+      c1: v(".setting-choice1"), c2: v(".setting-choice2"), text: v(".setting-text")
+    });
+  });
+  return list;
+}
+
+/* 設定項目を表に出す文にする */
+function settingDetailText(s) {
+  if (!s) return "";
+  if (!s.type) return s.detail || "";
+  if (s.type === "boolean") return `2択 [ ${s.c1 || "ON"} / ${s.c2 || "OFF"} ]`;
+  if (s.type === "text") return s.text || s.detail || "";
+  const unit = s.unit || "";
+  const d = [];
+  if (s.min && s.max) d.push(`${s.min}〜${s.max}${unit}`);
+  else if (s.max) d.push(`最大: ${s.max}${unit}`);
+  else if (s.min) d.push(`最小: ${s.min}${unit}`);
+  if (s.step) d.push(`間隔: ${s.step}${unit}`);
+  return d.join(" / ") || unit;
 }
 
 /* 管理者用：役職直接追加＆✏️ 編集機能 */
-function saveRoleDirectlyByAdmin() {
+async function saveRoleDirectlyByAdmin() {
   if (!isAdmin) return;
   const editId = document.getElementById("editingRoleId").value;
   const name = document.getElementById("adminRoleName").value.trim();
@@ -1195,61 +1370,24 @@ function saveRoleDirectlyByAdmin() {
     return;
   }
 
-  const settingCards = document.querySelectorAll("#adminSettingItemsContainer .setting-item-card");
-  let settingsList = [];
-  settingCards.forEach(card => {
-    const sName = card.querySelector(".setting-name").value.trim();
-    const sType = card.querySelector(".setting-type").value;
-    if (sName) {
-      if (sType === "boolean") {
-        const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
-        const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
-        settingsList.push({ name: sName, detail: `2択 [ ${c1} / ${c2} ]` });
-      } else {
-        const min = card.querySelector(".setting-min").value.trim();
-        const max = card.querySelector(".setting-max").value.trim();
-        const step = card.querySelector(".setting-step").value.trim();
-        const unit = card.querySelector(".setting-unit").value.trim();
-        let details = [];
-        if (min && max) details.push(`${min}〜${max}${unit}`);
-        else if (max) details.push(`最大: ${max}${unit}`);
-        else if (min) details.push(`最小: ${min}${unit}`);
-        if (step) details.push(`間隔: ${step}${unit}`);
-        settingsList.push({ name: sName, detail: details.join(" / ") || `${unit}` });
-      }
-    }
-  });
-
+  const settingsList = collectSettings("adminSettingItemsContainer");
   const descLines = desc.split("\n").filter(l => l.trim() !== "");
-
+  // 古い一覧を書き戻して他の管理者の変更を消さないよう、保存の前に最新を取る
+  await fetchServerRoles();
+  if (!rolesFromServer) { alert(submitErrorMessage(null)); return; }
+  const base = customRolesList;
+  let next;
   if (editId) {
-    const target = customRolesList.find(r => r.id === editId);
-    if (target) {
-      target.name = name;
-      target.camp = camp;
-      target.mode = mode;
-      target.descLines = descLines;
-      target.settingsList = settingsList;
-    }
-    cancelRoleEdit();
-    alert(currentLang === 'en' ? "Role updated successfully!" : "役職の内容を更新しました！");
+    next = base.map(r => r.id === editId ? { ...r, name, camp, mode, descLines, settingsList } : r);
   } else {
-    customRolesList.push({
-      id: Date.now().toString(),
-      name: name,
-      camp: camp,
-      mode: mode,
-      descLines: descLines,
-      settingsList: settingsList
-    });
-    alert(currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！");
+    next = base.concat([{ id: `role-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, name, camp, mode, descLines, settingsList }]);
   }
 
-  localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
-  document.getElementById("adminRoleName").value = "";
-  document.getElementById("adminRoleDesc").value = "";
-  document.getElementById("adminSettingItemsContainer").innerHTML = "";
-  renderRolesDisplay();
+  if (!(await saveRolesToServer(next))) return;
+  cancelRoleEdit();
+  alert(editId
+    ? (currentLang === 'en' ? "Role updated successfully!" : "役職の内容を更新しました！")
+    : (currentLang === 'en' ? "Role added to list!" : "役職一覧に追加しました！"));
 }
 
 function editRoleByAdmin(roleId, event) {
@@ -1264,6 +1402,13 @@ function editRoleByAdmin(roleId, event) {
   document.getElementById("adminRoleCamp").value = target.camp;
   document.getElementById("adminRoleMode").value = target.mode || "両方";
   document.getElementById("adminRoleDesc").value = (target.descLines || []).join("\n");
+
+  // 設定項目も読み込む (読み込まないと保存した時に消える)
+  document.getElementById("adminSettingItemsContainer").innerHTML = "";
+  (target.settingsList || []).forEach(s => {
+    const preset = s.type ? s : { name: s.name, type: "text", text: s.detail || "" };
+    createSettingCard("adminSettingItemsContainer", preset);
+  });
 
   const saveBtn = document.getElementById("adminRoleSaveBtn");
   const cancelBtn = document.getElementById("adminRoleCancelBtn");
@@ -1286,18 +1431,18 @@ function cancelRoleEdit() {
   const cancelBtn = document.getElementById("adminRoleCancelBtn");
   const titleEl = document.getElementById("adminRoleBoxTitle");
 
-  titleEl.textContent = currentLang === 'en' ? "[ADMIN] Add Custom Role Directly" : "[ADMIN] 役職の直接追加 / 編集";
+  titleEl.textContent = currentLang === 'en' ? "[ADMIN] Add / Edit Custom Role" : "[ADMIN] 役職の直接追加 / 編集";
   saveBtn.textContent = currentLang === 'en' ? "Add Role to List" : "役職を一覧に追加";
   cancelBtn.style.display = "none";
 }
 
-function deleteRoleDirectly(roleId, event) {
+async function deleteRoleDirectly(roleId, event) {
   if (event) event.stopPropagation();
   if (!isAdmin) return;
   if (!confirm(currentLang === 'en' ? "Delete this role?" : "この役職を削除しますか？")) return;
-  customRolesList = customRolesList.filter(r => r.id !== roleId);
-  localStorage.setItem("tora-custom-roles", JSON.stringify(customRolesList));
-  renderRolesDisplay();
+  await fetchServerRoles();
+  if (!rolesFromServer) { alert(submitErrorMessage(null)); return; }
+  await saveRolesToServer(customRolesList.filter(r => r.id !== roleId));
 }
 
 let activeRoleFilter = "all";
@@ -1318,11 +1463,32 @@ function selectFilter(btn, campName) {
 }
 
 function getCampColor(camp) {
-  if (camp.includes("インポスター") || camp.includes("マッドメイト")) return "var(--c-impostor)";
+  camp = camp || "";
+  if (camp.includes("インポスター")) return "var(--c-impostor)";
+  if (camp.includes("マッドメイト")) return "var(--c-madmate)";
   if (camp.includes("クルーメイト")) return "var(--c-crewmate)";
   if (camp.includes("第三陣営")) return "var(--c-neutral)";
+  if (camp.includes("コンビネーション")) return "var(--c-combination)";
   if (camp.includes("属性")) return "var(--c-modifier)";
+  if (camp.includes("幽霊")) return "var(--c-ghost)";
   return "#ffffff";
+}
+
+const CAMP_EN = {
+  "インポスター": "Impostor", "マッドメイト": "Madmate", "クルーメイト": "Crewmate", "第三陣営": "Neutral",
+  "コンビネーション": "Combination", "属性": "Modifier", "幽霊役職": "Ghost Role"
+};
+const MODE_LABEL = {
+  "両方": { ja: "両方 (ホスト・クライアント対応)", en: "Both (Host & Client)" },
+  "ホストMOD": { ja: "ホストMOD (ホストのみ導入で動作)", en: "Host-only MOD" },
+  "クライアントMOD": { ja: "クライアントMOD (全員がMOD導入必須)", en: "Client-only MOD" }
+};
+
+function campLabel(camp) {
+  if (currentLang === 'en') return CAMP_EN[camp] || camp;
+  // 「〇〇陣営」と言えるのはこの 3 つだけ
+  if (["インポスター", "マッドメイト", "クルーメイト"].includes(camp)) return camp + "陣営";
+  return camp;
 }
 
 /* 役職リスト描画 */
@@ -1333,37 +1499,56 @@ function renderRolesDisplay() {
   const countEl = document.getElementById("roleSearchCount");
 
   const filtered = customRolesList.filter(r => {
-    const matchCamp = (activeRoleFilter === "all" || r.camp.includes(activeRoleFilter));
+    const matchCamp = (activeRoleFilter === "all" || (r.camp || "").includes(activeRoleFilter));
     const matchMode = (activeModeFilter === "all" || r.mode === activeModeFilter || r.mode === "両方");
-    const matchSearch = (!searchVal || r.name.toLowerCase().includes(searchVal) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(searchVal)));
+    const matchSearch = (!searchVal || (r.name || "").toLowerCase().includes(searchVal) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(searchVal)));
     return matchCamp && matchMode && matchSearch;
   });
 
-  if (countEl) countEl.textContent = `${filtered.length}件`;
+  if (countEl) countEl.textContent = currentLang === 'en' ? `${filtered.length}` : `${filtered.length}件`;
 
+  container.innerHTML = "";
   if (filtered.length === 0) {
-    container.innerHTML = `<p style="text-align: center; color: var(--sub); padding: 30px;">${currentLang === 'en' ? 'No roles found.' : '該当する役職がありません。'}</p>`;
+    const p = document.createElement("p");
+    p.style.cssText = "text-align: center; color: var(--sub); padding: 30px;";
+    p.textContent = currentLang === 'en' ? 'No roles found.' : '該当する役職がありません。';
+    container.appendChild(p);
     return;
   }
 
-  container.innerHTML = "";
   filtered.forEach(r => {
-    const dotColor = getCampColor(r.camp);
     const btn = document.createElement("div");
     btn.className = "role-item-btn";
     btn.onclick = () => showRoleDetail(r);
 
-    btn.innerHTML = `
-      <div class="role-item-left">
-        <span class="role-dot" style="background: ${dotColor};"></span>
-        <span>${r.name}</span>
-      </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        ${isAdmin ? `<button type="button" class="bug-card-del-btn" style="color: #38bdf8;" onclick="editRoleByAdmin('${r.id}', event)" title="編集">✏️</button>` : ""}
-        ${isAdmin ? `<button type="button" class="bug-card-del-btn" onclick="deleteRoleDirectly('${r.id}', event)" title="削除">×</button>` : ""}
-        <span class="role-arrow">›</span>
-      </div>
-    `;
+    const left = document.createElement("div");
+    left.className = "role-item-left";
+    const dot = document.createElement("span");
+    dot.className = "role-dot";
+    dot.style.background = getCampColor(r.camp);
+    const nameEl = document.createElement("span");
+    nameEl.textContent = r.name;
+    left.append(dot, nameEl);
+
+    const right = document.createElement("div");
+    right.style.cssText = "display: flex; align-items: center; gap: 8px;";
+    if (isAdmin) {
+      const edit = document.createElement("button");
+      edit.type = "button"; edit.className = "bug-card-del-btn"; edit.style.color = "#38bdf8";
+      edit.title = "編集"; edit.textContent = "✏️";
+      edit.onclick = e => editRoleByAdmin(r.id, e);
+      const del = document.createElement("button");
+      del.type = "button"; del.className = "bug-card-del-btn";
+      del.title = "削除"; del.textContent = "×";
+      del.onclick = e => deleteRoleDirectly(r.id, e);
+      right.append(edit, del);
+    }
+    const arrow = document.createElement("span");
+    arrow.className = "role-arrow";
+    arrow.textContent = "›";
+    right.appendChild(arrow);
+
+    btn.append(left, right);
     container.appendChild(btn);
   });
 }
@@ -1377,8 +1562,9 @@ function showRoleDetail(role) {
   });
 
   document.getElementById("detailRoleName").textContent = role.name;
-  document.getElementById("detailRoleCamp").textContent = role.camp + (role.camp.includes("陣営") ? "" : (currentLang === 'en' ? " Team" : "陣営"));
-  document.getElementById("detailRoleMode").textContent = role.mode || "両方 (ホスト・クライアント対応)";
+  document.getElementById("detailRoleCamp").textContent = campLabel(role.camp);
+  const mode = MODE_LABEL[role.mode || "両方"];
+  document.getElementById("detailRoleMode").textContent = mode ? mode[currentLang === 'en' ? 'en' : 'ja'] : role.mode;
 
   const descList = document.getElementById("detailRoleDescList");
   descList.innerHTML = "";
@@ -1399,12 +1585,20 @@ function showRoleDetail(role) {
   if (role.settingsList && role.settingsList.length > 0) {
     role.settingsList.forEach(s => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${s.name}</td><td>${s.detail}</td>`;
+      const td1 = document.createElement("td");
+      td1.textContent = s.name;
+      const td2 = document.createElement("td");
+      td2.textContent = settingDetailText(s);
+      tr.append(td1, td2);
       tableBody.appendChild(tr);
     });
   } else {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td colspan="2" style="text-align: center; color: var(--sub);">${currentLang === 'en' ? 'No custom settings.' : '設定項目はありません。'}</td>`;
+    const td = document.createElement("td");
+    td.colSpan = 2;
+    td.style.cssText = "text-align: center; color: var(--sub);";
+    td.textContent = currentLang === 'en' ? 'No custom settings.' : '設定項目はありません。';
+    tr.appendChild(td);
     tableBody.appendChild(tr);
   }
 
@@ -1449,7 +1643,8 @@ function showPage(pageName, filterCategory) {
     if (filterCategory) {
       activeRoleFilter = filterCategory;
       document.querySelectorAll(".filter-tags .filter-btn").forEach(btn => btn.classList.remove("active"));
-      const targetBtn = document.querySelector(`.filter-tags .filter-btn.${filterCategory === 'all' ? 'all' : ''}`);
+      const cls = { all: "all", "インポスター": "impostor", "マッドメイト": "madmate", "クルーメイト": "crewmate", "第三陣営": "neutral", "コンビネーション": "combination", "属性": "modifier", "幽霊役職": "ghost" }[filterCategory];
+      const targetBtn = cls ? document.querySelector(`.filter-tags .filter-btn.${cls}`) : null;
       if (targetBtn) targetBtn.classList.add("active");
     }
     renderRolesDisplay();
@@ -1526,7 +1721,7 @@ function handleCombiCampChange() {
 
 /* 設定項目カード生成 */
 let settingItemCount = 0;
-function createSettingCard(containerId) {
+function createSettingCard(containerId, preset) {
   settingItemCount++;
   const container = document.getElementById(containerId);
   const card = document.createElement("div");
@@ -1535,50 +1730,75 @@ function createSettingCard(containerId) {
   const isEn = (currentLang === 'en');
   card.innerHTML = `
     <div class="setting-item-header">
-      <span class="setting-item-title">${isEn ? `Option #${settingItemCount}` : `設定項目 #${settingItemCount}`}</span>
+      <span class="setting-item-title"></span>
       <button type="button" class="setting-item-del-btn" onclick="removeSettingItem('setting-item-${settingItemCount}')">×</button>
     </div>
     <div class="setting-main-row">
-      <input type="text" class="form-input setting-name" placeholder="${isEn ? 'Option Name' : '設定項目名'}">
+      <input type="text" class="form-input setting-name" maxlength="100" placeholder="${isEn ? 'Option Name' : '設定項目名'}">
       <select class="form-select setting-type" onchange="toggleSettingType(this)">
         <option value="number">${isEn ? 'Number / Slider' : '数値 / スライダー'}</option>
         <option value="boolean">${isEn ? 'Toggle' : '2択'}</option>
+        <option value="text">${isEn ? 'Free text' : '自由記述'}</option>
       </select>
     </div>
     <div class="setting-detail-grid-4 setting-detail-number">
-      <input type="text" class="form-input setting-min" placeholder="${isEn ? 'Min' : '最小値'}">
-      <input type="text" class="form-input setting-max" placeholder="${isEn ? 'Max' : '最大値'}">
-      <input type="text" class="form-input setting-step" placeholder="${isEn ? 'Step' : '間隔'}">
-      <input type="text" class="form-input setting-unit" placeholder="${isEn ? 'Unit' : '単位'}">
+      <input type="text" class="form-input setting-min" maxlength="30" placeholder="${isEn ? 'Min' : '最小値'}">
+      <input type="text" class="form-input setting-max" maxlength="30" placeholder="${isEn ? 'Max' : '最大値'}">
+      <input type="text" class="form-input setting-step" maxlength="30" placeholder="${isEn ? 'Step' : '間隔'}">
+      <input type="text" class="form-input setting-unit" maxlength="30" placeholder="${isEn ? 'Unit' : '単位'}">
     </div>
     <div class="setting-detail-grid-2 setting-detail-boolean" style="display: none;">
-      <input type="text" class="form-input setting-choice1" placeholder="Choice 1">
-      <input type="text" class="form-input setting-choice2" placeholder="Choice 2">
+      <input type="text" class="form-input setting-choice1" maxlength="50" placeholder="${isEn ? 'Choice 1' : '選択肢1'}">
+      <input type="text" class="form-input setting-choice2" maxlength="50" placeholder="${isEn ? 'Choice 2' : '選択肢2'}">
+    </div>
+    <div class="setting-detail-text" style="display: none;">
+      <input type="text" class="form-input setting-text" maxlength="300" placeholder="${isEn ? 'Description' : '内容'}">
     </div>
   `;
   container.appendChild(card);
+  if (preset) {
+    const set = (cls, v) => { const el = card.querySelector(cls); if (el) el.value = v || ""; };
+    set(".setting-name", preset.name);
+    set(".setting-type", ["number", "boolean", "text"].includes(preset.type) ? preset.type : "text");
+    set(".setting-min", preset.min); set(".setting-max", preset.max);
+    set(".setting-step", preset.step); set(".setting-unit", preset.unit);
+    set(".setting-choice1", preset.c1); set(".setting-choice2", preset.c2);
+    set(".setting-text", preset.text || preset.detail);
+    toggleSettingType(card.querySelector(".setting-type"));
+  }
+  renumberSettingCards(container);
+}
+
+function renumberSettingCards(container) {
+  const isEn = (currentLang === 'en');
+  container.querySelectorAll(".setting-item-card").forEach((card, i) => {
+    const t = card.querySelector(".setting-item-title");
+    if (t) t.textContent = isEn ? `Option #${i + 1}` : `設定項目 #${i + 1}`;
+  });
 }
 
 function removeSettingItem(id) {
   const el = document.getElementById(id);
-  if (el) el.remove();
+  if (!el) return;
+  const container = el.parentElement;
+  el.remove();
+  if (container) renumberSettingCards(container);
 }
 
 function toggleSettingType(selectEl) {
   const card = selectEl.closest(".setting-item-card");
-  const numGrid = card.querySelector(".setting-detail-number");
-  const boolGrid = card.querySelector(".setting-detail-boolean");
-  if (selectEl.value === "boolean") {
-    numGrid.style.display = "none"; boolGrid.style.display = "grid";
-  } else {
-    numGrid.style.display = "grid"; boolGrid.style.display = "none";
-  }
+  card.querySelector(".setting-detail-number").style.display = selectEl.value === "number" ? "grid" : "none";
+  card.querySelector(".setting-detail-boolean").style.display = selectEl.value === "boolean" ? "grid" : "none";
+  card.querySelector(".setting-detail-text").style.display = selectEl.value === "text" ? "block" : "none";
 }
+
+const MAX_LOG_FILE_BYTES = 8 * 1024 * 1024;
 
 function handleFileSelected(input) {
   const nameDisplay = document.getElementById("selectedFileName");
   if (input.files && input.files[0]) {
-    nameDisplay.textContent = `${currentLang === 'en' ? 'Selected: ' : '選択中: '}${input.files[0].name}`;
+    const f = input.files[0];
+    nameDisplay.textContent = `${currentLang === 'en' ? 'Selected: ' : '選択中: '}${f.name} (${Math.max(1, Math.round(f.size / 1024))} KB)`;
     nameDisplay.style.display = "block";
   } else {
     nameDisplay.textContent = "";
@@ -1586,13 +1806,13 @@ function handleFileSelected(input) {
   }
 }
 
-/* Webhook & Bot設定 */
-const SUGGEST_WEBHOOK_URL = "https://discord.com/api/webhooks/1567912832043847693/Sv_xE6pw8dAPxhIKE2wAirU7QTbyfsPdSo3MPoQsF4L_lEo0ig4FGNCVm-z-LiCIih6A";
-const BUG_WEBHOOK_URL = "https://discord.com/api/webhooks/1568192847126208577/UgOAlLttDlB2S_E9HoUwpr8oE0zzJYenAbUw6s9mGXB91_oPyuHjOckMsRJU9O3OAS4n";
-const BOT_SERVER_URL = "https://413n7r1lrp.apps.bot-hosting.cloud/";
-const BOT_OFFLINE_MSG = "現在はbotが落ちています。しばらくお待ちください。(長い場合は8時間程度かかります)";
+function showFormStatus(el, text, ok) {
+  el.textContent = text;
+  el.classList.toggle("success", !!ok);
+  el.style.display = "block";
+}
 
-/* ① 役職提案 送信処理 */
+/* ① 役職提案 送信処理 (bot が Discord へ投稿する) */
 async function handleSuggestSubmit(event) {
   event.preventDefault();
   if (isPaused && !isAdmin) {
@@ -1603,110 +1823,42 @@ async function handleSuggestSubmit(event) {
   const formStatus = document.getElementById("formStatus");
   submitBtn.disabled = true; submitBtn.textContent = currentLang === 'en' ? "Submitting..." : "送信中..."; formStatus.style.display = "none";
 
-  const modMode = document.getElementById("modMode").value;
-  const roleCamp = document.getElementById("roleCamp").value;
-  const roleDesc = document.getElementById("roleDesc").value.trim() || (isAdmin ? "（未入力 - 管理者送信）" : "");
-
-  const campColors = {
-    "インポスター": 16731469, "マッドメイト": 16731469, "クルーメイト": 3718648,
-    "第三陣営": 10265775, "コンビネーション": 16777215, "幽霊役職": 16777215, "属性": 2278750
-  };
-
-  let embedTitle = "";
-  let fields = [
-    { name: "種別", value: currentProposalType === 'port' ? "🔄 移植案" : "💡 役職提案", inline: true },
-    { name: "対応モード", value: modMode, inline: true },
-    { name: "陣営", value: roleCamp, inline: true }
-  ];
-
-  if (currentProposalType === 'port') {
-    const originName = document.getElementById("originModName").value.trim() || (isAdmin ? "未入力(管理者)" : "未記入");
-    fields.push({ name: "移植元", value: originName, inline: false });
-  }
-
-  if (roleCamp === "コンビネーション") {
-    const camp1 = document.getElementById("combiCamp1").value;
-    const name1 = document.getElementById("combiRoleName1").value.trim() || (isAdmin ? "役職1(未入力)" : "");
-    const nameEn1 = document.getElementById("combiRoleNameEn1").value.trim();
-    const camp2 = document.getElementById("combiCamp2").value;
-    const name2 = document.getElementById("combiRoleName2").value.trim() || (isAdmin ? "役職2(未入力)" : "");
-    const nameEn2 = document.getElementById("combiRoleNameEn2").value.trim();
-
-    embedTitle = currentProposalType === 'port' ? `【移植案】${name1} × ${name2}` : `【新役職提案】${name1} × ${name2}`;
-    fields.push({ name: `役職1 [${camp1}]`, value: `${name1} ${nameEn1 ? `(${nameEn1})` : ""}`, inline: true });
-    if (camp1 === "第三陣営") {
-      fields.push({ name: "役職1の勝利条件", value: document.getElementById("combiWin1").value.trim() || "未記入" });
-    }
-    fields.push({ name: `役職2 [${camp2}]`, value: `${name2} ${nameEn2 ? `(${nameEn2})` : ""}`, inline: true });
-    if (camp2 === "第三陣営") {
-      fields.push({ name: "役職2の勝利条件", value: document.getElementById("combiWin2").value.trim() || "未記入" });
-    }
-  } else {
-    const roleName = document.getElementById("roleName").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
-    const roleNameEn = document.getElementById("roleNameEn").value.trim() || (isAdmin ? "Unspecified" : "");
-    embedTitle = currentProposalType === 'port' ? `【移植案】${roleName} (${roleNameEn})` : `【新役職提案】${roleName} (${roleNameEn})`;
-    fields.push({ name: "英語名 (英名)", value: roleNameEn, inline: true });
-    if (roleCamp === "第三陣営") {
-      fields.push({ name: "勝利条件", value: document.getElementById("winCondition").value.trim() || "未記入" });
-    }
-  }
-
-  fields.push({ name: "能力・詳細説明", value: roleDesc });
-
-  const settingCards = document.querySelectorAll("#settingItemsContainer .setting-item-card");
-  if (settingCards.length > 0) {
-    let settingText = "";
-    settingCards.forEach(card => {
-      const name = card.querySelector(".setting-name").value.trim();
-      const type = card.querySelector(".setting-type").value;
-      if (name) {
-        if (type === "boolean") {
-          const c1 = card.querySelector(".setting-choice1").value.trim() || "ON";
-          const c2 = card.querySelector(".setting-choice2").value.trim() || "OFF";
-          settingText += `・**${name}**: 2択 [ ${c1} / ${c2} ]\n`;
-        } else {
-          const min = card.querySelector(".setting-min").value.trim();
-          const max = card.querySelector(".setting-max").value.trim();
-          const step = card.querySelector(".setting-step").value.trim();
-          const unit = card.querySelector(".setting-unit").value.trim();
-          let details = [];
-          if (min && max) details.push(`${min}〜${max}${unit}`);
-          else if (max) details.push(`最大: ${max}${unit}`);
-          else if (min) details.push(`最小: ${min}${unit}`);
-          if (step) details.push(`間隔: ${step}${unit}`);
-          if (!min && !max && !step && unit) details.push(`単位: ${unit}`);
-          settingText += `・**${name}**: 数値 ${details.length > 0 ? `(${details.join(", ")})` : ""}\n`;
-        }
-      }
-    });
-    if (settingText) fields.push({ name: "⚙️ ゲーム内設定項目", value: settingText });
-  }
-
+  const val = id => document.getElementById(id).value.trim();
+  const camp = val("roleCamp");
   const payload = {
-    username: "Tora MOD 提案システム" + (isAdmin ? " [ADMIN]" : ""),
-    embeds: [{
-      title: embedTitle, color: campColors[roleCamp] || 3718648, fields: fields,
-      footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
-      timestamp: new Date().toISOString()
-    }]
+    type: currentProposalType,
+    mode: val("modMode"),
+    camp,
+    origin: currentProposalType === 'port' ? val("originModName") : "",
+    desc: val("roleDesc"),
+    settings: collectSettings("settingItemsContainer")
   };
+  if (camp === "コンビネーション") {
+    payload.combi = [
+      { camp: val("combiCamp1"), name: val("combiRoleName1"), nameEn: val("combiRoleNameEn1"), win: val("combiWin1") },
+      { camp: val("combiCamp2"), name: val("combiRoleName2"), nameEn: val("combiRoleNameEn2"), win: val("combiWin2") }
+    ];
+  } else {
+    payload.name = val("roleName");
+    payload.nameEn = val("roleNameEn");
+    if (camp === "第三陣営") payload.win = val("winCondition");
+  }
 
-  try {
-    const response = await fetch(SUGGEST_WEBHOOK_URL, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
-    });
-    if (response.ok) {
-      formStatus.textContent = currentLang === 'en' ? "Proposal submitted! Thank you." : "提案を送信しました！ありがとうございます。";
-      formStatus.classList.add("success"); formStatus.style.display = "block";
-      document.getElementById("roleSuggestForm").reset();
-      document.getElementById("settingItemsContainer").innerHTML = "";
-      switchProposalType('role'); handleCampChange("インポスター");
-    } else { alert(BOT_OFFLINE_MSG); }
-  } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Proposal" : "提案"; }
+  let r = null;
+  try { r = await api("POST", "api/suggest", payload); } catch (e) {}
+  if (r && r.ok) {
+    showFormStatus(formStatus, currentLang === 'en' ? "Proposal submitted! Thank you." : "提案を送信しました！ありがとうございます。", true);
+    document.getElementById("roleSuggestForm").reset();
+    document.getElementById("settingItemsContainer").innerHTML = "";
+    switchProposalType('role'); handleCampChange("インポスター");
+  } else {
+    alert(submitErrorMessage(r));
+  }
+  submitBtn.disabled = (isPaused && !isAdmin);
+  submitBtn.textContent = currentLang === 'en' ? "Submit Proposal" : "提案";
 }
 
-/* ② バグ報告 送信処理 */
+/* ② バグ報告 送信処理 (ログはファイルのまま Discord に添付される) */
 async function handleBugSubmit(event) {
   event.preventDefault();
   if (isPaused && !isAdmin) {
@@ -1715,115 +1867,124 @@ async function handleBugSubmit(event) {
   }
   const submitBtn = document.getElementById("bugSubmitBtn");
   const formStatus = document.getElementById("bugFormStatus");
-  submitBtn.disabled = true; submitBtn.textContent = currentLang === 'en' ? "Submitting..." : "送信中..."; formStatus.style.display = "none";
-
-  const match = document.getElementById("bugMatch").value.trim() || (isAdmin ? "未入力(管理者)" : "");
-  const turn = document.getElementById("bugTurn").value.trim() || (isAdmin ? "未入力(管理者)" : "");
-  const desc = document.getElementById("bugDesc").value.trim() || (isAdmin ? "未入力(管理者送信)" : "");
   const fileInput = document.getElementById("bugLogFile");
+  const logFile = (fileInput.files && fileInput.files[0]) ? fileInput.files[0] : null;
+  const resetBtn = () => {
+    submitBtn.disabled = (isPaused && !isAdmin);
+    submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する";
+  };
 
-  if (!isAdmin && (!fileInput.files || !fileInput.files[0])) {
+  if (!isAdmin && !logFile) {
     alert(currentLang === 'en' ? "Please select a log file." : "ログファイルを選択してください。");
-    submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する";
     return;
   }
 
-  const logFile = (fileInput.files && fileInput.files[0]) ? fileInput.files[0] : null;
-  let logContent = "";
+  submitBtn.disabled = true; submitBtn.textContent = currentLang === 'en' ? "Submitting..." : "送信中..."; formStatus.style.display = "none";
+
+  let log = "";
   if (logFile) {
-    try { logContent = await logFile.text(); }
-    catch (e) { logContent = "（ログの読み込みに失敗しました）"; }
+    try {
+      // 大きすぎるログは末尾 (エラーが出る所) だけ送る
+      const blob = logFile.size > MAX_LOG_FILE_BYTES ? logFile.slice(logFile.size - MAX_LOG_FILE_BYTES) : logFile;
+      log = await blob.text();
+    } catch (e) {
+      log = "（ログの読み込みに失敗しました）";
+    }
   }
 
-  const trimmedLog = logContent.length > 950 ? logContent.substring(0, 950) + "\n...（以降省略）" : logContent;
-
-  const fields = [
-    { name: "何試合目か", value: `${match || "未記入"} 試合目`, inline: true },
-    { name: "何ターン目か", value: `${turn || "未記入"} ターン目`, inline: true },
-    { name: "添付ファイル名", value: logFile ? `${logFile.name} (${Math.round(logFile.size / 1024)} KB)` : "未添付", inline: false },
-    { name: "バグ内容・発生状況", value: desc || "未記入", inline: false }
-  ];
-
-  if (logFile) {
-    fields.push({
-      name: "📋 ログ内容（抜粋）",
-      value: trimmedLog ? `\`\`\`text\n${trimmedLog}\n\`\`\`` : "（空のログ）",
-      inline: false
-    });
-  }
-
-  const payload = {
-    username: "Tora MOD バグ報告" + (isAdmin ? " [ADMIN]" : ""),
-    embeds: [{
-      title: "🐛【バグ報告】不具合が報告されました", color: 15631988, fields: fields,
-      footer: { text: "Tora MOD Official Wiki" + (isAdmin ? " (管理者送信)" : "") },
-      timestamp: new Date().toISOString()
-    }]
-  };
-
+  const val = id => document.getElementById(id).value.trim();
+  let r = null;
   try {
-    const response = await fetch(BUG_WEBHOOK_URL, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+    r = await api("POST", "api/bug", {
+      match: val("bugMatch"),
+      turn: val("bugTurn"),
+      desc: val("bugDesc"),
+      log,
+      logName: logFile ? logFile.name : ""
     });
-    if (response.ok) {
-      formStatus.textContent = currentLang === 'en' ? "Bug report submitted! Thank you." : "バグ報告を送信しました。ご協力ありがとうございます！";
-      formStatus.classList.add("success"); formStatus.style.display = "block";
-      document.getElementById("bugReportForm").reset();
-      document.getElementById("selectedFileName").style.display = "none";
-    } else { alert(BOT_OFFLINE_MSG); }
-  } catch (error) { alert(BOT_OFFLINE_MSG); }
-  finally { submitBtn.disabled = false; submitBtn.textContent = currentLang === 'en' ? "Submit Bug Report" : "バグを報告する"; }
+  } catch (e) {}
+
+  if (r && r.ok) {
+    showFormStatus(formStatus, currentLang === 'en' ? "Bug report submitted! Thank you." : "バグ報告を送信しました。ご協力ありがとうございます！", true);
+    document.getElementById("bugReportForm").reset();
+    document.getElementById("selectedFileName").style.display = "none";
+  } else {
+    alert(submitErrorMessage(r));
+  }
+  resetBtn();
 }
 
-/* 自動翻訳＆キャッシュ */
+/* 自動翻訳＆キャッシュ (英語表示の時だけ使う) */
 let bugTranslationCache = {};
-try { bugTranslationCache = JSON.parse(localStorage.getItem("tora-bug-translations") || "{}"); } catch(e) {}
+try { bugTranslationCache = JSON.parse(store.get("tora-bug-translations") || "{}") || {}; } catch (e) {}
+// 以前のキャッシュに混ざった翻訳サービスの警告文を捨てる
+Object.keys(bugTranslationCache).forEach(k => {
+  if (/MYMEMORY|QUERY LENGTH LIMIT|INVALID LANGUAGE PAIR/i.test(bugTranslationCache[k] || "")) delete bugTranslationCache[k];
+});
+
+const translationInFlight = new Map();
+const MAX_TRANSLATE_CHARS = 450; // MyMemory は 500 字まで
 
 async function translateTextToEn(text) {
   if (!text) return "";
   if (bugTranslationCache[text]) return bugTranslationCache[text];
-  try {
-    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ja|en`);
-    if (!res.ok) return text;
-    const data = await res.json();
-    if (data && data.responseData && data.responseData.translatedText) {
-      const translated = data.responseData.translatedText;
-      bugTranslationCache[text] = translated;
-      localStorage.setItem("tora-bug-translations", JSON.stringify(bugTranslationCache));
-      return translated;
-    }
-  } catch (e) {}
-  return text;
+  if (text.length > MAX_TRANSLATE_CHARS) return text;
+  if (translationInFlight.has(text)) return translationInFlight.get(text);
+  const job = (async () => {
+    try {
+      const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ja|en`);
+      if (!res.ok) return text;
+      const data = await res.json();
+      const status = Number(data && data.responseStatus);
+      const translated = data && data.responseData && data.responseData.translatedText;
+      if (status === 200 && translated && !/MYMEMORY WARNING/i.test(translated)) {
+        bugTranslationCache[text] = translated;
+        const keys = Object.keys(bugTranslationCache);
+        if (keys.length > 300) keys.slice(0, keys.length - 300).forEach(k => delete bugTranslationCache[k]);
+        store.set("tora-bug-translations", JSON.stringify(bugTranslationCache));
+        return translated;
+      }
+    } catch (e) {}
+    return text;
+  })();
+  translationInFlight.set(text, job);
+  try { return await job; } finally { translationInFlight.delete(text); }
 }
 
 /* ③ バグ一覧 */
 let loadedBugs = [];
+
+function setBugListMessage(text, color) {
+  const container = document.getElementById("bugListDisplay");
+  container.innerHTML = "";
+  const p = document.createElement("p");
+  p.style.cssText = `color: ${color || "var(--sub)"}; text-align: center;`;
+  p.textContent = text;
+  container.appendChild(p);
+}
+
 async function fetchBugList() {
   const container = document.getElementById("bugListDisplay");
   if (!container) return;
-  container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'Fetching bug list...' : 'Botから最新のバグ一覧を取得中...'}</p>`;
+  setBugListMessage(currentLang === 'en' ? 'Fetching bug list...' : 'Botから最新のバグ一覧を取得中...');
 
   try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl("api/bugs"));
     if (!response.ok) throw new Error();
-    loadedBugs = await response.json();
-
-    if (!loadedBugs || loadedBugs.length === 0) {
-      container.innerHTML = `<p style="color: var(--sub); text-align: center;">${currentLang === 'en' ? 'No tracked bugs currently! ✨' : '現在、対応中のバグはありません！✨'}</p>`;
-      return;
-    }
-
-    loadedBugs.forEach(bug => {
-      if (bug.desc && !bugTranslationCache[bug.desc]) {
-        translateTextToEn(bug.desc);
-      }
-    });
-
-    renderBugList();
+    const data = await response.json();
+    loadedBugs = Array.isArray(data) ? data : [];
   } catch (e) {
-    container.innerHTML = `<p style="color: #ff4d4d; text-align: center;">${currentLang === 'en' ? 'Unable to connect to Bot.' : '現在Botと接続中です。数秒待ってから開き直してください。'}</p>`;
+    setBugListMessage(currentLang === 'en'
+      ? 'Could not connect to the bot. It may be offline; please try again later.'
+      : 'Botに接続できませんでした。Botが落ちている可能性があります。しばらくしてから開き直してください。', "#ff4d4d");
+    return;
   }
+
+  if (loadedBugs.length === 0) {
+    setBugListMessage(currentLang === 'en' ? 'No tracked bugs currently! ✨' : '現在、対応中のバグはありません！✨');
+    return;
+  }
+  renderBugList();
 }
 
 function renderBugList() {
@@ -1835,16 +1996,21 @@ function renderBugList() {
     card.className = "custom-card border-gold";
     const descP = document.createElement("p");
     descP.className = "bug-desc";
+    const original = bug.desc || (currentLang === 'en' ? "No details" : "詳細なし");
 
-    if (currentLang === 'en') {
+    if (currentLang === 'en' && bug.desc) {
       if (bugTranslationCache[bug.desc]) {
         descP.textContent = bugTranslationCache[bug.desc];
       } else {
-        descP.innerHTML = `${bug.desc} <span class="translating-hint">Translating...</span>`;
-        translateTextToEn(bug.desc).then(t => { descP.textContent = t; });
+        descP.textContent = original + " ";
+        const hint = document.createElement("span");
+        hint.className = "translating-hint";
+        hint.textContent = "Translating...";
+        descP.appendChild(hint);
+        translateTextToEn(bug.desc).then(t => { if (currentLang === 'en') descP.textContent = t; });
       }
     } else {
-      descP.textContent = bug.desc || "詳細なし";
+      descP.textContent = original;
     }
 
     card.appendChild(descP);
@@ -1866,27 +2032,24 @@ async function addAdminBugDirectly() {
   const input = document.getElementById("adminBugInput");
   const desc = input.value.trim();
   if (!desc) return alert(currentLang === 'en' ? "Please enter bug description." : "バグ内容を入力してください。");
-  try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? BOT_SERVER_URL + 'api/bugs' : BOT_SERVER_URL + '/api/bugs';
-    const res = await fetch(apiUrl, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ desc: desc })
-    });
-    if (res.ok) {
-      input.value = "";
-      alert(currentLang === 'en' ? "Added to bug list directly!" : "バグ一覧に直接追加しました！");
-      fetchBugList();
-    } else { alert("Failed to add."); }
-  } catch (e) { alert("Connection error."); }
+  let r = null;
+  try { r = await api("POST", "api/bugs", { desc }); } catch (e) {}
+  if (r && r.ok) {
+    input.value = "";
+    alert(currentLang === 'en' ? "Added to bug list directly!" : "バグ一覧に直接追加しました！");
+    fetchBugList();
+  } else {
+    alert(submitErrorMessage(r));
+  }
 }
 
 async function deleteBugDirectly(bugId) {
   if (!isAdmin) return;
-  if (!confirm(currentLang === 'en' ? "Remove this bug?" : "このバグを一覧から削除（解決）しますか？")) return;
-  try {
-    const apiUrl = BOT_SERVER_URL.endsWith('/') ? `${BOT_SERVER_URL}api/bugs/${bugId}` : `${BOT_SERVER_URL}/api/bugs/${bugId}`;
-    const res = await fetch(apiUrl, { method: "DELETE" });
-    if (res.ok) fetchBugList();
-  } catch (e) {}
+  if (!confirm(currentLang === 'en' ? "Remove this bug?" : "このバグを一覧から削除（解決）しますか？\n(Discord のバグ報告も消えます)")) return;
+  let r = null;
+  try { r = await api("DELETE", `api/bugs/${encodeURIComponent(bugId)}`); } catch (e) {}
+  if (r && (r.ok || r.status === 404)) fetchBugList();
+  else alert(submitErrorMessage(r));
 }
 
 /* ⑤ サイト内まるごとキーワード検索 */
@@ -1897,7 +2060,7 @@ const searchDatabase = [
   { type: "ページ", typeEn: "Page", title: "バグ報告", titleEn: "Report Bug", page: "bug", desc: "不具合やログの報告フォーム" },
   { type: "ページ", typeEn: "Page", title: "バグ一覧", titleEn: "Known Bugs", page: "bug-list", desc: "現在対応中の不具合一覧" },
   { type: "ガイド", typeEn: "Guide", title: "MOD導入ガイド", titleEn: "Install Guide", page: "install", desc: "Steam/Epicでの導入方法・ホストMOD" },
-  { type: "FAQ", typeEn: "FAQ", title: "よくある質問 (F&Q)", titleEn: "FAQ", page: "faq", desc: "黒画面トラブル、BAN対策、フレンド参加" },
+  { type: "FAQ", typeEn: "FAQ", title: "よくある質問 (FAQ)", titleEn: "FAQ", page: "faq", desc: "黒画面トラブル、BAN対策、フレンド参加" },
   { type: "コマンド", typeEn: "Cmd", title: "/h (コマンド一覧)", titleEn: "/h (Command List)", page: "commands", desc: "ゲーム内の利用可能コマンドを表示" },
   { type: "コマンド", typeEn: "Cmd", title: "/m (自分の役職)", titleEn: "/m (My Role)", page: "commands", desc: "現在の役職と能力をチャットで確認" },
   { type: "コマンド", typeEn: "Cmd", title: "/n r (役職一覧)", titleEn: "/n r (Role List)", page: "commands", desc: "ゲーム内の全役職一覧を表示" }
@@ -1915,29 +2078,36 @@ function closeGlobalSearch() {
 function handleGlobalSearch(keyword) {
   const container = document.getElementById("globalSearchResults");
   const q = keyword.toLowerCase().trim();
+  const message = text => {
+    container.innerHTML = "";
+    const p = document.createElement("p");
+    p.style.cssText = "text-align: center; color: var(--sub); font-size: 13px;";
+    p.textContent = text;
+    container.appendChild(p);
+  };
   if (!q) {
-    container.innerHTML = `<p style="text-align: center; color: var(--sub); font-size: 13px;">${currentLang === 'en' ? 'Enter keywords to search' : 'キーワードを入力してください'}</p>`;
+    message(currentLang === 'en' ? 'Enter keywords to search' : 'キーワードを入力してください');
     return;
   }
 
-  let results = searchDatabase.filter(item => 
-    item.title.toLowerCase().includes(q) || 
-    item.titleEn.toLowerCase().includes(q) || 
+  let results = searchDatabase.filter(item =>
+    item.title.toLowerCase().includes(q) ||
+    item.titleEn.toLowerCase().includes(q) ||
     item.desc.toLowerCase().includes(q)
   );
 
   customRolesList.forEach(r => {
-    if (r.name.toLowerCase().includes(q) || r.camp.toLowerCase().includes(q) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(q))) {
+    if ((r.name || "").toLowerCase().includes(q) || (r.camp || "").toLowerCase().includes(q) || (r.descLines && r.descLines.join(" ").toLowerCase().includes(q))) {
       results.push({
         type: "役職", typeEn: "Role",
         title: r.name, titleEn: r.name,
-        page: "roles", desc: `${r.camp} - ${r.descLines ? r.descLines[0] : ""}`
+        role: r, desc: `${campLabel(r.camp)} - ${r.descLines ? r.descLines[0] || "" : ""}`
       });
     }
   });
 
   if (results.length === 0) {
-    container.innerHTML = `<p style="text-align: center; color: var(--sub); font-size: 13px;">${currentLang === 'en' ? 'No results found' : '一致する結果が見つかりませんでした'}</p>`;
+    message(currentLang === 'en' ? 'No results found' : '一致する結果が見つかりませんでした');
     return;
   }
 
@@ -1947,30 +2117,36 @@ function handleGlobalSearch(keyword) {
     a.className = "search-result-item";
     a.onclick = () => {
       closeGlobalSearch();
-      showPage(res.page);
+      if (res.role) showRoleDetail(res.role);
+      else showPage(res.page);
     };
-    a.innerHTML = `
-      <div>
-        <div style="font-weight: bold; font-size: 14px;">${currentLang === 'en' ? res.titleEn : res.title}</div>
-        <div style="font-size: 12px; color: var(--sub);">${res.desc}</div>
-      </div>
-      <span class="search-result-type">${currentLang === 'en' ? res.typeEn : res.type}</span>
-    `;
+    const box = document.createElement("div");
+    const t = document.createElement("div");
+    t.style.cssText = "font-weight: bold; font-size: 14px;";
+    t.textContent = currentLang === 'en' ? res.titleEn : res.title;
+    const d = document.createElement("div");
+    d.style.cssText = "font-size: 12px; color: var(--sub);";
+    d.textContent = res.desc;
+    box.append(t, d);
+    const kind = document.createElement("span");
+    kind.className = "search-result-type";
+    kind.textContent = currentLang === 'en' ? res.typeEn : res.type;
+    a.append(box, kind);
     container.appendChild(a);
   });
 }
 
 /* テーマ・言語・文字サイズ管理 */
-const savedTheme = localStorage.getItem("tora-theme") || "dark";
-let currentLang = localStorage.getItem("tora-lang") || "ja";
-const savedFontSize = localStorage.getItem("tora-font-size") || "normal";
+const savedTheme = store.get("tora-theme") || "dark";
+let currentLang = store.get("tora-lang") === "en" ? "en" : "ja";
+const savedFontSize = store.get("tora-font-size") || "normal";
 
 function applyTheme(theme) {
   document.body.classList.toggle("light", theme === "light");
   document.getElementById("themeSelect").value = theme;
 }
 function changeTheme(theme) {
-  localStorage.setItem("tora-theme", theme);
+  store.set("tora-theme", theme);
   applyTheme(theme);
 }
 
@@ -1980,7 +2156,7 @@ function applyFontSize(size) {
   document.getElementById("fontSizeSelect").value = size;
 }
 function changeFontSize(size) {
-  localStorage.setItem("tora-font-size", size);
+  store.set("tora-font-size", size);
   applyFontSize(size);
 }
 
@@ -1989,7 +2165,9 @@ function applyLanguage(lang) {
   document.getElementById("langSelect").value = lang;
 
   document.querySelectorAll("[data-ja][data-en]").forEach(el => {
-    el.textContent = el.getAttribute(`data-${lang}`);
+    const v = el.getAttribute(`data-${lang}`);
+    if (el.hasAttribute("data-html")) el.innerHTML = v;
+    else el.textContent = v;
   });
   document.querySelectorAll("[data-placeholder-ja][data-placeholder-en]").forEach(el => {
     el.placeholder = el.getAttribute(`data-placeholder-${lang}`);
@@ -1997,21 +2175,33 @@ function applyLanguage(lang) {
   document.querySelectorAll("option[data-ja][data-en]").forEach(opt => {
     opt.textContent = opt.getAttribute(`data-${lang}`);
   });
-  document.querySelectorAll(".req").forEach(el => {
-    el.textContent = lang === 'en' ? '*Required' : '*必須';
-  });
-  document.querySelectorAll(".opt").forEach(el => {
-    el.textContent = lang === 'en' ? 'Optional' : '任意';
-  });
+  document.querySelectorAll(".setting-items-container").forEach(renumberSettingCards);
+  cancelRoleEditTitleRefresh();
 
   switchProposalType(currentProposalType);
   if (loadedBugs && loadedBugs.length > 0) renderBugList();
   renderRolesDisplay();
+  updateAdminUI();
   loadAnnouncement();
 }
 
+/* 管理者の役職フォームの見出しを今の言語で付け直す */
+function cancelRoleEditTitleRefresh() {
+  const editing = document.getElementById("editingRoleId").value;
+  if (!editing) {
+    // 入力途中の欄は消さず、見出しとボタンの文字だけ付け直す
+    document.getElementById("adminRoleBoxTitle").textContent = currentLang === 'en' ? "[ADMIN] Add / Edit Custom Role" : "[ADMIN] 役職の直接追加 / 編集";
+    document.getElementById("adminRoleSaveBtn").textContent = currentLang === 'en' ? "Add Role to List" : "役職を一覧に追加";
+    document.getElementById("adminRoleCancelBtn").style.display = "none";
+    return;
+  }
+  const target = customRolesList.find(x => x.id === editing);
+  document.getElementById("adminRoleBoxTitle").textContent = currentLang === 'en' ? `[ADMIN] Editing Role: ${target ? target.name : ""}` : `[ADMIN] 役職の編集: ${target ? target.name : ""}`;
+  document.getElementById("adminRoleSaveBtn").textContent = currentLang === 'en' ? "Save Changes" : "役職を更新（保存）";
+}
+
 function changeLanguage(lang) {
-  localStorage.setItem("tora-lang", lang);
+  store.set("tora-lang", lang);
   applyLanguage(lang);
 }
 
@@ -2022,9 +2212,9 @@ function closeSettings() { document.getElementById("settingsModal").classList.re
 applyTheme(savedTheme);
 applyFontSize(savedFontSize);
 applyLanguage(currentLang);
-updateAdminUI();
-loadAnnouncement();
-renderRolesDisplay();
+// bot から最新の役職・お知らせ・受付状態を取る (取れるまでは前回の控えを出す)
+fetchServerSettings();
+fetchServerRoles();
 
 document.getElementById("settingsModal").addEventListener("click", function(e) {
   if (e.target === this) closeSettings();
